@@ -1,0 +1,105 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "modules/user/proto/user.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/login": {
+      "post": {
+        "operationId": "Login",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/userUser"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userLoginRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserSystem"
+        ]
+      }
+    },
+    "/v1/logout": {
+      "get": {
+        "operationId": "Logout",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/userNoopResponse"
+            }
+          }
+        },
+        "tags": [
+          "UserSystem"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "UserStatus": {
+      "type": "string",
+      "enum": [
+        "USER_STATUS_INVALID",
+        "USER_STATUS_REGISTERED",
+        "USER_STATUS_ACTIVE",
+        "USER_STATUS_BANNED"
+      ],
+      "default": "USER_STATUS_INVALID"
+    },
+    "userLoginRequest": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "userNoopResponse": {
+      "type": "object"
+    },
+    "userUser": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/UserStatus"
+        }
+      }
+    }
+  }
+}
