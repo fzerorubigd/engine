@@ -39,6 +39,9 @@ $(BIN)/protoc-gen-grpc-gateway:
 $(BIN)/protoc-gen-swagger:
 	$(GET) github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
 
-proto: $(BIN)/prototool $(BIN)/protoc-gen-go $(BIN)/protoc-gen-grpc-gateway $(BIN)/protoc-gen-swagger
+$(BIN)/protoc-gen-grpchan:
+	$(GET) github.com/fullstorydev/grpchan/cmd/protoc-gen-grpchan
+
+proto: $(BIN)/prototool $(BIN)/protoc-gen-go $(BIN)/protoc-gen-grpc-gateway $(BIN)/protoc-gen-swagger $(BIN)/protoc-gen-grpchan
 	$(BIN)/prototool all
 

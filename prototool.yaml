@@ -2,7 +2,6 @@
 excludes:
   - ./third_party/googleapis
   - ./tmp
-#  - path/to/b/file.proto
 
 # Protoc directives.
 protoc:
@@ -117,5 +116,8 @@ generate:
       type: go
       output: .
 
+    - name: grpchan
+      type: go
+      output: .
 #    - name: java
 #      output: ../../.gen/proto/java
