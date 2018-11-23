@@ -1,9 +1,9 @@
-export ROOT=$(realpath $(dir $(firstword $(MAKEFILE_LIST))))
-export BIN=$(ROOT)/bin
-export GOPATH=$(abspath $(ROOT)/../..)
-export GOBIN=$(BIN)
-export PATH:=$(GOBIN):$(PATH)
-APP_NAME=balloon
+export ROOT:=$(realpath $(dir $(firstword $(MAKEFILE_LIST))))
+export BIN:=$(ROOT)/bin
+export GOPATH:=$(mktemp)
+export GOBIN:=$(BIN)
+export PATH:=$(BIN):$(PATH)
+APP_NAME:=balloon
 DEFAULT_PASS=bita123
 GO=$(shell which go)
 GIT=$(shell which git)

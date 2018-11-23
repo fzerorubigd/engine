@@ -1,6 +1,7 @@
 # Paths to exclude when searching for Protobuf files.
 excludes:
   - ./third_party/googleapis
+  - ./tmp
 #  - path/to/b/file.proto
 
 # Protoc directives.
