@@ -1,30 +1,18 @@
 package main
 
 import (
-	"net/http"
-
-	"github.com/fullstorydev/grpchan/inprocgrpc"
-	"github.com/fzerorubigd/balloon/modules/user/impl"
-	"github.com/fzerorubigd/balloon/modules/user/proto"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-
-	"github.com/fraugster/cli"
+	"github.com/fzerorubigd/balloon/pkg/cli"
+	"github.com/fzerorubigd/balloon/pkg/config"
+	"github.com/fzerorubigd/balloon/pkg/grpcgw"
+	"github.com/fzerorubigd/balloon/pkg/initializer"
 )
 
 func main() {
 	ctx := cli.Context()
 
-	var c inprocgrpc.Channel
-	userpb.RegisterHandlerUserSystem(&c, userimpl.NewUserController())
+	config.Initialize("balloon", "BAL")
+	defer initializer.Initialize(ctx)()
 
-	cl := userpb.NewUserSystemChannelClient(&c)
+	grpcgw.Serve(ctx)
 
-	mux := runtime.NewServeMux()
-	if err := userpb.RegisterUserSystemHandlerClient(ctx, mux, cl); err != nil {
-		panic(err)
-	}
-
-	if err := http.ListenAndServe(":8080", mux); err != nil {
-		panic(err)
-	}
 }

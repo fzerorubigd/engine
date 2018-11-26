@@ -21,6 +21,8 @@ BUILD_DATE=$(shell date "+%D/%H/%I/%S"| sed -e "s/\//-/g")
 FLAGS="-X version.hash=$(LONG_HASH) -X version.short=$(SHORT_HASH) -X version.date=$(COMMIT_DATE) -X version.count=$(COMMIT_COUNT) -X version.build=$(BUILD_DATE)"
 LD_ARGS=-ldflags $(FLAGS)
 GET=cd $(ROOT) && $(GO) get -u -v $(LD_ARGS)
+BUILD=cd $(ROOT) && $(GO) build -v $(LD_ARGS)
+INSTALL=cd $(ROOT) && $(GO) install -v $(LD_ARGS)
 CG_SERVICES_POSTGRES_USER=$(DB_USER)
 CG_SERVICES_POSTGRES_PASSWORD=$(DB_PASS)
 CG_SERVICES_POSTGRES_DB=$(DB_NAME)
@@ -44,4 +46,12 @@ $(BIN)/protoc-gen-grpchan:
 
 proto: $(BIN)/prototool $(BIN)/protoc-gen-go $(BIN)/protoc-gen-grpc-gateway $(BIN)/protoc-gen-swagger $(BIN)/protoc-gen-grpchan
 	$(BIN)/prototool all
+
+install-server:
+	@echo "Building server"
+	$(INSTALL) ./cmd/server
+
+run-server: install-server
+	@echo "Running..."
+	$(BIN)/server
 
