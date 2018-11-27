@@ -3,6 +3,8 @@ cloud.google.com/go v0.33.1/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMT
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/fraugster/cli v1.0.0 h1:ZDnJaMQ2uPcP0oGuvYA+41868YcDkT9MId2pk3lv2fg=
 github.com/fraugster/cli v1.0.0/go.mod h1:tvJjLCpFu0hQm3nkOtUNvjtKZSx7rPDKVNnBcXY89uU=
+github.com/fraugster/go-bindata v3.3.0+incompatible h1:Hravl3pWFZqPBLNS/nsmNCx4Dy40wNFdRl94EVgrGHQ=
+github.com/fraugster/go-bindata v3.3.0+incompatible/go.mod h1:DvE1Y7RwQ7XFJ51SFu6h1P6xTjdAlABvzqwmsOwFaJI=
 github.com/fullstorydev/grpchan v0.0.0-20181120185831-564614157981 h1:cmdBpP8B9YUrkSIKH63xeqC6AlFGU+EvKZgT4f2GV4c=
 github.com/fullstorydev/grpchan v0.0.0-20181120185831-564614157981/go.mod h1:9v+0OFuNxrjTr5Ot9R89Ws8JdIBmaqQLT6Mg+n3tkcw=
 github.com/fzerorubigd/expand v0.0.0-20150817182922-fd359294116f h1:gLLBGceElLPz0apnj6kmEjCt4cWpqEiZrCeA5aPMt9E=
@@ -23,6 +25,8 @@ github.com/jhump/protoreflect v1.0.0/go.mod h1:kG/zRVeS2M91gYaCvvUbPkMjjtFQS4qqj
 github.com/jhump/protoreflect v1.1.0 h1:h+zsMrsiq0vIl7yWmeowmd8e8VtnWk75U04GgXA2s6Y=
 github.com/jhump/protoreflect v1.1.0/go.mod h1:kG/zRVeS2M91gYaCvvUbPkMjjtFQS4qqjcPFzFkh2zE=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=
+github.com/shuLhan/go-bindata v3.4.0+incompatible h1:w4Oo193QJfu7T2nNkUkt4bymbgLJKQiCAqc3jbVRGoc=
+github.com/shuLhan/go-bindata v3.4.0+incompatible/go.mod h1:pkcPAATLBDD2+SpAPnX5vEM90F7fcwHCvvLCMXcmw3g=
 go.uber.org/atomic v1.3.2 h1:2Oa65PReHzfn29GpvgsYwloV9AVFHPDk8tYxt2c2tr4=
 go.uber.org/atomic v1.3.2/go.mod h1:gD2HeocX3+yG+ygLZcrzQJaqmWj9AIm7n08wl/qW/PE=
 go.uber.org/multierr v1.1.0 h1:HoEmRHQPVSqub6w2z2d2EOVs2fjyFRGyofhKuyDq0QI=

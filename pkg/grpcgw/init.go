@@ -7,11 +7,8 @@ import (
 	"time"
 
 	"github.com/fullstorydev/grpchan/inprocgrpc"
-
 	"github.com/fzerorubigd/balloon/pkg/config"
-
 	"github.com/fzerorubigd/balloon/pkg/log"
-
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 )
 
@@ -41,17 +38,20 @@ func Serve(ctx context.Context) {
 	defer lock.RUnlock()
 
 	var (
-		c   inprocgrpc.Channel
-		mux = runtime.NewServeMux()
+		c         inprocgrpc.Channel
+		normalMux = http.NewServeMux()
+		mux       = runtime.NewServeMux()
 	)
 
+	normalMux.HandleFunc("/swagger", swaggerHandler)
 	for i := range all {
 		all[i].Init(ctx, c, mux)
 	}
 
+	normalMux.Handle("/", mux)
 	srv := http.Server{
 		Addr:    addr.String(),
-		Handler: mux,
+		Handler: normalMux,
 	}
 
 	go func() {

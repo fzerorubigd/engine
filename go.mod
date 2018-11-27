@@ -3,6 +3,7 @@ module github.com/fzerorubigd/balloon
 require (
 	cloud.google.com/go v0.33.1 // indirect
 	github.com/fraugster/cli v1.0.0
+	github.com/fraugster/go-bindata v3.3.0+incompatible // indirect
 	github.com/fullstorydev/grpchan v0.0.0-20181120185831-564614157981
 	github.com/fzerorubigd/expand v0.0.0-20150817182922-fd359294116f
 	github.com/ghodss/yaml v1.0.0 // indirect
@@ -11,6 +12,7 @@ require (
 	github.com/golang/protobuf v1.2.0
 	github.com/grpc-ecosystem/grpc-gateway v1.5.1
 	github.com/jhump/protoreflect v1.1.0 // indirect
+	github.com/shuLhan/go-bindata v3.4.0+incompatible // indirect
 	go.uber.org/atomic v1.3.2 // indirect
 	go.uber.org/multierr v1.1.0 // indirect
 	go.uber.org/zap v1.9.1
