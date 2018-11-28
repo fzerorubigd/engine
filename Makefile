@@ -28,6 +28,9 @@ CG_SERVICES_POSTGRES_PASSWORD=$(DB_PASS)
 CG_SERVICES_POSTGRES_DB=$(DB_NAME)
 where-am-i = $(CURDIR)/$(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
 
+# Include modules make file
+include $(wildcard $(ROOT)/modules/*/module.mk)
+
 $(BIN)/prototool:
 	$(CURL) -sSL https://github.com/uber/prototool/releases/download/v1.3.0/prototool-$(shell uname -s)-$(shell uname -m) -o $(BIN)/prototool
 	$(CHMOD) +x $(BIN)/prototool
@@ -47,22 +50,21 @@ $(BIN)/protoc-gen-grpchan:
 $(BIN)/go-bindata:
 	$(GET) github.com/fraugster/go-bindata/go-bindata
 
-.PHONY: swagger-to-go
 swagger-to-go:
 	$(INSTALL) ./cmd/swagger-to-go
 
-proto: $(BIN)/prototool $(BIN)/protoc-gen-go $(BIN)/protoc-gen-grpc-gateway $(BIN)/protoc-gen-swagger $(BIN)/protoc-gen-grpchan swagger-to-go
+proto: $(BIN)/prototool $(BIN)/protoc-gen-go $(BIN)/protoc-gen-grpc-gateway $(BIN)/protoc-gen-swagger $(BIN)/protoc-gen-grpchan
 	$(BIN)/prototool all
-	$(BIN)/swagger-to-go -pkg userpb -file $(ROOT)/modules/user/proto/user.swagger.json > $(ROOT)/modules/user/proto/user.swagger.pb.go
 
-swagger: proto
+swagger: swagger-to-go proto $(addsuffix -swagger,$(wildcard $(ROOT)/modules/*))
 
 
-install-server:
+build-server:
 	@echo "Building server"
 	$(INSTALL) ./cmd/server
 
-run-server: install-server
+run-server: build-server
 	@echo "Running..."
 	$(BIN)/server
 
+.PHONY: swagger-to-go proto swagger build-server run-server
