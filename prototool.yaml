@@ -1,6 +1,6 @@
 # Paths to exclude when searching for Protobuf files.
 excludes:
-  - ./third_party/googleapis
+  - ./third_party
   - ./tmp
 
 # Protoc directives.
@@ -14,7 +14,7 @@ protoc:
   # By default, the directory of the config file is included,
   # or the current directory if there is no config file.
   includes:
-    - ./third_party/googleapis
+    - ./third_party
 
 
   # If not set, compile will fail if there are unused imports.
@@ -79,14 +79,14 @@ generate:
       # The plugin name. This will go to protoc with --name_out, so it either needs
       # to be a built-in name (like java), or a plugin name with a binary
       # protoc-gen-name.
-    - name: go
+    - name: gofast
 
       # The type, if any. Valid types are go, gogo.
       # Use go if your plugin is a standard Golang plugin
       # that uses github.com/golang/protobuf imports, use gogo
       # if it uses github.com/gogo/protobuf imports. For protoc-gen-go
       # use go, For protoc-gen-gogo, protoc-gen-gogoslick, etc, use gogo.
-      type: go
+      type: gogo
 
       # Extra flags to specify.
       # The only flag you will generally set is plugins=grpc for Golang.
@@ -119,5 +119,10 @@ generate:
     - name: grpchan
       type: go
       output: .
+
+#    - name: govalidators
+#      type: go
+#      output: .
+#      flags: gogoimport=true
 #    - name: java
 #      output: ../../.gen/proto/java

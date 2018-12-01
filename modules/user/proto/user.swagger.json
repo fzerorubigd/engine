@@ -22,7 +22,7 @@
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/userUser"
+              "$ref": "#/definitions/userUserResponse"
             }
           }
         },
@@ -59,16 +59,6 @@
     }
   },
   "definitions": {
-    "UserStatus": {
-      "type": "string",
-      "enum": [
-        "USER_STATUS_INVALID",
-        "USER_STATUS_REGISTERED",
-        "USER_STATUS_ACTIVE",
-        "USER_STATUS_BANNED"
-      ],
-      "default": "USER_STATUS_INVALID"
-    },
     "userLoginRequest": {
       "type": "object",
       "properties": {
@@ -83,12 +73,11 @@
     "userNoopResponse": {
       "type": "object"
     },
-    "userUser": {
+    "userUserResponse": {
       "type": "object",
       "properties": {
         "id": {
-          "type": "string",
-          "format": "int64"
+          "type": "string"
         },
         "username": {
           "type": "string"
@@ -97,9 +86,19 @@
           "type": "string"
         },
         "status": {
-          "$ref": "#/definitions/UserStatus"
+          "$ref": "#/definitions/userUserStatus"
         }
       }
+    },
+    "userUserStatus": {
+      "type": "string",
+      "enum": [
+        "USER_STATUS_INVALID",
+        "USER_STATUS_REGISTERED",
+        "USER_STATUS_ACTIVE",
+        "USER_STATUS_BANNED"
+      ],
+      "default": "USER_STATUS_INVALID"
     }
   }
 }

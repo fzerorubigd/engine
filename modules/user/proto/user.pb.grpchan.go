@@ -19,8 +19,8 @@ func NewUserSystemChannelClient(ch grpchan.Channel) UserSystemClient {
 	return &userSystemChannelClient{ch: ch}
 }
 
-func (c *userSystemChannelClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*User, error) {
-	out := new(User)
+func (c *userSystemChannelClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*UserResponse, error) {
+	out := new(UserResponse)
 	err := c.ch.Invoke(ctx, "/user.UserSystem/Login", in, out, opts...)
 	if err != nil {
 		return nil, err

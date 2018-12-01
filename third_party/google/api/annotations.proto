@@ -22,7 +22,7 @@ option java_outer_classname = "AnnotationsProto";
 option java_package = "com.google.api";
 option objc_class_prefix = "GAPI";
 
-import "google/api/http.proto";
+import "third_party/google/api/http.proto";
 import "google/protobuf/descriptor.proto";
 
 extend google.protobuf.MethodOptions {
