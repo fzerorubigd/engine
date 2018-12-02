@@ -120,9 +120,6 @@ generate:
       type: go
       output: .
 
-#    - name: govalidators
-#      type: go
-#      output: .
-#      flags: gogoimport=true
-#    - name: java
-#      output: ../../.gen/proto/java
+    - name: wrapper
+      type: go
+      output: .

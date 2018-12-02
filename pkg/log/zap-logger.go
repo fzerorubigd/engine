@@ -59,7 +59,7 @@ func Panic(msg string, f ...zap.Field) {
 func init() {
 	if logger == nil {
 		var err error
-		logger, err = zap.NewProduction()
+		logger, err = zap.NewProduction(zap.AddCallerSkip(2))
 		if err != nil {
 			panic(err)
 		}

@@ -56,7 +56,10 @@ $(BIN)/go-bindata:
 swagger-to-go:
 	$(INSTALL) ./cmd/swagger-to-go
 
-proto: $(BIN)/prototool $(BIN)/protoc-gen-go $(BIN)/protoc-gen-grpc-gateway $(BIN)/protoc-gen-swagger $(BIN)/protoc-gen-grpchan $(BIN)/protoc-gen-gofast
+wrapper-generator:
+	$(INSTALL) ./cmd/protoc-gen-wrapper
+
+proto: $(BIN)/prototool $(BIN)/protoc-gen-go $(BIN)/protoc-gen-grpc-gateway $(BIN)/protoc-gen-swagger $(BIN)/protoc-gen-grpchan $(BIN)/protoc-gen-gofast wrapper-generator
 	$(BIN)/prototool all
 
 swagger: swagger-to-go proto $(addsuffix -swagger,$(wildcard $(ROOT)/modules/*))

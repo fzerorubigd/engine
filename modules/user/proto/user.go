@@ -3,23 +3,34 @@ package userpb
 import (
 	"context"
 
-	"github.com/fullstorydev/grpchan/inprocgrpc"
-	"github.com/fzerorubigd/balloon/pkg/assert"
 	"github.com/fzerorubigd/balloon/pkg/grpcgw"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"gopkg.in/go-playground/validator.v9"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 )
 
 type userController struct {
-	v *validator.Validate
 }
 
 func (uc *userController) Initialize(ctx context.Context) {
 }
 
 func (uc *userController) Login(ctx context.Context, lr *LoginRequest) (*UserResponse, error) {
-	if err := uc.v.Struct(lr); err != nil {
-		return nil, err
+	// create and send header
+	header := metadata.Pairs("Grpc-Metadata-Header-Key", "val",
+		"Grpc-Trailer-Header-Key2", "val2",
+		"grpcgateway-Header-Key3", "val3",
+	)
+	if err := grpc.SendHeader(ctx, header); err != nil {
+		panic(err)
+	}
+	// create and set trailer
+	trailer := metadata.Pairs("Grpc-Metadata-t-Key", "val",
+		"Grpc-Trailer-t-Key2", "val2",
+		"grpcgateway-t-Key3", "val3",
+	)
+
+	if err := grpc.SetTrailer(ctx, trailer); err != nil {
+		panic(err)
 	}
 
 	return &UserResponse{
@@ -34,13 +45,6 @@ func (*userController) Logout(context.Context, *LogoutRequest) (*NoopResponse, e
 	return &NoopResponse{}, nil
 }
 
-func (uc *userController) Init(ctx context.Context, ch inprocgrpc.Channel, mux *runtime.ServeMux) {
-	RegisterHandlerUserSystem(&ch, uc)
-	cl := NewUserSystemChannelClient(&ch)
-
-	assert.Nil(RegisterUserSystemHandlerClient(ctx, mux, cl))
-}
-
 func init() {
-	grpcgw.Register(&userController{v: validator.New()})
+	grpcgw.Register(NewWrappedUserSystemServer(&userController{}))
 }

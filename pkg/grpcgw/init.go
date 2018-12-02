@@ -48,7 +48,7 @@ func Serve(ctx context.Context) {
 		all[i].Init(ctx, c, mux)
 	}
 
-	normalMux.Handle("/", mux)
+	normalMux.Handle("/", newRecover(mux))
 	srv := http.Server{
 		Addr:    addr.String(),
 		Handler: normalMux,

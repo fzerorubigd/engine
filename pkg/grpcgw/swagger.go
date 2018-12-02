@@ -6,6 +6,7 @@ import (
 	"sync"
 
 	"github.com/fzerorubigd/balloon/pkg/assert"
+	"github.com/fzerorubigd/balloon/pkg/log"
 )
 
 type swaggerFile struct {
@@ -38,10 +39,15 @@ var (
 )
 
 func swaggerHandler(w http.ResponseWriter, r *http.Request) {
+	defer Recover(w)
+
 	swaggerLock.RLock()
 	defer swaggerLock.RUnlock()
 
-	assert.Nil(json.NewEncoder(w).Encode(data))
+	if err := json.NewEncoder(w).Encode(data); err != nil {
+		log.Error("Failed to serve swagger", log.Err(err))
+		w.WriteHeader(http.StatusInternalServerError)
+	}
 }
 
 // RegisterSwagger register a swagger end point
