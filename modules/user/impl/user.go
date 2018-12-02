@@ -1,7 +1,9 @@
-package userpb
+package impl
 
 import (
 	"context"
+
+	"github.com/fzerorubigd/balloon/modules/user/proto"
 
 	"github.com/fzerorubigd/balloon/pkg/grpcgw"
 	"google.golang.org/grpc"
@@ -14,7 +16,7 @@ type userController struct {
 func (uc *userController) Initialize(ctx context.Context) {
 }
 
-func (uc *userController) Login(ctx context.Context, lr *LoginRequest) (*UserResponse, error) {
+func (uc *userController) Login(ctx context.Context, lr *userpb.LoginRequest) (*userpb.UserResponse, error) {
 	// create and send header
 	header := metadata.Pairs("Grpc-Metadata-Header-Key", "val",
 		"Grpc-Trailer-Header-Key2", "val2",
@@ -33,18 +35,18 @@ func (uc *userController) Login(ctx context.Context, lr *LoginRequest) (*UserRes
 		panic(err)
 	}
 
-	return &UserResponse{
+	return &userpb.UserResponse{
 		Email:    "hi@me.com",
 		Id:       "sss",
-		Status:   UserStatus_USER_STATUS_ACTIVE,
+		Status:   userpb.UserStatus_USER_STATUS_ACTIVE,
 		Username: "hi",
 	}, nil
 }
 
-func (*userController) Logout(context.Context, *LogoutRequest) (*NoopResponse, error) {
-	return &NoopResponse{}, nil
+func (*userController) Logout(context.Context, *userpb.LogoutRequest) (*userpb.NoopResponse, error) {
+	return &userpb.NoopResponse{}, nil
 }
 
 func init() {
-	grpcgw.Register(NewWrappedUserSystemServer(&userController{}))
+	grpcgw.Register(userpb.NewWrappedUserSystemServer(&userController{}))
 }

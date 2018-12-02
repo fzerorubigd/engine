@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package misc;
+
+option go_package = "miscpb";
+option java_multiple_files = true;
+option java_outer_classname = "MiscProto";
+option java_package = "com.misc";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+message VersionResponse {
+  string commit_hash = 1;
+  string short_hash = 2;
+  google.protobuf.Timestamp build_date = 3;
+  google.protobuf.Timestamp commit_date = 4;
+  int64 count = 5;
+}
+
+message VersionRequest {}
+
+service MiscSystem {
+  rpc Version(VersionRequest) returns (VersionResponse) {
+    option (google.api.http) = {
+      get: "/v1/misc/version"
+    };
+  }
+}

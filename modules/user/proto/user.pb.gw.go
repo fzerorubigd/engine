@@ -150,9 +150,9 @@ func RegisterUserSystemHandlerClient(ctx context.Context, mux *runtime.ServeMux,
 }
 
 var (
-	pattern_UserSystem_Login_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "login"}, ""))
+	pattern_UserSystem_Login_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "user", "login"}, ""))
 
-	pattern_UserSystem_Logout_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "logout"}, ""))
+	pattern_UserSystem_Logout_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "user", "logout"}, ""))
 )
 
 var (

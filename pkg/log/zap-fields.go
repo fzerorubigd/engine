@@ -1,6 +1,8 @@
 package log
 
 import (
+	"time"
+
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -18,4 +20,10 @@ func String(key, val string) zapcore.Field {
 // Any return zapcore field based on type of val
 func Any(key string, val interface{}) zapcore.Field {
 	return zap.Any(key, val)
+}
+
+// Time constructs a Field with the given key and value. The encoder
+// controls how the time is serialized.
+func Time(key string, val time.Time) zapcore.Field {
+	return zap.Time(key, val)
 }

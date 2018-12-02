@@ -15,7 +15,7 @@
     "application/json"
   ],
   "paths": {
-    "/v1/login": {
+    "/v1/user/login": {
       "post": {
         "operationId": "Login",
         "responses": {
@@ -41,7 +41,7 @@
         ]
       }
     },
-    "/v1/logout": {
+    "/v1/user/logout": {
       "get": {
         "operationId": "Logout",
         "responses": {

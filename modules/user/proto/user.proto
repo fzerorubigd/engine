@@ -50,13 +50,13 @@ message NoopResponse {}
 service UserSystem {
   rpc Login(LoginRequest) returns (UserResponse) {
     option (google.api.http) = {
-      post: "/v1/login"
+      post: "/v1/user/login"
       body: "*"
     };
   }
   rpc Logout(LogoutRequest) returns (NoopResponse) {
     option (google.api.http) = {
-      get: "/v1/logout"
+      get: "/v1/user/logout"
     };
   }
 }
