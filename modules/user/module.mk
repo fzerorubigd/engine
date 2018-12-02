@@ -5,7 +5,8 @@ $(USER_ROOT)-swagger: swagger-to-go
 
 
 $(USER_ROOT)-migration: $(BIN)/go-bindata
-	cd $(USER_ROOT)/migrations && $(BIN)/go-bindata -nometadata -o migration.gen.go -nomemcopy=true -pkg=migrations ./db/...
+	echo "Users"
+	#cd $(USER_ROOT)/migrations && $(BIN)/go-bindata -nometadata -o migration.gen.go -nomemcopy=true -pkg=migrations ./db/...
 
 #$(USER_ROOT)-lint: $(LINTER)
 #	$(LINTERCMD) $(USER_ROOT)/...

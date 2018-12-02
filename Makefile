@@ -51,7 +51,7 @@ $(BIN)/protoc-gen-grpchan:
 	$(GET) github.com/fullstorydev/grpchan/cmd/protoc-gen-grpchan
 
 $(BIN)/go-bindata:
-	$(GET) github.com/fraugster/go-bindata/go-bindata
+	$(GET) github.com/shuLhan/go-bindata/go-bindata
 
 swagger-to-go:
 	$(INSTALL) ./cmd/swagger-to-go
@@ -59,10 +59,21 @@ swagger-to-go:
 wrapper-generator:
 	$(INSTALL) ./cmd/protoc-gen-wrapper
 
+tools-migration: $(BIN)/go-bindata $(addsuffix -migration,$(dir$(wildcard $(ROOT)/modules/*/)))
+	$(INSTALL) ./cmd/migration
+
+mig-up: tools-migration
+	$(BIN)/migration -action=up
+
+mig-down: tools-migration
+	$(BIN)/migration -action=down
+
 proto: $(BIN)/prototool $(BIN)/protoc-gen-go $(BIN)/protoc-gen-grpc-gateway $(BIN)/protoc-gen-swagger $(BIN)/protoc-gen-grpchan $(BIN)/protoc-gen-gofast wrapper-generator
 	$(BIN)/prototool all
 
-swagger: swagger-to-go proto $(addsuffix -swagger,$(wildcard $(ROOT)/modules/*))
+swagger: swagger-to-go proto $(addsuffix -swagger,$(wildcard $(ROOT)/modules/*/))
+
+generate: swagger
 
 LINTER:=$(BIN)/gometalinter.v2
 LINTERCMD:=$(LINTER) -e ".*.pb.go" -e ".*_test.go" -e "$(ROOT)/vendor/.*" --cyclo-over=19 --line-length=120 --deadline=100s --disable-all --enable=structcheck --enable=deadcode --enable=gocyclo --enable=ineffassign --enable=golint --enable=goimports --enable=errcheck --enable=varcheck --enable=goconst --enable=gosimple --enable=staticcheck --enable=unused --enable=misspell
@@ -82,4 +93,4 @@ run-server: build-server
 	@echo "Running..."
 	$(BIN)/server
 
-.PHONY: swagger-to-go proto swagger build-server run-server
+.PHONY: swagger-to-go proto swagger build-server run-server generate
