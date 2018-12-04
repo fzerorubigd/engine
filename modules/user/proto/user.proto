@@ -7,6 +7,7 @@ option java_multiple_files = true;
 option java_outer_classname = "UserProto";
 option java_package = "com.user";
 
+import "github.com/fzerorubigd/protobuf/extra/extra.proto";
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
@@ -19,6 +20,9 @@ enum UserStatus {
 }
 
 message User {
+  option (extra.is_model) = true;
+  option (extra.table_name) = "user";
+  option (extra.schema_name) = "aaa";
   string id = 1 [(gogoproto.moretags) = "db:\"id\" "];
   string username = 2 [(gogoproto.moretags) = "db:\"username\" "];
   string password = 3 [(gogoproto.moretags) = "db:\"password\" "];

@@ -10,6 +10,7 @@ import (
 	"github.com/fzerorubigd/balloon/pkg/config"
 	"github.com/fzerorubigd/balloon/pkg/log"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/rs/cors"
 )
 
 // Controller is the simple controller interface
@@ -48,7 +49,8 @@ func Serve(ctx context.Context) {
 		all[i].Init(ctx, c, mux)
 	}
 
-	normalMux.Handle("/", newRecover(mux))
+	// TODO : Handle cors with options, currently it is ok.
+	normalMux.Handle("/", cors.AllowAll().Handler(mux))
 	srv := http.Server{
 		Addr:    addr.String(),
 		Handler: normalMux,

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package extra;
+
+option go_package = "extrapb";
+option java_multiple_files = true;
+option java_outer_classname = "ExtraProto";
+option java_package = "com.extra";
+
+import "google/protobuf/descriptor.proto";
+
+extend google.protobuf.FileOptions {
+  string schema_name_all = 52001;
+  string table_name_all = 52002;
+}
+
+extend google.protobuf.MessageOptions {
+  bool is_model = 53001;
+  string schema_name = 53002;
+  string table_name = 53003;
+}

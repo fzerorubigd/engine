@@ -67,7 +67,7 @@ generate:
   go_options:
     # The base import path. This should be the go path of the prototool.yaml file.
     # This is required if you have any go plugins.
-    import_path: modules
+    import_path: github.com/fzerorubigd/balloon
 
     # Extra modifiers to include with Mfile=package.
 #    extra_modifiers:
@@ -79,7 +79,7 @@ generate:
       # The plugin name. This will go to protoc with --name_out, so it either needs
       # to be a built-in name (like java), or a plugin name with a binary
       # protoc-gen-name.
-    - name: gofast
+    - name: gogo
 
       # The type, if any. Valid types are go, gogo.
       # Use go if your plugin is a standard Golang plugin
@@ -109,17 +109,21 @@ generate:
 #      output: ../../.gen/proto/go
 
     - name: grpc-gateway
-      type: go
+      type: gogo
       output: .
 
     - name: swagger
-      type: go
+      type: gogo
       output: .
 
     - name: grpchan
-      type: go
+      type: gogo
       output: .
 
     - name: wrapper
-      type: go
+      type: gogo
+      output: .
+
+    - name: model
+      type: gogo
       output: .

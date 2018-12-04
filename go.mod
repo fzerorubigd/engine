@@ -3,6 +3,7 @@ module github.com/fzerorubigd/balloon
 require (
 	github.com/fullstorydev/grpchan v0.0.0-20181120185831-564614157981
 	github.com/fzerorubigd/expand v0.0.0-20150817182922-fd359294116f
+	github.com/fzerorubigd/protobuf v0.0.0-20181204204259-5689e0bd722c
 	github.com/go-playground/locales v0.12.1 // indirect
 	github.com/go-playground/universal-translator v0.16.0 // indirect
 	github.com/gobuffalo/packr v1.21.5 // indirect
@@ -12,9 +13,10 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.5.1
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/jtolds/gls v4.2.1+incompatible // indirect
+	github.com/kr/pretty v0.1.0
 	github.com/lib/pq v1.0.0
-	github.com/ogier/pflag v0.0.1 // indirect
 	github.com/pkg/errors v0.8.0
+	github.com/rs/cors v1.6.0
 	github.com/rubenv/sql-migrate v0.0.0-20181106121204-ba2c6a7295c5
 	github.com/sirupsen/logrus v1.2.0
 	github.com/smartystreets/assertions v0.0.0-20180927180507-b2de0cb4f26d // indirect

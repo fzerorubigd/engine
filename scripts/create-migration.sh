@@ -14,7 +14,7 @@ cd ${SCRIPT_DIR}/..
 DATE=`date +%Y%m%d%H%M%S`
 FILE="${DATE}_${NAME}.sql"
 
-cat >>$FILE <<-EOGO
+cat >>${FILE} <<-EOGO
 -- +migrate Up
 -- SQL in section 'Up' is executed when this migration is applied
 

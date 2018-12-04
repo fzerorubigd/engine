@@ -56,8 +56,9 @@ $(BIN)/go-bindata:
 swagger-to-go:
 	$(INSTALL) ./cmd/swagger-to-go
 
-wrapper-generator:
+generators:
 	$(INSTALL) ./cmd/protoc-gen-wrapper
+	$(INSTALL) ./cmd/protoc-gen-model
 
 tools-migration: $(BIN)/go-bindata $(addsuffix -migration,$(dir$(wildcard $(ROOT)/modules/*/)))
 	$(INSTALL) ./cmd/migration
@@ -68,8 +69,8 @@ mig-up: tools-migration
 mig-down: tools-migration
 	$(BIN)/migration -action=down
 
-proto: $(BIN)/prototool $(BIN)/protoc-gen-go $(BIN)/protoc-gen-grpc-gateway $(BIN)/protoc-gen-swagger $(BIN)/protoc-gen-grpchan $(BIN)/protoc-gen-gofast wrapper-generator
-	$(BIN)/prototool all
+proto: $(BIN)/prototool $(BIN)/protoc-gen-go $(BIN)/protoc-gen-grpc-gateway $(BIN)/protoc-gen-swagger $(BIN)/protoc-gen-grpchan $(BIN)/protoc-gen-gofast generators
+	$(BIN)/prototool generate
 
 swagger: swagger-to-go proto $(addsuffix -swagger,$(wildcard $(ROOT)/modules/*/))
 
