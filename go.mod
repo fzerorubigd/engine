@@ -9,8 +9,10 @@ require (
 	github.com/gobuffalo/packr v1.21.5 // indirect
 	github.com/gogo/protobuf v1.1.1
 	github.com/golang/protobuf v1.2.0
+	github.com/google/uuid v1.1.0
 	github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.5.1
+	github.com/jinzhu/inflection v0.0.0-20180308033659-04140366298a
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/jtolds/gls v4.2.1+incompatible // indirect
 	github.com/kr/pretty v0.1.0

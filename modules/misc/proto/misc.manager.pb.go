@@ -14,8 +14,3 @@ import _ "google.golang.org/genproto/googleapis/api/annotations"
 var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
-
-/*
-proto: nil *descriptor.MessageOptions is not extendable
-proto: nil *descriptor.MessageOptions is not extendable
-*/

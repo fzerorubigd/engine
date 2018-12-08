@@ -10,6 +10,7 @@ import (
 //DBX is the sqlx executer interfacefor both transaction and DB
 type DBX interface {
 	sqlx.Ext
+	sqlx.ExecerContext
 	Get(dest interface{}, query string, args ...interface{}) error
 	GetContext(ctx context.Context, dest interface{}, query string, args ...interface{}) error
 	MustExec(query string, args ...interface{}) sql.Result

@@ -12,6 +12,8 @@ import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 
+option (extra.schema_name_all) = "aaa";
+
 enum UserStatus {
   USER_STATUS_INVALID = 0;
   USER_STATUS_REGISTERED = 1;
@@ -21,9 +23,8 @@ enum UserStatus {
 
 message User {
   option (extra.is_model) = true;
-  option (extra.table_name) = "user";
-  option (extra.schema_name) = "aaa";
-  string id = 1 [(gogoproto.moretags) = "db:\"id\" "];
+  option (extra.table_name) = "users";
+  int64 id = 1 [(gogoproto.moretags) = "db:\"id\" "];
   string username = 2 [(gogoproto.moretags) = "db:\"username\" "];
   string password = 3 [(gogoproto.moretags) = "db:\"password\" "];
   string email = 4 [(gogoproto.moretags) = "db:\"email\" "];
@@ -34,8 +35,6 @@ message User {
 }
 
 message UserResponse {
-  option (gogoproto.face) = true;
-  option (gogoproto.goproto_getters) = false;
   string id = 1;
   string username = 2;
   string email = 3;
