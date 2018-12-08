@@ -28,9 +28,18 @@ func (c *userSystemChannelClient) Login(ctx context.Context, in *LoginRequest, o
 	return out, nil
 }
 
-func (c *userSystemChannelClient) Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*NoopResponse, error) {
-	out := new(NoopResponse)
+func (c *userSystemChannelClient) Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutResponse, error) {
+	out := new(LogoutResponse)
 	err := c.ch.Invoke(ctx, "/user.UserSystem/Logout", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userSystemChannelClient) Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error) {
+	out := new(RegisterResponse)
+	err := c.ch.Invoke(ctx, "/user.UserSystem/Register", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}

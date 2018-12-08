@@ -36,15 +36,18 @@ func (uc *userController) Login(ctx context.Context, lr *userpb.LoginRequest) (*
 	}
 
 	return &userpb.UserResponse{
-		Email:    "hi@me.com",
-		Id:       "sss",
-		Status:   userpb.UserStatus_USER_STATUS_ACTIVE,
-		Username: "hi",
+		Email:  "hi@me.com",
+		Id:     "sss",
+		Status: userpb.UserStatus_USER_STATUS_ACTIVE,
 	}, nil
 }
 
-func (*userController) Logout(context.Context, *userpb.LogoutRequest) (*userpb.NoopResponse, error) {
-	return &userpb.NoopResponse{}, nil
+func (uc *userController) Logout(context.Context, *userpb.LogoutRequest) (*userpb.LogoutResponse, error) {
+	panic("implement me")
+}
+
+func (uc *userController) Register(context.Context, *userpb.RegisterRequest) (*userpb.RegisterResponse, error) {
+	panic("implement me")
 }
 
 func init() {

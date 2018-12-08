@@ -1,4 +1,4 @@
-package modules
+package cmd
 
 import (
 	_ "github.com/fzerorubigd/balloon/modules/misc/impl"

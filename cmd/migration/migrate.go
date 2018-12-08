@@ -3,9 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/fzerorubigd/balloon/cmd"
 	"os"
 
-	"github.com/fzerorubigd/balloon/modules"
 	"github.com/fzerorubigd/balloon/pkg/cli"
 	"github.com/fzerorubigd/balloon/pkg/initializer"
 	"github.com/fzerorubigd/balloon/pkg/log"
@@ -20,7 +20,7 @@ var (
 
 func main() {
 	ctx := cli.Context()
-	modules.InitializeConfig()
+	cmd.InitializeConfig()
 
 	defer initializer.Initialize(ctx)()
 

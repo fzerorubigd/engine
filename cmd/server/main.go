@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/fzerorubigd/balloon/modules"
+	"github.com/fzerorubigd/balloon/cmd"
 	"github.com/fzerorubigd/balloon/pkg/cli"
 	"github.com/fzerorubigd/balloon/pkg/grpcgw"
 	"github.com/fzerorubigd/balloon/pkg/initializer"
@@ -9,7 +9,7 @@ import (
 
 func main() {
 	ctx := cli.Context()
-	modules.InitializeConfig()
+	cmd.InitializeConfig()
 
 	defer initializer.Initialize(ctx)()
 

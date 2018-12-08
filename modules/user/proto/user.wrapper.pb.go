@@ -63,7 +63,7 @@ func (w *wrappedUserSystemServer) Login(ctx golang_org_x_net_context.Context, re
 	return
 }
 
-func (w *wrappedUserSystemServer) Logout(ctx golang_org_x_net_context.Context, req *LogoutRequest) (res *NoopResponse, err error) {
+func (w *wrappedUserSystemServer) Logout(ctx golang_org_x_net_context.Context, req *LogoutRequest) (res *LogoutResponse, err error) {
 	github_com_fzerorubigd_balloon_pkg_log.Info("UserSystem.Logout request")
 	defer func() {
 		e := recover()
@@ -82,6 +82,28 @@ func (w *wrappedUserSystemServer) Logout(ctx golang_org_x_net_context.Context, r
 	}
 
 	res, err = w.original.Logout(ctx, req)
+	return
+}
+
+func (w *wrappedUserSystemServer) Register(ctx golang_org_x_net_context.Context, req *RegisterRequest) (res *RegisterResponse, err error) {
+	github_com_fzerorubigd_balloon_pkg_log.Info("UserSystem.Register request")
+	defer func() {
+		e := recover()
+		if e == nil {
+			return
+		}
+		github_com_fzerorubigd_balloon_pkg_log.Error("Recovering from panic", github_com_fzerorubigd_balloon_pkg_log.Any("panic", e))
+		res, err = nil, github_com_pkg_errors.New("internal server error")
+	}()
+	ctx, err = github_com_fzerorubigd_balloon_pkg_grpcgw.ExecuteMiddleware(ctx, w.original)
+	if err != nil {
+		return nil, err
+	}
+	if err = w.v.Struct(req); err != nil {
+		return nil, err
+	}
+
+	res, err = w.original.Register(ctx, req)
 	return
 }
 

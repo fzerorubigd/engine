@@ -48,10 +48,36 @@
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/userNoopResponse"
+              "$ref": "#/definitions/userLogoutResponse"
             }
           }
         },
+        "tags": [
+          "UserSystem"
+        ]
+      }
+    },
+    "/v1/user/register": {
+      "post": {
+        "operationId": "Register",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/userRegisterResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userRegisterRequest"
+            }
+          }
+        ],
         "tags": [
           "UserSystem"
         ]
@@ -62,7 +88,7 @@
     "userLoginRequest": {
       "type": "object",
       "properties": {
-        "username": {
+        "email": {
           "type": "string"
         },
         "password": {
@@ -70,16 +96,27 @@
         }
       }
     },
-    "userNoopResponse": {
+    "userLogoutResponse": {
+      "type": "object"
+    },
+    "userRegisterRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "userRegisterResponse": {
       "type": "object"
     },
     "userUserResponse": {
       "type": "object",
       "properties": {
         "id": {
-          "type": "string"
-        },
-        "username": {
           "type": "string"
         },
         "email": {
