@@ -51,8 +51,8 @@ main.modelData{
     schema:    "aaa",
     model:     "User",
     receiver:  "u",
-    dbFields:  {"id", "email", "password", "status", "created_at", "updated_at", "last_login"},
-    goFields:  {"Id", "Email", "Password", "Status", "CreatedAt", "UpdatedAt", "LastLogin"},
+    dbFields:  {"id", "email", "password", "status", "token", "created_at", "updated_at", "last_login"},
+    goFields:  {"Id", "Email", "Password", "Status", "Token", "CreatedAt", "UpdatedAt", "LastLogin"},
     types:     {"created_at":"Timestamp", "updated_at":"Timestamp", "last_login":"Timestamp"},
     createdAt: true,
     updatedAt: true,
@@ -82,8 +82,8 @@ func (m *Manager) CreateUser(ctx context.Context, u *User) error {
 	if err != nil {
 		return err
 	}
-	q := `INSERT INTO aaa.users(email, password, status, created_at, updated_at, last_login) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
-	row := m.GetDbMap().QueryRowxContext(ctx, q, u.Email, u.Password, u.Status, CreatedAt, UpdatedAt, LastLogin)
+	q := `INSERT INTO aaa.users(email, password, status, token, created_at, updated_at, last_login) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`
+	row := m.GetDbMap().QueryRowxContext(ctx, q, u.Email, u.Password, u.Status, u.Token, CreatedAt, UpdatedAt, LastLogin)
 	return row.Scan(&u.Id)
 }
 
@@ -108,20 +108,20 @@ func (m *Manager) UpdateUser(ctx context.Context, u *User) error {
 	if err != nil {
 		return err
 	}
-	q := `UPDATE aaa.users SET email = $1, password = $2, status = $3, created_at = $4, updated_at = $5, last_login = $6 WHERE id = $7`
-	_, err = m.GetDbMap().ExecContext(ctx, q, u.Email, u.Password, u.Status, CreatedAt, UpdatedAt, LastLogin, u.Id)
+	q := `UPDATE aaa.users SET email = $1, password = $2, status = $3, token = $4, created_at = $5, updated_at = $6, last_login = $7 WHERE id = $8`
+	_, err = m.GetDbMap().ExecContext(ctx, q, u.Email, u.Password, u.Status, u.Token, CreatedAt, UpdatedAt, LastLogin, u.Id)
 	return err
 }
 
 func (m *Manager) GetUserByPrimary(ctx context.Context, id int64) (*User, error) {
-	q := `SELECT id, email, password, status, created_at, updated_at, last_login FROM aaa.users WHERE id = $1`
+	q := `SELECT id, email, password, status, token, created_at, updated_at, last_login FROM aaa.users WHERE id = $1`
 	row := m.GetDbMap().QueryRowxContext(ctx, q, id)
 
 	var u User
 	var CreatedAt time.Time
 	var UpdatedAt time.Time
 	var LastLogin time.Time
-	err := row.Scan(&u.Id, &u.Email, &u.Password, &u.Status, &CreatedAt, &UpdatedAt, &LastLogin)
+	err := row.Scan(&u.Id, &u.Email, &u.Password, &u.Status, &u.Token, &CreatedAt, &UpdatedAt, &LastLogin)
 	if err != nil {
 		return nil, err
 	}

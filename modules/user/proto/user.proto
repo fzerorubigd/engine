@@ -28,9 +28,10 @@ message User {
   string email = 2 [(gogoproto.moretags) = "db:\"email\" "];
   string password = 3 [(gogoproto.moretags) = "db:\"password\" "];
   UserStatus status = 4 [(gogoproto.moretags) = "db:\"status\" "];
-  google.protobuf.Timestamp created_at = 5 [(gogoproto.moretags) = "db:\"created_at\" "];
-  google.protobuf.Timestamp updated_at = 6 [(gogoproto.moretags) = "db:\"updated_at\" "];
-  google.protobuf.Timestamp last_login = 7 [(gogoproto.moretags) = "db:\"last_login\" "];
+  string token = 5 [(gogoproto.moretags) = "db:\"token\" "];
+  google.protobuf.Timestamp created_at = 6 [(gogoproto.moretags) = "db:\"created_at\" "];
+  google.protobuf.Timestamp updated_at = 7 [(gogoproto.moretags) = "db:\"updated_at\" "];
+  google.protobuf.Timestamp last_login = 8 [(gogoproto.moretags) = "db:\"last_login\" "];
 }
 
 message UserResponse {
@@ -67,6 +68,7 @@ service UserSystem {
     option (google.api.http) = {
       get: "/v1/user/logout"
     };
+    option (extra.resource) = "sss";
   }
 
   rpc Register(RegisterRequest) returns (RegisterResponse) {

@@ -3,7 +3,11 @@ package main
 import (
 	"strings"
 
+	"github.com/fzerorubigd/protobuf/extra"
+	"github.com/kr/pretty"
+
 	"github.com/fzerorubigd/balloon/pkg/assert"
+	"github.com/gogo/protobuf/proto"
 	"github.com/gogo/protobuf/protoc-gen-gogo/generator"
 	"github.com/gogo/protobuf/vanity"
 )
@@ -36,6 +40,16 @@ func (p *plugin) Name() string {
 func (p *plugin) Init(g *generator.Generator) {
 	p.Generator = g
 }
+func getString(msg proto.Message, extension *proto.ExtensionDesc, def string) string {
+	ss, err := proto.GetExtension(msg, extension)
+	if err == nil {
+		if str, ok := ss.(*string); ok {
+			return *str
+		}
+	}
+
+	return def
+}
 
 func (p *plugin) Generate(file *generator.FileDescriptor) {
 	if !p.useGogoImport {
@@ -51,6 +65,7 @@ func (p *plugin) Generate(file *generator.FileDescriptor) {
 	p.logImport = p.NewImport("github.com/fzerorubigd/balloon/pkg/log")
 	p.errorsImport = p.NewImport("github.com/pkg/errors")
 
+	resMap := make(map[string]string)
 	for _, svc := range file.GetService() {
 		p.createWrappedInterface(svc.GetName())
 		p.P()
@@ -61,12 +76,19 @@ func (p *plugin) Generate(file *generator.FileDescriptor) {
 		for _, m := range svc.GetMethod() {
 			p.P()
 			p.createMethod(svc.GetName(), m.GetName(), m.GetInputType(), m.GetOutputType())
+			res := getString(m.Options, extrapb.E_Resource, "__DEFAULT__")
+			if res != "__DEFAULT__" {
+				resMap[file.GetName()+svc.GetName()+m.GetName()] = res
+			}
 		}
 		p.P()
 		p.createNewFunction(svc.GetName())
 		//p.P("*/")
 	}
 
+	p.P("/*")
+	p.P(pretty.Sprint(resMap))
+	p.P("*/")
 }
 
 func (p *plugin) createWrappedInterface(class string) {
@@ -88,10 +110,10 @@ func (p *plugin) createWrappedStruct(class string) {
 }
 
 func (p *plugin) createInitFunction(class string) {
-	p.P("func (w *wrapped", class, "Server) Init(ctx ", p.contextImport.Use(), ".Context, ch ", p.inprocgrpcImport.Use(), ".Channel, mux *", p.runtimeImport.Use(), ".ServeMux) {")
+	p.P("func (w *wrapped", class, "Server) Init(ctx ", p.contextImport.Use(), ".Context, ch *", p.inprocgrpcImport.Use(), ".Channel, mux *", p.runtimeImport.Use(), ".ServeMux) {")
 	p.In()
-	p.P("RegisterHandler", class, "(&ch, w)")
-	p.P("cl := New", class, "ChannelClient(&ch)")
+	p.P("RegisterHandler", class, "(ch, w)")
+	p.P("cl := New", class, "ChannelClient(ch)")
 	p.P()
 	p.P(p.assertImport.Use(), ".Nil(Register", class, "HandlerClient(ctx, mux, cl))")
 	p.Out()

@@ -56,6 +56,11 @@ func Panic(msg string, f ...zap.Field) {
 	logger.Panic(msg, f...)
 }
 
+// Logger TODO: this is not good , return new logger for use in other places
+func Logger() *zap.Logger {
+	return logger
+}
+
 func init() {
 	if logger == nil {
 		var err error

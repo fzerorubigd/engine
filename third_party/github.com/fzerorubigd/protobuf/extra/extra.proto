@@ -19,3 +19,7 @@ extend google.protobuf.MessageOptions {
   string schema_name = 53002;
   string table_name = 53003;
 }
+
+extend google.protobuf.MethodOptions {
+  string resource = 54001;
+}

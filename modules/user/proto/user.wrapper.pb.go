@@ -34,9 +34,9 @@ type wrappedUserSystemServer struct {
 	v        *gopkg_in_go_playground_validator_v9.Validate
 }
 
-func (w *wrappedUserSystemServer) Init(ctx golang_org_x_net_context.Context, ch github_com_fullstorydev_grpchan_inprocgrpc.Channel, mux *github_com_grpc_ecosystem_grpc_gateway_runtime.ServeMux) {
-	RegisterHandlerUserSystem(&ch, w)
-	cl := NewUserSystemChannelClient(&ch)
+func (w *wrappedUserSystemServer) Init(ctx golang_org_x_net_context.Context, ch *github_com_fullstorydev_grpchan_inprocgrpc.Channel, mux *github_com_grpc_ecosystem_grpc_gateway_runtime.ServeMux) {
+	RegisterHandlerUserSystem(ch, w)
+	cl := NewUserSystemChannelClient(ch)
 
 	github_com_fzerorubigd_balloon_pkg_assert.Nil(RegisterUserSystemHandlerClient(ctx, mux, cl))
 }
@@ -113,3 +113,7 @@ func NewWrappedUserSystemServer(server UserSystemServer) WrappedUserSystemContro
 		v:        gopkg_in_go_playground_validator_v9.New(),
 	}
 }
+
+/*
+map[string]string{"modules/user/proto/user.protoUserSystemLogout":"sss"}
+*/

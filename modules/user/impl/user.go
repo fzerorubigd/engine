@@ -2,6 +2,9 @@ package impl
 
 import (
 	"context"
+	"fmt"
+
+	"github.com/grpc-ecosystem/go-grpc-middleware/auth"
 
 	"github.com/fzerorubigd/balloon/modules/user/proto"
 
@@ -50,6 +53,19 @@ func (uc *userController) Register(context.Context, *userpb.RegisterRequest) (*u
 	panic("implement me")
 }
 
+func auth(ctx context.Context) (context.Context, error) {
+	fmt.Println("=======")
+	token, err := grpc_auth.AuthFromMD(ctx, "bearer")
+	fmt.Println(err, "==>", token)
+
+	fmt.Printf("%+v",ctx)
+	return ctx, nil
+}
+
 func init() {
 	grpcgw.Register(userpb.NewWrappedUserSystemServer(&userController{}))
+	grpcgw.RegisterInterceptors(grpcgw.Interceptor{
+		Stream: grpc_auth.StreamServerInterceptor(auth),
+		Unary:  grpc_auth.UnaryServerInterceptor(auth),
+	})
 }

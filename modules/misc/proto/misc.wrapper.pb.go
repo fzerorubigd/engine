@@ -33,9 +33,9 @@ type wrappedMiscSystemServer struct {
 	v        *gopkg_in_go_playground_validator_v9.Validate
 }
 
-func (w *wrappedMiscSystemServer) Init(ctx golang_org_x_net_context.Context, ch github_com_fullstorydev_grpchan_inprocgrpc.Channel, mux *github_com_grpc_ecosystem_grpc_gateway_runtime.ServeMux) {
-	RegisterHandlerMiscSystem(&ch, w)
-	cl := NewMiscSystemChannelClient(&ch)
+func (w *wrappedMiscSystemServer) Init(ctx golang_org_x_net_context.Context, ch *github_com_fullstorydev_grpchan_inprocgrpc.Channel, mux *github_com_grpc_ecosystem_grpc_gateway_runtime.ServeMux) {
+	RegisterHandlerMiscSystem(ch, w)
+	cl := NewMiscSystemChannelClient(ch)
 
 	github_com_fzerorubigd_balloon_pkg_assert.Nil(RegisterMiscSystemHandlerClient(ctx, mux, cl))
 }
@@ -68,3 +68,7 @@ func NewWrappedMiscSystemServer(server MiscSystemServer) WrappedMiscSystemContro
 		v:        gopkg_in_go_playground_validator_v9.New(),
 	}
 }
+
+/*
+map[string]string{}
+*/
