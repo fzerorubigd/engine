@@ -3,7 +3,7 @@ package resources
 import "sync"
 
 var (
-	all  map[string]string
+	all  = map[string]string{}
 	lock sync.RWMutex
 )
 
@@ -19,6 +19,7 @@ func RegisterResource(method, resource string) {
 func QueryResource(method string) (string, bool) {
 	lock.RLock()
 	defer lock.RUnlock()
+
 	r, ok := all[method]
 	return r, ok
 }

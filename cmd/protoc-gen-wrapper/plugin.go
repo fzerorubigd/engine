@@ -1,10 +1,11 @@
 package main
 
 import (
+	"fmt"
+	"path/filepath"
 	"strings"
 
 	"github.com/fzerorubigd/protobuf/extra"
-	"github.com/kr/pretty"
 
 	"github.com/fzerorubigd/balloon/pkg/assert"
 	"github.com/gogo/protobuf/proto"
@@ -25,6 +26,7 @@ type plugin struct {
 	assertImport     generator.Single
 	logImport        generator.Single
 	errorsImport     generator.Single
+	resourcesImport  generator.Single
 }
 
 func newPlugin(useGogoImport bool) generator.Plugin {
@@ -63,9 +65,11 @@ func (p *plugin) Generate(file *generator.FileDescriptor) {
 	p.runtimeImport = p.NewImport("github.com/grpc-ecosystem/grpc-gateway/runtime")
 	p.assertImport = p.NewImport("github.com/fzerorubigd/balloon/pkg/assert")
 	p.logImport = p.NewImport("github.com/fzerorubigd/balloon/pkg/log")
+	p.resourcesImport = p.NewImport("github.com/fzerorubigd/balloon/pkg/resources")
 	p.errorsImport = p.NewImport("github.com/pkg/errors")
 
 	resMap := make(map[string]string)
+	var order []string
 	for _, svc := range file.GetService() {
 		p.createWrappedInterface(svc.GetName())
 		p.P()
@@ -78,7 +82,9 @@ func (p *plugin) Generate(file *generator.FileDescriptor) {
 			p.createMethod(svc.GetName(), m.GetName(), m.GetInputType(), m.GetOutputType())
 			res := getString(m.Options, extrapb.E_Resource, "__DEFAULT__")
 			if res != "__DEFAULT__" {
-				resMap[file.GetName()+svc.GetName()+m.GetName()] = res
+				m := getFullName(file.GetName(), svc.GetName(), m.GetName())
+				order = append(order, m)
+				resMap[m] = res
 			}
 		}
 		p.P()
@@ -86,9 +92,21 @@ func (p *plugin) Generate(file *generator.FileDescriptor) {
 		//p.P("*/")
 	}
 
-	p.P("/*")
-	p.P(pretty.Sprint(resMap))
-	p.P("*/")
+	p.P("func init() {")
+	p.In()
+	for _, i := range order {
+		p.P(p.resourcesImport.Use(), ".RegisterResource(", fmt.Sprintf("%q, %q", i, resMap[i]), ")")
+	}
+	p.Out()
+	p.P("}")
+}
+
+func getFullName(fl, svc, meth string) string {
+	parts := strings.Split(fl, "/")
+	f := parts[len(parts)-1]
+	f = strings.TrimSuffix(f, filepath.Ext(f))
+
+	return "/" + f + "." + svc + "/" + meth
 }
 
 func (p *plugin) createWrappedInterface(class string) {

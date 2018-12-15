@@ -68,7 +68,5 @@ func NewWrappedMiscSystemServer(server MiscSystemServer) WrappedMiscSystemContro
 		v:        gopkg_in_go_playground_validator_v9.New(),
 	}
 }
-
-/*
-map[string]string{}
-*/
+func init() {
+}

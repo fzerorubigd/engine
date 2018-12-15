@@ -10,6 +10,7 @@ import github_com_fullstorydev_grpchan_inprocgrpc "github.com/fullstorydev/grpch
 import github_com_grpc_ecosystem_grpc_gateway_runtime "github.com/grpc-ecosystem/grpc-gateway/runtime"
 import github_com_fzerorubigd_balloon_pkg_assert "github.com/fzerorubigd/balloon/pkg/assert"
 import github_com_fzerorubigd_balloon_pkg_log "github.com/fzerorubigd/balloon/pkg/log"
+import github_com_fzerorubigd_balloon_pkg_resources "github.com/fzerorubigd/balloon/pkg/resources"
 import github_com_pkg_errors "github.com/pkg/errors"
 import proto "github.com/golang/protobuf/proto"
 import fmt "fmt"
@@ -113,7 +114,6 @@ func NewWrappedUserSystemServer(server UserSystemServer) WrappedUserSystemContro
 		v:        gopkg_in_go_playground_validator_v9.New(),
 	}
 }
-
-/*
-map[string]string{"modules/user/proto/user.protoUserSystemLogout":"sss"}
-*/
+func init() {
+	github_com_fzerorubigd_balloon_pkg_resources.RegisterResource("/user.UserSystem/Logout", "sss")
+}
