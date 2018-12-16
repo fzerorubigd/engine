@@ -29,8 +29,8 @@ const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
 type VersionResponse struct {
 	CommitHash           string           `protobuf:"bytes,1,opt,name=commit_hash,json=commitHash,proto3" json:"commit_hash,omitempty"`
 	ShortHash            string           `protobuf:"bytes,2,opt,name=short_hash,json=shortHash,proto3" json:"short_hash,omitempty"`
-	BuildDate            *types.Timestamp `protobuf:"bytes,3,opt,name=build_date,json=buildDate" json:"build_date,omitempty"`
-	CommitDate           *types.Timestamp `protobuf:"bytes,4,opt,name=commit_date,json=commitDate" json:"commit_date,omitempty"`
+	BuildDate            *types.Timestamp `protobuf:"bytes,3,opt,name=build_date,json=buildDate,proto3" json:"build_date,omitempty"`
+	CommitDate           *types.Timestamp `protobuf:"bytes,4,opt,name=commit_date,json=commitDate,proto3" json:"commit_date,omitempty"`
 	Count                int64            `protobuf:"varint,5,opt,name=count,proto3" json:"count,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
 	XXX_unrecognized     []byte           `json:"-"`

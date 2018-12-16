@@ -62,9 +62,9 @@ type User struct {
 	Password             string           `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty" db:"password" `
 	Status               UserStatus       `protobuf:"varint,4,opt,name=status,proto3,enum=user.UserStatus" json:"status,omitempty" db:"status" `
 	Token                string           `protobuf:"bytes,5,opt,name=token,proto3" json:"token,omitempty" db:"token" `
-	CreatedAt            *types.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt" json:"created_at,omitempty" db:"created_at" `
-	UpdatedAt            *types.Timestamp `protobuf:"bytes,7,opt,name=updated_at,json=updatedAt" json:"updated_at,omitempty" db:"updated_at" `
-	LastLogin            *types.Timestamp `protobuf:"bytes,8,opt,name=last_login,json=lastLogin" json:"last_login,omitempty" db:"last_login" `
+	CreatedAt            *types.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty" db:"created_at" `
+	UpdatedAt            *types.Timestamp `protobuf:"bytes,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty" db:"updated_at" `
+	LastLogin            *types.Timestamp `protobuf:"bytes,8,opt,name=last_login,json=lastLogin,proto3" json:"last_login,omitempty" db:"last_login" `
 	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
 	XXX_unrecognized     []byte           `json:"-"`
 	XXX_sizecache        int32            `json:"-"`

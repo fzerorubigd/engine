@@ -34,7 +34,7 @@ var (
 	interceptors []Interceptor
 	lock         sync.RWMutex
 
-	addr = config.RegisterString("grpcw.http.addr", ":8000", "http address to listen to")
+	addr = config.RegisterString("grpcw.http.addr", ":8090", "http address to listen to")
 )
 
 // Register new controller into system

@@ -31,6 +31,17 @@ where-am-i = $(CURDIR)/$(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
 # Include modules make file
 include $(wildcard $(ROOT)/modules/*/module.mk)
 
+need_root :
+	@[ "$(shell id -u)" -eq "0" ] || exit 1
+
+not_root :
+	@[ "$(shell id -u)" != "0" ] || exit 1
+
+database-setup:
+	sudo -u postgres psql -U postgres -d postgres -c "CREATE USER $(DB_USER) WITH PASSWORD '$(DB_PASS)';" || sudo -u postgres psql -U postgres -d postgres -c "ALTER USER $(DB_USER) WITH PASSWORD '$(DB_PASS)';"
+	sudo -u postgres psql -U postgres -c "CREATE DATABASE $(DB_NAME);" || echo "Database $(DB_NAME) is already there?"
+	sudo -u postgres psql -U postgres -c "GRANT ALL ON DATABASE $(DB_NAME) TO $(DB_USER);"
+
 $(BIN)/prototool:
 	$(CURL) -sSL https://github.com/uber/prototool/releases/download/v1.3.0/prototool-$(shell uname -s)-$(shell uname -m) -o $(BIN)/prototool
 	$(CHMOD) +x $(BIN)/prototool
@@ -38,8 +49,8 @@ $(BIN)/prototool:
 $(BIN)/protoc-gen-go:
 	$(GET) github.com/golang/protobuf/protoc-gen-go
 
-$(BIN)/protoc-gen-gofast:
-	$(GET) github.com/gogo/protobuf/protoc-gen-gofast
+$(BIN)/protoc-gen-gogo:
+	$(GET) github.com/gogo/protobuf/protoc-gen-gogo
 
 $(BIN)/protoc-gen-grpc-gateway:
 	$(GET) github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
@@ -70,12 +81,12 @@ mig-up: tools-migration
 mig-down: tools-migration
 	$(BIN)/migration -action=down
 
-proto: $(BIN)/prototool $(BIN)/protoc-gen-go $(BIN)/protoc-gen-grpc-gateway $(BIN)/protoc-gen-swagger $(BIN)/protoc-gen-grpchan $(BIN)/protoc-gen-gofast generators
+proto: $(BIN)/prototool $(BIN)/protoc-gen-go $(BIN)/protoc-gen-grpc-gateway $(BIN)/protoc-gen-swagger $(BIN)/protoc-gen-grpchan $(BIN)/protoc-gen-gogo generators
 	$(BIN)/prototool generate
 
 swagger: swagger-to-go proto $(addsuffix -swagger,$(dir $(wildcard $(ROOT)/modules/*/)))
 
-generate: swagger
+code-gen: swagger
 
 LINTER:=$(BIN)/gometalinter.v2
 LINTERCMD:=$(LINTER) -e ".*.pb.go" -e ".*_test.go" -e "$(ROOT)/vendor/.*" --cyclo-over=19 --line-length=120 --deadline=100s --disable-all --enable=structcheck --enable=deadcode --enable=gocyclo --enable=ineffassign --enable=golint --enable=goimports --enable=errcheck --enable=varcheck --enable=goconst --enable=gosimple --enable=staticcheck --enable=unused --enable=misspell

@@ -1,4 +1,3 @@
-# Created by .ignore support plugin (hsz.mobi)
 ### Go template
 # Binaries for programs and plugins
 *.exe
@@ -13,3 +12,5 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
+# vagrant related
+.vagrant/
