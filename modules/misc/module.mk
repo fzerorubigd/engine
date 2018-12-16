@@ -5,7 +5,7 @@ $(MISC_ROOT)/-swagger: swagger-to-go
 
 
 $(MISC_ROOT)/-migration: $(BIN)/go-bindata
-	echo "Misc"
+	@echo "Misc has no migrations"
 #	cd $(MISC_ROOT)/migrations && $(BIN)/go-bindata -nometadata -o migration.gen.go -nomemcopy=true -pkg=migrations ./db/...
 
 #$(USER_ROOT)-lint: $(LINTER)

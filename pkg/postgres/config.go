@@ -6,8 +6,8 @@ import (
 
 var (
 	//retryMax  = config.RegisterDuration("services.postgres.max_retry_connection", time.Minute, "max time app should fallback to get mysql connection")
-	user    = config.RegisterString("services.postgres.user", "postgres", "postgres user")
-	dbname  = config.RegisterString("services.postgres.db", "cerulean", "postgres database")
+	user    = config.RegisterString("services.postgres.user", "balloon", "postgres user")
+	dbname  = config.RegisterString("services.postgres.db", "balloon", "postgres database")
 	pass    = config.RegisterString("services.postgres.password", "bita123", "postgres password")
 	host    = config.RegisterString("services.postgres.host", "localhost", "postgres host")
 	port    = config.RegisterInt("services.postgres.port", 5432, "postgres port")

@@ -37,37 +37,37 @@ need_root :
 not_root :
 	@[ "$(shell id -u)" != "0" ] || exit 1
 
-database-setup:
+database-setup: need_root
 	sudo -u postgres psql -U postgres -d postgres -c "CREATE USER $(DB_USER) WITH PASSWORD '$(DB_PASS)';" || sudo -u postgres psql -U postgres -d postgres -c "ALTER USER $(DB_USER) WITH PASSWORD '$(DB_PASS)';"
 	sudo -u postgres psql -U postgres -c "CREATE DATABASE $(DB_NAME);" || echo "Database $(DB_NAME) is already there?"
 	sudo -u postgres psql -U postgres -c "GRANT ALL ON DATABASE $(DB_NAME) TO $(DB_USER);"
 
-$(BIN)/prototool:
+$(BIN)/prototool: not_root
 	$(CURL) -sSL https://github.com/uber/prototool/releases/download/v1.3.0/prototool-$(shell uname -s)-$(shell uname -m) -o $(BIN)/prototool
 	$(CHMOD) +x $(BIN)/prototool
 
-$(BIN)/protoc-gen-go:
+$(BIN)/protoc-gen-go: not_root
 	$(GET) github.com/golang/protobuf/protoc-gen-go
 
-$(BIN)/protoc-gen-gogo:
+$(BIN)/protoc-gen-gogo: not_root
 	$(GET) github.com/gogo/protobuf/protoc-gen-gogo
 
-$(BIN)/protoc-gen-grpc-gateway:
+$(BIN)/protoc-gen-grpc-gateway: not_root
 	$(GET) github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
 
-$(BIN)/protoc-gen-swagger:
+$(BIN)/protoc-gen-swagger: not_root
 	$(GET) github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
 
-$(BIN)/protoc-gen-grpchan:
+$(BIN)/protoc-gen-grpchan: not_root
 	$(GET) github.com/fullstorydev/grpchan/cmd/protoc-gen-grpchan
 
-$(BIN)/go-bindata:
-	$(GET) github.com/shuLhan/go-bindata/go-bindata
+$(BIN)/go-bindata: not_root
+	$(GET) github.com/shuLhan/go-bindata/cmd/go-bindata
 
-swagger-to-go:
+swagger-to-go: not_root
 	$(INSTALL) ./cmd/swagger-to-go
 
-generators:
+generators: not_root
 	$(INSTALL) ./cmd/protoc-gen-wrapper
 	$(INSTALL) ./cmd/protoc-gen-model
 

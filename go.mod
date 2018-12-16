@@ -20,6 +20,7 @@ require (
 	github.com/pkg/errors v0.8.0
 	github.com/rs/cors v1.6.0
 	github.com/rubenv/sql-migrate v0.0.0-20181106121204-ba2c6a7295c5
+	github.com/shuLhan/go-bindata v3.4.0+incompatible // indirect
 	github.com/sirupsen/logrus v1.2.0
 	github.com/smartystreets/assertions v0.0.0-20180927180507-b2de0cb4f26d // indirect
 	github.com/smartystreets/goconvey v0.0.0-20181108003508-044398e4856c // indirect

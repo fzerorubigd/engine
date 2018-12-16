@@ -18,8 +18,8 @@ CREATE TABLE aaa.users(
 
 );
 
-INSERT INTO aaa.users (id ,email, password, status, token, created_at, updated_at, last_login) VALUES
-	(NULL, 'master@cerulean.ir', '$2a$06$jDAy514SemGwCHhD..kfdedw/ibC3zyj.kqPtCHOoAwVYHC/RlDLa', 'active', '5d632e2bc53de825f247469b142f63ff0cc1399e', 'now', 'now', 'now');
+INSERT INTO aaa.users (email, password, status, token, created_at, updated_at, last_login) VALUES
+	('master@cerulean.ir', '$2a$06$jDAy514SemGwCHhD..kfdedw/ibC3zyj.kqPtCHOoAwVYHC/RlDLa', 2, '5d632e2bc53de825f247469b142f63ff0cc1399e', 'now', 'now', 'now');
 
 -- +migrate Down
 -- SQL section 'Down' is executed when this migration is rolled back

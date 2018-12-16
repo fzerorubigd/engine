@@ -7,10 +7,14 @@ import (
 	"sort"
 	"text/tabwriter"
 
+	// Make sure postgres is already initialized
+	_ "github.com/fzerorubigd/balloon/pkg/postgres"
 	"github.com/rubenv/sql-migrate"
 )
 
-var all multiAsset
+var (
+	all multiAsset
+)
 
 // Manager is the simple model manager
 type Manager interface {
