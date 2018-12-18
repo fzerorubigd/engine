@@ -8,7 +8,7 @@ import (
 	"github.com/fzerorubigd/balloon/pkg/grpcgw"
 )
 
-const paths = "{\"/v1/misc/version\":{\"get\":{\"operationId\":\"Version\",\"responses\":{\"200\":{\"description\":\"\",\"schema\":{\"$ref\":\"#/definitions/miscVersionResponse\"}}},\"tags\":[\"MiscSystem\"]}}}"
+const paths = "{\"/v1/misc/version\":{\"get\":{\"operationId\":\"Version\",\"responses\":{\"200\":{\"description\":\"A successful response.\",\"schema\":{\"$ref\":\"#/definitions/miscVersionResponse\"}}},\"tags\":[\"MiscSystem\"]}}}"
 const definitions = "{\"miscVersionResponse\":{\"properties\":{\"build_date\":{\"format\":\"date-time\",\"type\":\"string\"},\"commit_date\":{\"format\":\"date-time\",\"type\":\"string\"},\"commit_hash\":{\"type\":\"string\"},\"count\":{\"format\":\"int64\",\"type\":\"string\"},\"short_hash\":{\"type\":\"string\"}},\"type\":\"object\"}}"
 
 func init() {

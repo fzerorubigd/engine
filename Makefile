@@ -42,32 +42,32 @@ database-setup: need_root
 	sudo -u postgres psql -U postgres -c "CREATE DATABASE $(DB_NAME);" || echo "Database $(DB_NAME) is already there?"
 	sudo -u postgres psql -U postgres -c "GRANT ALL ON DATABASE $(DB_NAME) TO $(DB_USER);"
 
-$(BIN)/prototool: not_root
+$(BIN)/prototool:
 	$(CURL) -sSL https://github.com/uber/prototool/releases/download/v1.3.0/prototool-$(shell uname -s)-$(shell uname -m) -o $(BIN)/prototool
 	$(CHMOD) +x $(BIN)/prototool
 
-$(BIN)/protoc-gen-go: not_root
+$(BIN)/protoc-gen-go:
 	$(GET) github.com/golang/protobuf/protoc-gen-go
 
-$(BIN)/protoc-gen-gogo: not_root
+$(BIN)/protoc-gen-gogo:
 	$(GET) github.com/gogo/protobuf/protoc-gen-gogo
 
-$(BIN)/protoc-gen-grpc-gateway: not_root
+$(BIN)/protoc-gen-grpc-gateway:
 	$(GET) github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
 
-$(BIN)/protoc-gen-swagger: not_root
+$(BIN)/protoc-gen-swagger:
 	$(GET) github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
 
-$(BIN)/protoc-gen-grpchan: not_root
+$(BIN)/protoc-gen-grpchan:
 	$(GET) github.com/fullstorydev/grpchan/cmd/protoc-gen-grpchan
 
-$(BIN)/go-bindata: not_root
+$(BIN)/go-bindata:
 	$(GET) github.com/shuLhan/go-bindata/cmd/go-bindata
 
-swagger-to-go: not_root
+swagger-to-go:
 	$(INSTALL) ./cmd/swagger-to-go
 
-generators: not_root
+generators:
 	$(INSTALL) ./cmd/protoc-gen-wrapper
 	$(INSTALL) ./cmd/protoc-gen-model
 
@@ -104,6 +104,6 @@ build-server:
 
 run-server: build-server
 	@echo "Running..."
-	$(BIN)/server
+	$(BIN)/server 2>&1
 
 .PHONY: swagger-to-go proto swagger build-server run-server generate

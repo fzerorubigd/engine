@@ -4,10 +4,8 @@ import (
 	"context"
 
 	"github.com/fzerorubigd/balloon/modules/user/proto"
-
 	"github.com/fzerorubigd/balloon/pkg/grpcgw"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/metadata"
+	"github.com/pkg/errors"
 )
 
 type userController struct {
@@ -17,37 +15,40 @@ func (uc *userController) Initialize(ctx context.Context) {
 }
 
 func (uc *userController) Login(ctx context.Context, lr *userpb.LoginRequest) (*userpb.UserResponse, error) {
-	// create and send header
-	header := metadata.Pairs("Grpc-Metadata-Header-Key", "val",
-		"Grpc-Trailer-Header-Key2", "val2",
-		"grpcgateway-Header-Key3", "val3",
-	)
-	if err := grpc.SendHeader(ctx, header); err != nil {
-		panic(err)
-	}
-	// create and set trailer
-	trailer := metadata.Pairs("Grpc-Metadata-t-Key", "val",
-		"Grpc-Trailer-t-Key2", "val2",
-		"grpcgateway-t-Key3", "val3",
-	)
+	m := userpb.NewManager()
 
-	if err := grpc.SetTrailer(ctx, trailer); err != nil {
-		panic(err)
+	u, err := m.LoginUserByPassword(ctx, lr.GetEmail(), lr.GetPassword())
+	if err != nil {
+		return nil, errors.Wrap(err, "email and/or password is wrong")
 	}
 
-	return &userpb.UserResponse{
-		Email:  "hi@me.com",
-		Id:     "sss",
-		Status: userpb.UserStatus_USER_STATUS_ACTIVE,
-	}, nil
+	resp := userpb.UserResponse{
+		Email:  u.GetEmail(),
+		Status: u.GetStatus(),
+		Id:     u.GetId(),
+	}
+
+	return &resp, nil
 }
 
 func (uc *userController) Logout(context.Context, *userpb.LogoutRequest) (*userpb.LogoutResponse, error) {
+	panic("S")
 	return &userpb.LogoutResponse{}, nil
 }
 
-func (uc *userController) Register(context.Context, *userpb.RegisterRequest) (*userpb.RegisterResponse, error) {
-	panic("implement me")
+func (uc *userController) Register(ctx context.Context, ru *userpb.RegisterRequest) (*userpb.UserResponse, error) {
+	m := userpb.NewManager()
+
+	u, err := m.RegisterUser(ctx, ru.GetEmail(), ru.GetPassword())
+	if err != nil {
+		return nil, grpcgw.NewBadRequest(err, "duplicate email")
+	}
+
+	return &userpb.UserResponse{
+		Id:     u.GetId(),
+		Status: u.GetStatus(),
+		Email:  u.GetEmail(),
+	}, nil
 }
 
 func init() {

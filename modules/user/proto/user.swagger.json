@@ -20,7 +20,7 @@
         "operationId": "Login",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/userUserResponse"
             }
@@ -46,7 +46,7 @@
         "operationId": "Logout",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/userLogoutResponse"
             }
@@ -62,9 +62,9 @@
         "operationId": "Register",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/userRegisterResponse"
+              "$ref": "#/definitions/userUserResponse"
             }
           }
         },
@@ -110,14 +110,12 @@
         }
       }
     },
-    "userRegisterResponse": {
-      "type": "object"
-    },
     "userUserResponse": {
       "type": "object",
       "properties": {
         "id": {
-          "type": "string"
+          "type": "string",
+          "format": "int64"
         },
         "email": {
           "type": "string"

@@ -139,6 +139,8 @@ func (p *plugin) Generate(file *generator.FileDescriptor) {
 		if models[i].hasID {
 			p.byPrimaryFunction(models[i])
 		}
+		p.scanModel(models[i])
+		p.getFiledMethod(models[i])
 	}
 }
 
@@ -186,12 +188,12 @@ func (p *plugin) createFunction(msg modelData) {
 	p.In()
 	p.P("var err error")
 	if msg.updatedAt || msg.createdAt {
-		p.P("now := ", p.protoTimeImport.Use(), ".TimestampNow()")
+		p.P("now := ", p.timeImport.Use(), ".Now()")
 		if msg.createdAt {
-			p.P("*", msg.receiver, ".CreatedAt = *now")
+			p.P(msg.receiver, ".CreatedAt, _ = ", p.protoTimeImport.Use(), ".TimestampProto(now)")
 		}
 		if msg.updatedAt {
-			p.P("*", msg.receiver, ".UpdatedAt = *now")
+			p.P(msg.receiver, ".UpdatedAt, _ = ", p.protoTimeImport.Use(), ".TimestampProto(now)")
 		}
 	}
 	p.initClosure(msg.receiver, "PreInsert")
@@ -282,6 +284,14 @@ func (p *plugin) byPrimaryFunction(msg modelData) {
 
 	p.P("row := m.GetDbMap().QueryRowxContext(ctx, q, id)")
 	p.P()
+	p.P("return m.scan", msg.model, "(row)")
+	p.Out()
+	p.P("}")
+}
+
+func (p *plugin) scanModel(msg modelData) {
+	p.P()
+	p.P("func (m *Manager) scan", msg.model, "(row ", p.modelImport.Use(), ".Scanner) (*", msg.model, ", error){")
 	p.P("var ", msg.receiver, " ", msg.model)
 	values := make([]string, len(msg.dbFields))
 	for j, dbf := range msg.dbFields {
@@ -307,6 +317,16 @@ func (p *plugin) byPrimaryFunction(msg modelData) {
 		}
 	}
 	p.P("return &", msg.receiver, ", nil")
+	p.Out()
+	p.P("}")
+
+}
+
+func (p *plugin) getFiledMethod(msg modelData) {
+	p.P()
+	p.P("func (m *Manager) get", msg.model, "Fields() []string {")
+	p.In()
+	p.P("return ", pretty.Sprint(msg.dbFields))
 	p.Out()
 	p.P("}")
 }

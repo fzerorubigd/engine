@@ -37,8 +37,8 @@ func (c *userSystemChannelClient) Logout(ctx context.Context, in *LogoutRequest,
 	return out, nil
 }
 
-func (c *userSystemChannelClient) Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error) {
-	out := new(RegisterResponse)
+func (c *userSystemChannelClient) Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*UserResponse, error) {
+	out := new(UserResponse)
 	err := c.ch.Invoke(ctx, "/user.UserSystem/Register", in, out, opts...)
 	if err != nil {
 		return nil, err

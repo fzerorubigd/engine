@@ -35,7 +35,7 @@ message User {
 }
 
 message UserResponse {
-  string id = 1;
+  int64 id = 1;
   string email = 2;
   UserStatus status = 3;
 }
@@ -54,8 +54,6 @@ message RegisterRequest {
   string password = 2 [(gogoproto.moretags) = "validate:\"gte=6,required\" "];
 }
 
-message RegisterResponse {}
-
 service UserSystem {
   rpc Login(LoginRequest) returns (UserResponse) {
     option (google.api.http) = {
@@ -71,7 +69,7 @@ service UserSystem {
     option (extra.resource) = "sss";
   }
 
-  rpc Register(RegisterRequest) returns (RegisterResponse) {
+  rpc Register(RegisterRequest) returns (UserResponse) {
     option (google.api.http) = {
       post: "/v1/user/register"
       body: "*"

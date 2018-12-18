@@ -53,7 +53,7 @@ main.modelData{
     receiver:  "u",
     dbFields:  {"id", "email", "password", "status", "token", "created_at", "updated_at", "last_login"},
     goFields:  {"Id", "Email", "Password", "Status", "Token", "CreatedAt", "UpdatedAt", "LastLogin"},
-    types:     {"created_at":"Timestamp", "updated_at":"Timestamp", "last_login":"Timestamp"},
+    types:     {"last_login":"Timestamp", "created_at":"Timestamp", "updated_at":"Timestamp"},
     createdAt: true,
     updatedAt: true,
     hasID:     true,
@@ -62,9 +62,9 @@ main.modelData{
 
 func (m *Manager) CreateUser(ctx context.Context, u *User) error {
 	var err error
-	now := github_com_gogo_protobuf_types.TimestampNow()
-	*u.CreatedAt = *now
-	*u.UpdatedAt = *now
+	now := time.Now()
+	u.CreatedAt, _ = github_com_gogo_protobuf_types.TimestampProto(now)
+	u.UpdatedAt, _ = github_com_gogo_protobuf_types.TimestampProto(now)
 	func(in interface{}) {
 		if o, ok := in.(interface{ PreInsert() }); ok {
 			o.PreInsert()
@@ -117,6 +117,10 @@ func (m *Manager) GetUserByPrimary(ctx context.Context, id int64) (*User, error)
 	q := `SELECT id, email, password, status, token, created_at, updated_at, last_login FROM aaa.users WHERE id = $1`
 	row := m.GetDbMap().QueryRowxContext(ctx, q, id)
 
+	return m.scanUser(row)
+}
+
+func (m *Manager) scanUser(row github_com_fzerorubigd_balloon_pkg_postgres_model.Scanner) (*User, error) {
 	var u User
 	var CreatedAt time.Time
 	var UpdatedAt time.Time
@@ -129,4 +133,8 @@ func (m *Manager) GetUserByPrimary(ctx context.Context, id int64) (*User, error)
 	u.UpdatedAt, _ = github_com_gogo_protobuf_types.TimestampProto(UpdatedAt)
 	u.LastLogin, _ = github_com_gogo_protobuf_types.TimestampProto(LastLogin)
 	return &u, nil
+}
+
+func (m *Manager) getUserFields() []string {
+	return []string{"id", "email", "password", "status", "token", "created_at", "updated_at", "last_login"}
 }

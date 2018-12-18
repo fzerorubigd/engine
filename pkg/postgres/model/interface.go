@@ -28,3 +28,8 @@ type DBX interface {
 	Select(dest interface{}, query string, args ...interface{}) error
 	SelectContext(ctx context.Context, dest interface{}, query string, args ...interface{}) error
 }
+
+// Scanner is the simple row and rows interface
+type Scanner interface {
+	Scan(dest ...interface{}) error
+}

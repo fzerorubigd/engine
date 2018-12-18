@@ -86,7 +86,7 @@ func (w *wrappedUserSystemServer) Logout(ctx golang_org_x_net_context.Context, r
 	return
 }
 
-func (w *wrappedUserSystemServer) Register(ctx golang_org_x_net_context.Context, req *RegisterRequest) (res *RegisterResponse, err error) {
+func (w *wrappedUserSystemServer) Register(ctx golang_org_x_net_context.Context, req *RegisterRequest) (res *UserResponse, err error) {
 	github_com_fzerorubigd_balloon_pkg_log.Info("UserSystem.Register request")
 	defer func() {
 		e := recover()
