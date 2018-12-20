@@ -115,5 +115,5 @@ func NewWrappedUserSystemServer(server UserSystemServer) WrappedUserSystemContro
 	}
 }
 func init() {
-	github_com_fzerorubigd_balloon_pkg_resources.RegisterResource("/user.UserSystem/Logout", "sss")
+	github_com_fzerorubigd_balloon_pkg_resources.RegisterResource("/user.UserSystem/Logout", "")
 }

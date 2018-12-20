@@ -120,6 +120,9 @@
         "email": {
           "type": "string"
         },
+        "token": {
+          "type": "string"
+        },
         "status": {
           "$ref": "#/definitions/userUserStatus"
         }

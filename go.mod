@@ -7,6 +7,7 @@ require (
 	github.com/fzerorubigd/protobuf v0.0.0-20181215144254-2323e1253696
 	github.com/go-playground/locales v0.12.1 // indirect
 	github.com/go-playground/universal-translator v0.16.0 // indirect
+	github.com/go-redis/redis v6.14.2+incompatible
 	github.com/gobuffalo/packr v1.21.5 // indirect
 	github.com/gogo/protobuf v1.2.0
 	github.com/golang/protobuf v1.2.0

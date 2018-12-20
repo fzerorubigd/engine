@@ -2,16 +2,14 @@ package middlewares
 
 import (
 	"context"
-	"fmt"
+	"net/http"
 
+	userpb "github.com/fzerorubigd/balloon/modules/user/proto"
 	"github.com/fzerorubigd/balloon/pkg/assert"
-
-	"github.com/fzerorubigd/balloon/modules/user/proto"
-	"github.com/pkg/errors"
-
 	"github.com/fzerorubigd/balloon/pkg/grpcgw"
 	"github.com/fzerorubigd/balloon/pkg/resources"
-	"github.com/grpc-ecosystem/go-grpc-middleware/auth"
+	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
+	"github.com/pkg/errors"
 	"google.golang.org/grpc"
 )
 
@@ -20,6 +18,7 @@ type contextKey int
 const (
 	resource contextKey = 0
 	user     contextKey = 1
+	token    contextKey = 2
 )
 
 func requirement(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
@@ -36,10 +35,14 @@ func auth(ctx context.Context) (context.Context, error) {
 	if r == nil { // No user requested here
 		return ctx, nil
 	}
-	token, err := grpc_auth.AuthFromMD(ctx, "bearer")
-	fmt.Println(err, "==>", token)
-	fmt.Println("Key => ", ctx.Value(resource))
-	return ctx, nil
+	tok, err := grpc_auth.AuthFromMD(ctx, "bearer")
+	m := userpb.NewManager()
+	u, err := m.FindUserByIndirectToken(ctx, tok)
+	if err != nil {
+		return ctx, grpcgw.NewBadRequestStatus(err, "invalid token", http.StatusUnauthorized)
+	}
+
+	return context.WithValue(context.WithValue(ctx, user, u), token, tok), nil
 }
 
 // ExtractUser try to extract the current user from the context
@@ -56,6 +59,20 @@ func MustExtractUser(ctx context.Context) *userpb.User {
 	u, err := ExtractUser(ctx)
 	assert.Nil(err)
 	return u
+}
+
+func ExtractToken(ctx context.Context) (string, error) {
+	tok, ok := ctx.Value(token).(string)
+	if !ok {
+		return "", errors.New("no token in context")
+	}
+	return tok, nil
+}
+
+func MustExtractToken(ctx context.Context) string {
+	tok, err := ExtractToken(ctx)
+	assert.Nil(err)
+	return tok
 }
 
 func init() {

@@ -7,10 +7,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gogo/protobuf/types"
+	"github.com/gogo/protobuf/proto"
 
 	"github.com/fzerorubigd/balloon/pkg/assert"
+	"github.com/fzerorubigd/balloon/pkg/kv"
 	"github.com/fzerorubigd/balloon/pkg/random"
+	"github.com/gogo/protobuf/types"
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -56,7 +58,7 @@ func (m *User) HasPassword() bool {
 }
 
 // LoginUserByPassword try to login user with username and password
-func (m *Manager) LoginUserByPassword(ctx context.Context, email, password string) (*User, error) {
+func (m *Manager) FindUserByEmailPassword(ctx context.Context, email, password string) (*User, error) {
 	u, err := m.FindUserByEmail(ctx, email)
 	if err != nil {
 		return nil, err
@@ -91,7 +93,6 @@ func (m *Manager) RegisterUser(ctx context.Context, email, pass string) (*User, 
 	u := User{
 		Email:    email,
 		Password: pass,
-		Token:    <-random.ID,
 		Status:   UserStatus_USER_STATUS_REGISTERED,
 	}
 
@@ -102,14 +103,26 @@ func (m *Manager) RegisterUser(ctx context.Context, email, pass string) (*User, 
 	return &u, nil
 }
 
-func (m *Manager) FindUserByToken(ctx context.Context, token string) (*User, error) {
-	q := fmt.Sprintf(
-		"SELECT %s FROM %s WHERE token = $1 ",
-		strings.Join(m.getUserFields(), ","),
-		UserTableFull,
-	)
+func (m *Manager) CreateToken(_ context.Context, u *User, d time.Duration) string {
+	t := <-random.ID
+	v, err := proto.Marshal(u)
+	assert.Nil(err)
+	kv.MustStoreKey(t, string(v), d)
+	return t
+}
 
-	r := m.GetDbMap().QueryRowxContext(ctx, q, token)
+func (m *Manager) FindUserByIndirectToken(ctx context.Context, token string) (*User, error) {
+	t, err := kv.FetchKey(token)
+	if err != nil {
+		return nil, err
+	}
+	var u User
+	if err := proto.Unmarshal([]byte(t), &u); err != nil {
+		return nil, err
+	}
+	return &u, nil
+}
 
-	return m.scanUser(r)
+func (m *Manager) DeleteToken(_ context.Context, token string) {
+	kv.MustDeleteKey(token)
 }
