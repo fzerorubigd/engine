@@ -3,6 +3,7 @@ package grpcgw
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
 	"sync"
 
 	"github.com/fzerorubigd/balloon/pkg/assert"
@@ -15,6 +16,7 @@ type swaggerFile struct {
 		Title   string `json:"title"`
 		Version string `json:"version"`
 	} `json:"info"`
+	Host        string                 `json:"host"`
 	Schemes     []string               `json:"schemes"`
 	Consumes    []string               `json:"consumes"`
 	Produces    []string               `json:"produces"`
@@ -33,10 +35,23 @@ var (
 		Schemes:     []string{"http", "https"},
 		Consumes:    []string{"application/json"},
 		Produces:    []string{"application/json"},
+		Host:        address(),
 		Paths:       make(map[string]interface{}),
 		Definitions: make(map[string]interface{}),
 	}
 )
+
+func address() string {
+	p := strings.Split(addr.String(), ":")
+	if len(p) != 2 {
+		return addr.String()
+	}
+	if p[0] == "" {
+		return "127.0.0.1:" + p[1]
+	}
+
+	return addr.String()
+}
 
 func swaggerHandler(w http.ResponseWriter, r *http.Request) {
 	defer Recover(w)

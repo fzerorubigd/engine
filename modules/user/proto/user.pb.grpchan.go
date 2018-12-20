@@ -54,3 +54,12 @@ func (c *userSystemChannelClient) Ping(ctx context.Context, in *PingRequest, opt
 	}
 	return out, nil
 }
+
+func (c *userSystemChannelClient) ChangePassword(ctx context.Context, in *ChangePasswordRequest, opts ...grpc.CallOption) (*ChangePasswordResponse, error) {
+	out := new(ChangePasswordResponse)
+	err := c.ch.Invoke(ctx, "/user.UserSystem/ChangePassword", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}

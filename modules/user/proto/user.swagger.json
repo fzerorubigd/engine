@@ -15,6 +15,32 @@
     "application/json"
   ],
   "paths": {
+    "/v1/user/change/password": {
+      "post": {
+        "operationId": "ChangePassword",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/userChangePasswordResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userChangePasswordRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserSystem"
+        ]
+      }
+    },
     "/v1/user/login": {
       "post": {
         "operationId": "Login",
@@ -101,6 +127,20 @@
     }
   },
   "definitions": {
+    "userChangePasswordRequest": {
+      "type": "object",
+      "properties": {
+        "old_password": {
+          "type": "string"
+        },
+        "new_password": {
+          "type": "string"
+        }
+      }
+    },
+    "userChangePasswordResponse": {
+      "type": "object"
+    },
     "userLoginRequest": {
       "type": "object",
       "properties": {

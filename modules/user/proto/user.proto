@@ -56,6 +56,13 @@ message RegisterRequest {
 
 message PingRequest {}
 
+message ChangePasswordRequest {
+  string old_password = 1 [(gogoproto.moretags) = "validate:\"gte=6,required\" "];
+  string new_password = 2 [(gogoproto.moretags) = "validate:\"gte=6,required\" "];
+}
+
+message ChangePasswordResponse {}
+
 service UserSystem {
   rpc Login(LoginRequest) returns (UserResponse) {
     option (google.api.http) = {
@@ -81,6 +88,14 @@ service UserSystem {
   rpc Ping(PingRequest) returns (UserResponse) {
     option (google.api.http) = {
       get: "/v1/user/ping"
+    };
+    option (extra.resource) = "";
+  }
+
+  rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse) {
+    option (google.api.http) = {
+      post: "/v1/user/change/password"
+      body: "*"
     };
     option (extra.resource) = "";
   }

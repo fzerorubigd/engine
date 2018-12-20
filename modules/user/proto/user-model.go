@@ -7,11 +7,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gogo/protobuf/proto"
-
 	"github.com/fzerorubigd/balloon/pkg/assert"
 	"github.com/fzerorubigd/balloon/pkg/kv"
 	"github.com/fzerorubigd/balloon/pkg/random"
+	"github.com/gogo/protobuf/proto"
 	"github.com/gogo/protobuf/types"
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
@@ -125,4 +124,9 @@ func (m *Manager) FindUserByIndirectToken(ctx context.Context, token string) (*U
 
 func (m *Manager) DeleteToken(_ context.Context, token string) {
 	kv.MustDeleteKey(token)
+}
+
+func (m *Manager) ChangePassword(ctx context.Context, u *User, newPassword string) error {
+	u.Password = newPassword
+	return m.UpdateUser(ctx, u)
 }

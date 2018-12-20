@@ -4,6 +4,8 @@ import (
 	"context"
 	"time"
 
+	"github.com/fzerorubigd/balloon/pkg/assert"
+
 	"github.com/fzerorubigd/balloon/modules/user/middlewares"
 	userpb "github.com/fzerorubigd/balloon/modules/user/proto"
 	"github.com/fzerorubigd/balloon/pkg/config"
@@ -18,6 +20,23 @@ var (
 type userController struct {
 }
 
+func (uc *userController) Initialize(ctx context.Context) {
+}
+
+func (uc *userController) ChangePassword(ctx context.Context, cpr *userpb.ChangePasswordRequest) (*userpb.ChangePasswordResponse, error) {
+	old := middlewares.MustExtractUser(ctx)
+	// ok reload the user from db
+	m := userpb.NewManager()
+	u, err := m.FindUserByEmailPassword(ctx, old.GetEmail(), cpr.GetOldPassword())
+	if err != nil {
+		return nil, grpcgw.NewBadRequest(err, "old password is wrong")
+	}
+
+	assert.Nil(m.ChangePassword(ctx, u, cpr.GetNewPassword()))
+
+	return &userpb.ChangePasswordResponse{}, nil
+}
+
 func (uc *userController) Ping(ctx context.Context, _ *userpb.PingRequest) (*userpb.UserResponse, error) {
 	u := middlewares.MustExtractUser(ctx)
 	tok := middlewares.MustExtractToken(ctx)
@@ -27,9 +46,6 @@ func (uc *userController) Ping(ctx context.Context, _ *userpb.PingRequest) (*use
 		Status: u.GetStatus(),
 		Email:  u.GetEmail(),
 	}, nil
-}
-
-func (uc *userController) Initialize(ctx context.Context) {
 }
 
 func (uc *userController) Login(ctx context.Context, lr *userpb.LoginRequest) (*userpb.UserResponse, error) {
