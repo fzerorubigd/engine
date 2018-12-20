@@ -45,3 +45,12 @@ func (c *userSystemChannelClient) Register(ctx context.Context, in *RegisterRequ
 	}
 	return out, nil
 }
+
+func (c *userSystemChannelClient) Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*UserResponse, error) {
+	out := new(UserResponse)
+	err := c.ch.Invoke(ctx, "/user.UserSystem/Ping", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}

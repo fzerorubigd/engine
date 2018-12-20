@@ -54,6 +54,8 @@ message RegisterRequest {
   string password = 2 [(gogoproto.moretags) = "validate:\"gte=6,required\" "];
 }
 
+message PingRequest {}
+
 service UserSystem {
   rpc Login(LoginRequest) returns (UserResponse) {
     option (google.api.http) = {
@@ -75,4 +77,12 @@ service UserSystem {
       body: "*"
     };
   }
+
+  rpc Ping(PingRequest) returns (UserResponse) {
+    option (google.api.http) = {
+      get: "/v1/user/ping"
+    };
+    option (extra.resource) = "";
+  }
+
 }

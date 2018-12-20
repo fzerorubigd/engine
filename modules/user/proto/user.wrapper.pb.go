@@ -108,6 +108,28 @@ func (w *wrappedUserSystemServer) Register(ctx golang_org_x_net_context.Context,
 	return
 }
 
+func (w *wrappedUserSystemServer) Ping(ctx golang_org_x_net_context.Context, req *PingRequest) (res *UserResponse, err error) {
+	github_com_fzerorubigd_balloon_pkg_log.Info("UserSystem.Ping request")
+	defer func() {
+		e := recover()
+		if e == nil {
+			return
+		}
+		github_com_fzerorubigd_balloon_pkg_log.Error("Recovering from panic", github_com_fzerorubigd_balloon_pkg_log.Any("panic", e))
+		res, err = nil, github_com_pkg_errors.New("internal server error")
+	}()
+	ctx, err = github_com_fzerorubigd_balloon_pkg_grpcgw.ExecuteMiddleware(ctx, w.original)
+	if err != nil {
+		return nil, err
+	}
+	if err = w.v.Struct(req); err != nil {
+		return nil, err
+	}
+
+	res, err = w.original.Ping(ctx, req)
+	return
+}
+
 func NewWrappedUserSystemServer(server UserSystemServer) WrappedUserSystemController {
 	return &wrappedUserSystemServer{
 		original: server,
@@ -116,4 +138,5 @@ func NewWrappedUserSystemServer(server UserSystemServer) WrappedUserSystemContro
 }
 func init() {
 	github_com_fzerorubigd_balloon_pkg_resources.RegisterResource("/user.UserSystem/Logout", "")
+	github_com_fzerorubigd_balloon_pkg_resources.RegisterResource("/user.UserSystem/Ping", "")
 }

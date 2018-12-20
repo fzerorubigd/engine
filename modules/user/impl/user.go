@@ -5,10 +5,8 @@ import (
 	"time"
 
 	"github.com/fzerorubigd/balloon/modules/user/middlewares"
-
+	userpb "github.com/fzerorubigd/balloon/modules/user/proto"
 	"github.com/fzerorubigd/balloon/pkg/config"
-
-	"github.com/fzerorubigd/balloon/modules/user/proto"
 	"github.com/fzerorubigd/balloon/pkg/grpcgw"
 	"github.com/pkg/errors"
 )
@@ -18,6 +16,17 @@ var (
 )
 
 type userController struct {
+}
+
+func (uc *userController) Ping(ctx context.Context, _ *userpb.PingRequest) (*userpb.UserResponse, error) {
+	u := middlewares.MustExtractUser(ctx)
+	tok := middlewares.MustExtractToken(ctx)
+
+	return &userpb.UserResponse{
+		Token:  tok,
+		Status: u.GetStatus(),
+		Email:  u.GetEmail(),
+	}, nil
 }
 
 func (uc *userController) Initialize(ctx context.Context) {
