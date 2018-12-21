@@ -11,6 +11,28 @@ import (
 	"github.com/fzerorubigd/balloon/pkg/log"
 )
 
+var (
+	errDef map[string]interface{}
+	err400 = map[string]interface{}{
+		"description": "Input error",
+		"schema": map[string]interface{}{
+			"$ref": "#/definitions/ErrorResponse",
+		},
+	}
+	err401 = map[string]interface{}{
+		"description": "Returned when not authenticated",
+		"schema": map[string]interface{}{
+			"$ref": "#/definitions/ErrorResponse",
+		},
+	}
+	err403 = map[string]interface{}{
+		"description": "Returned when not authorized",
+		"schema": map[string]interface{}{
+			"$ref": "#/definitions/ErrorResponse",
+		},
+	}
+)
+
 type security struct {
 	In   string `json:"in"`
 	Name string `json:"name"`
@@ -123,6 +145,10 @@ func RegisterSwagger(paths map[string]interface{}, definitions map[string]interf
 		data.Definitions[i] = definitions[i]
 	}
 
+	if data.Definitions["ErrorResponse"] == nil {
+		data.Definitions["ErrorResponse"] = errDef
+	}
+
 }
 
 func appendSecurity(d interface{}) map[string]interface{} {
@@ -139,6 +165,8 @@ func appendSecurity(d interface{}) map[string]interface{} {
 				meth["parameters"] = createParameter(p)
 			}
 		}
+
+		meth["responses"] = create40XResponses(meth["responses"].(map[string]interface{}), meth["security"] != nil)
 	}
 	return v
 
@@ -152,4 +180,34 @@ func createParameter(old []interface{}) []interface{} {
 		"required":    true,
 		"type":        "string",
 	})
+}
+
+func create40XResponses(in map[string]interface{}, forbidden bool) map[string]interface{} {
+	if forbidden {
+		in["401"] = err401
+		in["403"] = err403
+	}
+	in["400"] = err400
+	return in
+}
+
+func init() {
+	x := `{
+			"type": "object",
+			"properties": {
+				"error": {
+					"type": "string"
+				},
+				"message": {
+					"type": "string"
+				},
+				"code": {
+					"type": "integer",
+					"format": "int32"
+				}
+			}
+		}`
+	errDef = make(map[string]interface{})
+	assert.Nil(json.Unmarshal([]byte(x), &errDef))
+
 }

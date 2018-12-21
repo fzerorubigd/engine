@@ -38,7 +38,7 @@ option (extra.schema_name_all) = "aaa";
 //        description: "Returned when the resource does not exist.";
 //        schema: {
 //          json_schema: {
-//            ref: ".ErrorResponse";
+//            ref: ".user.ErrorResponse";
 //          }
 //        }
 //      }
