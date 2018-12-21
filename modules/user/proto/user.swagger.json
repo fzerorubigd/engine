@@ -38,6 +38,11 @@
         ],
         "tags": [
           "UserSystem"
+        ],
+        "security": [
+          {
+            "Authentication": []
+          }
         ]
       }
     },
@@ -80,6 +85,11 @@
         },
         "tags": [
           "UserSystem"
+        ],
+        "security": [
+          {
+            "Authentication": []
+          }
         ]
       }
     },
@@ -96,6 +106,11 @@
         },
         "tags": [
           "UserSystem"
+        ],
+        "security": [
+          {
+            "Authentication": []
+          }
         ]
       }
     },

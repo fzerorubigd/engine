@@ -4,10 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/fzerorubigd/balloon/pkg/assert"
-
 	"github.com/fzerorubigd/balloon/modules/user/middlewares"
 	userpb "github.com/fzerorubigd/balloon/modules/user/proto"
+	"github.com/fzerorubigd/balloon/pkg/assert"
 	"github.com/fzerorubigd/balloon/pkg/config"
 	"github.com/fzerorubigd/balloon/pkg/grpcgw"
 	"github.com/pkg/errors"

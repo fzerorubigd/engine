@@ -84,7 +84,7 @@ func Serve(ctx context.Context) {
 	c = c.WithServerUnaryInterceptor(grpc_middleware.ChainUnaryServer(unaryMiddle...)).
 		WithServerStreamInterceptor(grpc_middleware.ChainStreamServer(streamMiddle...))
 
-	normalMux.HandleFunc("/swagger", swaggerHandler)
+	normalMux.HandleFunc("/v1/swagger/", swaggerHandler)
 	for i := range all {
 		all[i].Init(ctx, c, mux)
 	}

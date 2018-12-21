@@ -84,6 +84,14 @@ mig-down: tools-migration
 proto: $(BIN)/prototool $(BIN)/protoc-gen-go $(BIN)/protoc-gen-grpc-gateway $(BIN)/protoc-gen-swagger $(BIN)/protoc-gen-grpchan $(BIN)/protoc-gen-gogo generators
 	$(BIN)/prototool generate
 
+swagger-ui: $(BIN)/go-bindata
+	$(GIT) clone --depth 1 https://github.com/swagger-api/swagger-ui.git $(ROOT)/tmp/swagger-ui
+	rm -rf $(ROOT)/third_party/swagger-ui
+	mv $(ROOT)/tmp/swagger-ui/dist $(ROOT)/third_party/swagger-ui
+	rm -rf $(ROOT)/tmp/swagger-ui
+	sed -i -e 's/https:\/\/petstore.swagger.io\/v2\/swagger\.json/\/v1\/swagger\/index\.json/g' $(ROOT)/third_party/swagger-ui/index.html
+	cd $(ROOT)/third_party/swagger-ui && $(BIN)/go-bindata -nometadata -o $(ROOT)/pkg/grpcgw/swagger.gen.go -nomemcopy=true -pkg=grpcgw ./...
+
 swagger: swagger-to-go proto $(addsuffix -swagger,$(dir $(wildcard $(ROOT)/modules/*/)))
 
 code-gen: swagger
@@ -96,7 +104,7 @@ $(LINTER):
 	$(LINTER) --install
 
 lint: $(LINTER) $(addsuffix -lint,$(wildcard $(ROOT)/modules/*))
-	$(LINTERCMD) $(ROOT)//cmd/...
+	$(LINTERCMD) $(ROOT)/cmd/...
 
 build-server:
 	@echo "Building server"
