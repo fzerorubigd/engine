@@ -6,13 +6,12 @@ import (
 	"io"
 	"net/http"
 
+	"gopkg.in/go-playground/validator.v9"
+
 	"github.com/pkg/errors"
 
-	"github.com/golang/protobuf/ptypes/any"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
-	"google.golang.org/grpc/status"
 )
 
 // GWError is used for the error returned from the grpc implementation
@@ -26,9 +25,10 @@ type GWError interface {
 }
 
 type gwError struct {
-	error
-	Msg string `json:"message"`
-	S   int    `json:"status"`
+	error `json:"-"`
+	Msg   string            `json:"message"`
+	S     int               `json:"status"`
+	F     map[string]string `json:"fields,omitempty"`
 }
 
 func (gw *gwError) Status() int {
@@ -46,11 +46,18 @@ func NewBadRequest(err error, message string) error {
 
 // NewBadRequestStatus is the bad request
 func NewBadRequestStatus(err error, message string, status int) error {
-	return &gwError{
+	ret := &gwError{
 		error: errors.Wrap(err, message),
 		Msg:   message,
 		S:     status,
 	}
+	if v, ok := err.(validator.ValidationErrors); ok {
+		ret.F = make(map[string]string)
+		for _, fld := range v {
+			ret.F[fld.Field()] = fld.Tag()
+		}
+	}
+	return ret
 }
 
 // defaultHTTPError is my first try to overwrite the default
@@ -60,31 +67,12 @@ func defaultHTTPError(ctx context.Context, _ *runtime.ServeMux, marshaler runtim
 	w.Header().Del("Trailer")
 	w.Header().Set("Content-Type", marshaler.ContentType())
 
-	s, ok := status.FromError(err)
+	body, ok := err.(GWError)
 	if !ok {
-		s = status.New(codes.Unknown, err.Error())
-	}
-
-	re := false
-	gw, ok := err.(GWError)
-	if ok {
-		re = true
-		s = status.New(codes.Code(gw.Status()), gw.Message())
-	}
-
-	body := struct {
-		Error string `protobuf:"bytes,1,name=error" json:"error"`
-		// This is to make the error more compatible with users that expect errors to be Status objects:
-		// https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto
-		// It should be the exact same message as the Error field.
-		Message string     `protobuf:"bytes,1,name=message" json:"message"`
-		Code    int32      `protobuf:"varint,2,name=code" json:"code"`
-		Details []*any.Any `protobuf:"bytes,3,rep,name=details" json:"details,omitempty"`
-	}{
-		Error:   s.Message(),
-		Message: s.Message(),
-		Code:    int32(s.Code()),
-		Details: s.Proto().GetDetails(),
+		body = &gwError{
+			Msg: "unknown",
+			S:   http.StatusInternalServerError,
+		}
 	}
 
 	buf, merr := marshaler.Marshal(body)
@@ -102,11 +90,7 @@ func defaultHTTPError(ctx context.Context, _ *runtime.ServeMux, marshaler runtim
 		grpclog.Infof("Failed to extract ServerMetadata from context")
 	}
 
-	st := int(s.Code())
-	if !re {
-		st = runtime.HTTPStatusFromCode(s.Code())
-	}
-	w.WriteHeader(st)
+	w.WriteHeader(body.Status())
 	if _, err := w.Write(buf); err != nil {
 		grpclog.Infof("Failed to write response: %v", err)
 	}

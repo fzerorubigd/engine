@@ -58,7 +58,7 @@ func (w *wrappedUserSystemServer) Login(ctx golang_org_x_net_context.Context, re
 		return nil, err
 	}
 	if err = w.v.Struct(req); err != nil {
-		return nil, err
+		return nil, github_com_fzerorubigd_balloon_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 
 	res, err = w.original.Login(ctx, req)
@@ -80,7 +80,7 @@ func (w *wrappedUserSystemServer) Logout(ctx golang_org_x_net_context.Context, r
 		return nil, err
 	}
 	if err = w.v.Struct(req); err != nil {
-		return nil, err
+		return nil, github_com_fzerorubigd_balloon_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 
 	res, err = w.original.Logout(ctx, req)
@@ -102,7 +102,7 @@ func (w *wrappedUserSystemServer) Register(ctx golang_org_x_net_context.Context,
 		return nil, err
 	}
 	if err = w.v.Struct(req); err != nil {
-		return nil, err
+		return nil, github_com_fzerorubigd_balloon_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 
 	res, err = w.original.Register(ctx, req)
@@ -124,7 +124,7 @@ func (w *wrappedUserSystemServer) Ping(ctx golang_org_x_net_context.Context, req
 		return nil, err
 	}
 	if err = w.v.Struct(req); err != nil {
-		return nil, err
+		return nil, github_com_fzerorubigd_balloon_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 
 	res, err = w.original.Ping(ctx, req)
@@ -146,7 +146,7 @@ func (w *wrappedUserSystemServer) ChangePassword(ctx golang_org_x_net_context.Co
 		return nil, err
 	}
 	if err = w.v.Struct(req); err != nil {
-		return nil, err
+		return nil, github_com_fzerorubigd_balloon_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 
 	res, err = w.original.ChangePassword(ctx, req)

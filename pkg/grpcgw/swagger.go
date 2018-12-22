@@ -12,11 +12,12 @@ import (
 )
 
 var (
-	errDef map[string]interface{}
-	err400 = map[string]interface{}{
+	errDef    map[string]interface{}
+	errFldDef map[string]interface{}
+	err400    = map[string]interface{}{
 		"description": "Input error",
 		"schema": map[string]interface{}{
-			"$ref": "#/definitions/ErrorResponse",
+			"$ref": "#/definitions/ErrorFldResponse",
 		},
 	}
 	err401 = map[string]interface{}{
@@ -147,6 +148,7 @@ func RegisterSwagger(paths map[string]interface{}, definitions map[string]interf
 
 	if data.Definitions["ErrorResponse"] == nil {
 		data.Definitions["ErrorResponse"] = errDef
+		data.Definitions["ErrorFldResponse"] = errFldDef
 	}
 
 }
@@ -192,22 +194,40 @@ func create40XResponses(in map[string]interface{}, forbidden bool) map[string]in
 }
 
 func init() {
-	x := `{
+	// TODO : better approach
+	x1 := `{
 			"type": "object",
 			"properties": {
-				"error": {
-					"type": "string"
-				},
 				"message": {
 					"type": "string"
 				},
-				"code": {
+				"status": {
+					"type": "integer",
+					"format": "int32"
+				},
+        		"fields": {
+          			"type": "object",
+          			"additionalProperties": {
+            			"type": "string"
+          			}
+        		}
+			}
+		}`
+	x2 := `{
+			"type": "object",
+			"properties": {
+				"message": {
+					"type": "string"
+				},
+				"status": {
 					"type": "integer",
 					"format": "int32"
 				}
 			}
 		}`
 	errDef = make(map[string]interface{})
-	assert.Nil(json.Unmarshal([]byte(x), &errDef))
+	errFldDef = make(map[string]interface{})
+	assert.Nil(json.Unmarshal([]byte(x1), &errFldDef))
+	assert.Nil(json.Unmarshal([]byte(x2), &errDef))
 
 }

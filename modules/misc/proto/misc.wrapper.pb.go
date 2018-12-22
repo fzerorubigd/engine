@@ -55,7 +55,7 @@ func (w *wrappedMiscSystemServer) Version(ctx golang_org_x_net_context.Context, 
 		return nil, err
 	}
 	if err = w.v.Struct(req); err != nil {
-		return nil, err
+		return nil, github_com_fzerorubigd_balloon_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 
 	res, err = w.original.Version(ctx, req)

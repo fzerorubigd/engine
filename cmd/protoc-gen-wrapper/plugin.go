@@ -170,7 +170,7 @@ func (p *plugin) createMethod(class, method, in, out string) {
 	p.P("}")
 	p.P("if err = w.v.Struct(req); err != nil {")
 	p.In()
-	p.P("return nil, err")
+	p.P("return nil, ", p.grpcgwImport.Use(), `.NewBadRequest(err, "validation failed")`)
 	p.Out()
 	p.P("}")
 	p.P()
