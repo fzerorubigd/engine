@@ -56,7 +56,7 @@ func (m *User) HasPassword() bool {
 	return m.Password != noPassString
 }
 
-// LoginUserByPassword try to login user with username and password
+// FindUserByEmailPassword try to login user with username and password
 func (m *Manager) FindUserByEmailPassword(ctx context.Context, email, password string) (*User, error) {
 	u, err := m.FindUserByEmail(ctx, email)
 	if err != nil {

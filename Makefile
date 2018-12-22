@@ -106,11 +106,11 @@ $(LINTER):
 lint: $(LINTER) $(addsuffix -lint,$(wildcard $(ROOT)/modules/*))
 	$(LINTERCMD) $(ROOT)/cmd/...
 
-build-server: code-gen
+build-server:
 	@echo "Building server"
 	$(INSTALL) ./cmd/server
 
-run-server: build-server
+run-server: code-gen build-server
 	@echo "Running..."
 	$(BIN)/server 2>&1
 
