@@ -10,10 +10,12 @@ require (
 	github.com/go-redis/redis v6.14.2+incompatible
 	github.com/gobuffalo/packr v1.21.5 // indirect
 	github.com/gogo/protobuf v1.2.0
+	github.com/golang/mock v1.2.0 // indirect
 	github.com/golang/protobuf v1.2.0
 	github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.0.0
 	github.com/grpc-ecosystem/grpc-gateway v1.6.2
+	github.com/jhump/protoreflect v1.1.0 // indirect
 	github.com/jinzhu/inflection v0.0.0-20180308033659-04140366298a
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/jtolds/gls v4.2.1+incompatible // indirect
@@ -31,15 +33,19 @@ require (
 	go.uber.org/multierr v1.1.0 // indirect
 	go.uber.org/zap v1.9.1
 	golang.org/x/crypto v0.0.0-20181112202954-3d3f9f413869
-	golang.org/x/net v0.0.0-20181213202711-891ebc4b82d6
+	golang.org/x/lint v0.0.0-20181217174547-8f45f776aaf1 // indirect
+	golang.org/x/net v0.0.0-20181220203305-927f97764cc3
 	golang.org/x/oauth2 v0.0.0-20181203162652-d668ce993890 // indirect
-	golang.org/x/sys v0.0.0-20181213200352-4d1cda033e06 // indirect
-	google.golang.org/appengine v1.3.0 // indirect
-	google.golang.org/genproto v0.0.0-20181202183823-bd91e49a0898
+	golang.org/x/sync v0.0.0-20181221193216-37e7f081c4d4 // indirect
+	golang.org/x/sys v0.0.0-20181221143128-b4a75ba826a6 // indirect
+	golang.org/x/tools v0.0.0-20181221235234-d00ac6d27372 // indirect
+	google.golang.org/appengine v1.4.0 // indirect
+	google.golang.org/genproto v0.0.0-20181221175505-bd9b4fb69e2f
 	google.golang.org/grpc v1.17.0
 	gopkg.in/fzerorubigd/onion.v3 v3.0.0-20181013165022-7b9c1b5d62cd
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v9 v9.23.0
 	gopkg.in/gorp.v1 v1.7.2 // indirect
 	gopkg.in/yaml.v2 v2.2.2 // indirect
+	honnef.co/go/tools v0.0.0-20180920025451-e3ad64cb4ed3 // indirect
 )
