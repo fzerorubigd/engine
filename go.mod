@@ -4,7 +4,7 @@ require (
 	cloud.google.com/go v0.34.0 // indirect
 	github.com/fullstorydev/grpchan v0.0.0-20181120185831-564614157981
 	github.com/fzerorubigd/expand v0.0.0-20150817182922-fd359294116f
-	github.com/fzerorubigd/protobuf v0.0.0-20181215144254-2323e1253696
+	github.com/fzerorubigd/protobuf v0.0.0-20181223003124-6e93ab630467
 	github.com/go-playground/locales v0.12.1 // indirect
 	github.com/go-playground/universal-translator v0.16.0 // indirect
 	github.com/go-redis/redis v6.14.2+incompatible

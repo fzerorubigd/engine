@@ -5,14 +5,14 @@ package userpb
 
 import github_com_fzerorubigd_balloon_pkg_postgres_model "github.com/fzerorubigd/balloon/pkg/postgres/model"
 import time "time"
-import github_com_gogo_protobuf_types "github.com/gogo/protobuf/types"
+import github_com_fzerorubigd_protobuf_types "github.com/fzerorubigd/protobuf/types"
 import context "context"
 import proto "github.com/golang/protobuf/proto"
 import fmt "fmt"
 import math "math"
 import _ "github.com/fzerorubigd/protobuf/extra"
+import _ "github.com/fzerorubigd/protobuf/types"
 import _ "github.com/gogo/protobuf/gogoproto"
-import _ "github.com/gogo/protobuf/types"
 import _ "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options"
 import _ "google.golang.org/genproto/googleapis/api/annotations"
 
@@ -54,7 +54,7 @@ main.modelData{
     receiver:  "u",
     dbFields:  {"id", "email", "password", "status", "created_at", "updated_at", "last_login"},
     goFields:  {"Id", "Email", "Password", "Status", "CreatedAt", "UpdatedAt", "LastLogin"},
-    types:     {"created_at":"Timestamp", "updated_at":"Timestamp", "last_login":"Timestamp"},
+    types:     {},
     createdAt: true,
     updatedAt: true,
     hasID:     true,
@@ -62,55 +62,30 @@ main.modelData{
 */
 
 func (m *Manager) CreateUser(ctx context.Context, u *User) error {
-	var err error
 	now := time.Now()
-	u.CreatedAt, _ = github_com_gogo_protobuf_types.TimestampProto(now)
-	u.UpdatedAt, _ = github_com_gogo_protobuf_types.TimestampProto(now)
+	u.CreatedAt = github_com_fzerorubigd_protobuf_types.TimestampProto(now)
+	u.UpdatedAt = github_com_fzerorubigd_protobuf_types.TimestampProto(now)
 	func(in interface{}) {
 		if o, ok := in.(interface{ PreInsert() }); ok {
 			o.PreInsert()
 		}
 	}(u)
-	CreatedAt, err := github_com_gogo_protobuf_types.TimestampFromProto(u.CreatedAt)
-	if err != nil {
-		return err
-	}
-	UpdatedAt, err := github_com_gogo_protobuf_types.TimestampFromProto(u.UpdatedAt)
-	if err != nil {
-		return err
-	}
-	LastLogin, err := github_com_gogo_protobuf_types.TimestampFromProto(u.LastLogin)
-	if err != nil {
-		return err
-	}
 	q := `INSERT INTO aaa.users(email, password, status, created_at, updated_at, last_login) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
-	row := m.GetDbMap().QueryRowxContext(ctx, q, u.Email, u.Password, u.Status, CreatedAt, UpdatedAt, LastLogin)
+	row := m.GetDbMap().QueryRowxContext(ctx, q, u.Email, u.Password, u.Status, u.CreatedAt, u.UpdatedAt, u.LastLogin)
 	return row.Scan(&u.Id)
 }
 
 func (m *Manager) UpdateUser(ctx context.Context, u *User) error {
 	var err error
-	now := github_com_gogo_protobuf_types.TimestampNow()
-	*u.UpdatedAt = *now
+	now := time.Now()
+	u.UpdatedAt = github_com_fzerorubigd_protobuf_types.TimestampProto(now)
 	func(in interface{}) {
 		if o, ok := in.(interface{ PreUpdate() }); ok {
 			o.PreUpdate()
 		}
 	}(u)
-	CreatedAt, err := github_com_gogo_protobuf_types.TimestampFromProto(u.CreatedAt)
-	if err != nil {
-		return err
-	}
-	UpdatedAt, err := github_com_gogo_protobuf_types.TimestampFromProto(u.UpdatedAt)
-	if err != nil {
-		return err
-	}
-	LastLogin, err := github_com_gogo_protobuf_types.TimestampFromProto(u.LastLogin)
-	if err != nil {
-		return err
-	}
 	q := `UPDATE aaa.users SET email = $1, password = $2, status = $3, created_at = $4, updated_at = $5, last_login = $6 WHERE id = $7`
-	_, err = m.GetDbMap().ExecContext(ctx, q, u.Email, u.Password, u.Status, CreatedAt, UpdatedAt, LastLogin, u.Id)
+	_, err = m.GetDbMap().ExecContext(ctx, q, u.Email, u.Password, u.Status, u.CreatedAt, u.UpdatedAt, u.LastLogin, u.Id)
 	return err
 }
 
@@ -123,16 +98,10 @@ func (m *Manager) GetUserByPrimary(ctx context.Context, id int64) (*User, error)
 
 func (m *Manager) scanUser(row github_com_fzerorubigd_balloon_pkg_postgres_model.Scanner) (*User, error) {
 	var u User
-	var CreatedAt time.Time
-	var UpdatedAt time.Time
-	var LastLogin time.Time
-	err := row.Scan(&u.Id, &u.Email, &u.Password, &u.Status, &CreatedAt, &UpdatedAt, &LastLogin)
+	err := row.Scan(&u.Id, &u.Email, &u.Password, &u.Status, &u.CreatedAt, &u.UpdatedAt, &u.LastLogin)
 	if err != nil {
 		return nil, err
 	}
-	u.CreatedAt, _ = github_com_gogo_protobuf_types.TimestampProto(CreatedAt)
-	u.UpdatedAt, _ = github_com_gogo_protobuf_types.TimestampProto(UpdatedAt)
-	u.LastLogin, _ = github_com_gogo_protobuf_types.TimestampProto(LastLogin)
 	return &u, nil
 }
 

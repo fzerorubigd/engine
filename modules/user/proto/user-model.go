@@ -11,7 +11,6 @@ import (
 	"github.com/fzerorubigd/balloon/pkg/kv"
 	"github.com/fzerorubigd/balloon/pkg/random"
 	"github.com/gogo/protobuf/proto"
-	"github.com/gogo/protobuf/types"
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -22,6 +21,7 @@ const (
 	noPassString = "NO" // Size must be less than 6 character
 )
 
+//  TODO: NEEDS COMMENT INFO
 var (
 	isBcrypt = regexp.MustCompile(`^\$[^$]+\$[0-9]+\$`)
 )
@@ -35,13 +35,12 @@ func (m *User) cryptPassword() {
 	}
 }
 
-// Initialize the user on create
+// PreInsert the user on create
 func (m *User) PreInsert() {
-	m.LastLogin, _ = types.TimestampProto(time.Now())
 	m.cryptPassword()
 }
 
-// Initialize the user on update
+// PreUpdate the user on update
 func (m *User) PreUpdate() {
 	m.cryptPassword()
 }
@@ -102,6 +101,7 @@ func (m *Manager) RegisterUser(ctx context.Context, email, pass string) (*User, 
 	return &u, nil
 }
 
+// CreateToken TODO: NEEDS COMMENT INFO
 func (m *Manager) CreateToken(_ context.Context, u *User, d time.Duration) string {
 	t := <-random.ID
 	v, err := proto.Marshal(u)
@@ -110,6 +110,7 @@ func (m *Manager) CreateToken(_ context.Context, u *User, d time.Duration) strin
 	return t
 }
 
+// FindUserByIndirectToken TODO: NEEDS COMMENT INFO
 func (m *Manager) FindUserByIndirectToken(ctx context.Context, token string) (*User, error) {
 	t, err := kv.FetchKey(token)
 	if err != nil {
@@ -122,10 +123,12 @@ func (m *Manager) FindUserByIndirectToken(ctx context.Context, token string) (*U
 	return &u, nil
 }
 
+// DeleteToken TODO: NEEDS COMMENT INFO
 func (m *Manager) DeleteToken(_ context.Context, token string) {
 	kv.MustDeleteKey(token)
 }
 
+// ChangePassword TODO: NEEDS COMMENT INFO
 func (m *Manager) ChangePassword(ctx context.Context, u *User, newPassword string) error {
 	u.Password = newPassword
 	return m.UpdateUser(ctx, u)

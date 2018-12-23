@@ -94,7 +94,7 @@ func (p *plugin) Generate(file *generator.FileDescriptor) {
 	p.initImport = p.NewImport("github.com/fzerorubigd/balloon/pkg/initializer")
 	p.timeImport = p.NewImport("time")
 	p.uuidImport = p.NewImport("github.com/google/uuid")
-	p.protoTimeImport = p.NewImport("github.com/gogo/protobuf/types")
+	p.protoTimeImport = p.NewImport("github.com/fzerorubigd/protobuf/types")
 	p.contextImport = p.NewImport("context")
 
 	var models []modelData
@@ -132,7 +132,6 @@ func (p *plugin) Generate(file *generator.FileDescriptor) {
 	for i := range models {
 		p.P("/*")
 		p.P(pretty.Sprint(models[i]))
-
 		p.P("*/")
 		p.createFunction(models[i])
 		p.updateFunction(models[i])
@@ -186,14 +185,14 @@ func (p *plugin) createFunction(msg modelData) {
 	p.P()
 	p.P("func (m *Manager) Create", msg.model, "(ctx ", p.contextImport.Use(), ".Context, ", msg.receiver, " *", msg.model, ") error {")
 	p.In()
-	p.P("var err error")
+	//p.P("var err error")
 	if msg.updatedAt || msg.createdAt {
 		p.P("now := ", p.timeImport.Use(), ".Now()")
 		if msg.createdAt {
-			p.P(msg.receiver, ".CreatedAt, _ = ", p.protoTimeImport.Use(), ".TimestampProto(now)")
+			p.P(msg.receiver, ".CreatedAt = ", p.protoTimeImport.Use(), ".TimestampProto(now)")
 		}
 		if msg.updatedAt {
-			p.P(msg.receiver, ".UpdatedAt, _ = ", p.protoTimeImport.Use(), ".TimestampProto(now)")
+			p.P(msg.receiver, ".UpdatedAt = ", p.protoTimeImport.Use(), ".TimestampProto(now)")
 		}
 	}
 	p.initClosure(msg.receiver, "PreInsert")
@@ -239,8 +238,8 @@ func (p *plugin) updateFunction(msg modelData) {
 	p.In()
 	p.P("var err error")
 	if msg.updatedAt {
-		p.P("now := ", p.protoTimeImport.Use(), ".TimestampNow()")
-		p.P("*", msg.receiver, ".UpdatedAt = *now")
+		p.P("now := ", p.timeImport.Use(), ".Now()")
+		p.P(msg.receiver, ".UpdatedAt = ", p.protoTimeImport.Use(), ".TimestampProto(now)")
 	}
 	p.initClosure(msg.receiver, "PreUpdate")
 	l := len(msg.dbFields)
@@ -378,7 +377,7 @@ func (p *plugin) getExtraMap(msg *generator.Descriptor) map[string]string {
 
 func (p *plugin) hasTimeField(msg *generator.Descriptor, s string) bool {
 	for _, f := range msg.Field {
-		if f.GetTypeName() == ".google.protobuf.Timestamp" {
+		if f.GetTypeName() == ".types.Timestamp" {
 			if f.GetName() == s {
 				return true
 			}
