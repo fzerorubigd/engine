@@ -32,6 +32,12 @@ var (
 			"$ref": "#/definitions/ErrorResponse",
 		},
 	}
+	err404 = map[string]interface{}{
+		"description": "Returned when the route is not correct",
+		"schema": map[string]interface{}{
+			"$ref": "#/definitions/ErrorResponse",
+		},
+	}
 )
 
 type security struct {
@@ -137,7 +143,7 @@ func RegisterSwagger(paths map[string]interface{}, definitions map[string]interf
 		_, ok := data.Paths[i]
 		// TODO: Currently one path multiple method is not possible, fix it
 		assert.False(ok, "Path is already registered", i)
-		data.Paths[i] = appendSecurity(paths[i])
+		data.Paths[i] = appendSecurity(paths[i], strings.Contains(i, "{"))
 	}
 
 	for i := range definitions {
@@ -153,7 +159,7 @@ func RegisterSwagger(paths map[string]interface{}, definitions map[string]interf
 
 }
 
-func appendSecurity(d interface{}) map[string]interface{} {
+func appendSecurity(d interface{}, has404 bool) map[string]interface{} {
 	v := d.(map[string]interface{})
 	for i := range v {
 		meth, ok := v[i].(map[string]interface{})
@@ -168,7 +174,7 @@ func appendSecurity(d interface{}) map[string]interface{} {
 			}
 		}
 
-		meth["responses"] = create40XResponses(meth["responses"].(map[string]interface{}), meth["security"] != nil)
+		meth["responses"] = create40XResponses(meth["responses"].(map[string]interface{}), meth["security"] != nil, has404)
 	}
 	return v
 
@@ -184,10 +190,13 @@ func createParameter(old []interface{}) []interface{} {
 	})
 }
 
-func create40XResponses(in map[string]interface{}, forbidden bool) map[string]interface{} {
+func create40XResponses(in map[string]interface{}, forbidden, notFound bool) map[string]interface{} {
 	if forbidden {
 		in["401"] = err401
 		in["403"] = err403
+	}
+	if notFound {
+		in["404"] = err404
 	}
 	in["400"] = err400
 	return in

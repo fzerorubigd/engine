@@ -15,6 +15,7 @@ import (
 
 type contextKey int
 
+//  TODO: NEEDS COMMENT INFO
 const (
 	resource contextKey = 0
 	user     contextKey = 1
@@ -61,6 +62,7 @@ func MustExtractUser(ctx context.Context) *userpb.User {
 	return u
 }
 
+// ExtractToken TODO: NEEDS COMMENT INFO
 func ExtractToken(ctx context.Context) (string, error) {
 	tok, ok := ctx.Value(token).(string)
 	if !ok {
@@ -69,6 +71,7 @@ func ExtractToken(ctx context.Context) (string, error) {
 	return tok, nil
 }
 
+// MustExtractToken TODO: NEEDS COMMENT INFO
 func MustExtractToken(ctx context.Context) string {
 	tok, err := ExtractToken(ctx)
 	assert.Nil(err)
