@@ -11,7 +11,7 @@ CREATE TABLE aaa.users(
 	status int NOT NULL DEFAULT 1,
 	created_at timestamp with time zone NOT NULL,
 	updated_at timestamp with time zone NOT NULL,
-	last_login timestamp with time zone NOT NULL,
+	last_login timestamp with time zone,
 	CONSTRAINT aaa_users_id_primary PRIMARY KEY (id),
 	CONSTRAINT aaa_users_email_unique UNIQUE (email)
 

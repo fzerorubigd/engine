@@ -26,6 +26,8 @@ github.com/fzerorubigd/protobuf v0.0.0-20181222235006-8c0dca083aa3 h1:TJA83MfX+B
 github.com/fzerorubigd/protobuf v0.0.0-20181222235006-8c0dca083aa3/go.mod h1:ZycH95FHoVHOjfqWCCDZFaclJeoSRNTCmoJocPWvMfg=
 github.com/fzerorubigd/protobuf v0.0.0-20181223003124-6e93ab630467 h1:ZGeah83npZyRljZOKMOUfYzeuNe1LSR9XADwjWxim9s=
 github.com/fzerorubigd/protobuf v0.0.0-20181223003124-6e93ab630467/go.mod h1:ZycH95FHoVHOjfqWCCDZFaclJeoSRNTCmoJocPWvMfg=
+github.com/fzerorubigd/protobuf v0.0.0-20181223122235-cbc88b1cd266 h1:q5YYVWPsaC/L7lQlKVeILxQBgXIwDqxttEqp6FePtDA=
+github.com/fzerorubigd/protobuf v0.0.0-20181223122235-cbc88b1cd266/go.mod h1:ZycH95FHoVHOjfqWCCDZFaclJeoSRNTCmoJocPWvMfg=
 github.com/go-playground/locales v0.12.1 h1:2FITxuFt/xuCNP1Acdhv62OzaCiviiE4kotfhkmOqEc=
 github.com/go-playground/locales v0.12.1/go.mod h1:IUMDtCfWo/w/mtMfIE/IG2K+Ey3ygWanZIBtBW0W2TM=
 github.com/go-playground/universal-translator v0.16.0 h1:X++omBR/4cE2MNg91AoC3rmGrCjJ8eAeUP/K/EKx4DM=
@@ -242,6 +244,8 @@ github.com/satori/go.uuid v1.2.0/go.mod h1:dA0hQrYB0VpLJoorglMZABFdXlWrHn1NEOzdh
 github.com/serenize/snaker v0.0.0-20171204205717-a683aaf2d516/go.mod h1:Yow6lPLSAXx2ifx470yD/nUe22Dv5vBvxK/UK9UUTVs=
 github.com/sergi/go-diff v1.0.0/go.mod h1:0CfEIISq7TuYL3j771MWULgwwjU+GofnZX9QAmXWZgo=
 github.com/shopspring/decimal v0.0.0-20180709203117-cd690d0c9e24/go.mod h1:M+9NzErvs504Cn4c5DxATwIqPbtswREoFCre64PpcG4=
+github.com/shuLhan/go-bindata v3.4.0+incompatible h1:w4Oo193QJfu7T2nNkUkt4bymbgLJKQiCAqc3jbVRGoc=
+github.com/shuLhan/go-bindata v3.4.0+incompatible/go.mod h1:pkcPAATLBDD2+SpAPnX5vEM90F7fcwHCvvLCMXcmw3g=
 github.com/shurcooL/go v0.0.0-20180423040247-9e1955d9fb6e/go.mod h1:TDJrrUr11Vxrven61rcy3hJMUqaf/CLWYhHNPmT14Lk=
 github.com/shurcooL/go-goon v0.0.0-20170922171312-37c2f522c041/go.mod h1:N5mDOmsrJOB+vfqUK+7DmDyjhSLIIBnXo9lvZJj3MWQ=
 github.com/shurcooL/highlight_diff v0.0.0-20170515013008-09bb4053de1b/go.mod h1:ZpfEhSmds4ytuByIcDnOLkTHGUI6KNqRNPDLHDk+mUU=

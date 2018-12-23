@@ -4,7 +4,7 @@ require (
 	cloud.google.com/go v0.34.0 // indirect
 	github.com/fullstorydev/grpchan v0.0.0-20181120185831-564614157981
 	github.com/fzerorubigd/expand v0.0.0-20150817182922-fd359294116f
-	github.com/fzerorubigd/protobuf v0.0.0-20181223003124-6e93ab630467
+	github.com/fzerorubigd/protobuf v0.0.0-20181223122235-cbc88b1cd266
 	github.com/go-playground/locales v0.12.1 // indirect
 	github.com/go-playground/universal-translator v0.16.0 // indirect
 	github.com/go-redis/redis v6.14.2+incompatible
@@ -24,6 +24,7 @@ require (
 	github.com/pkg/errors v0.8.0
 	github.com/rs/cors v1.6.0
 	github.com/rubenv/sql-migrate v0.0.0-20181106121204-ba2c6a7295c5
+	github.com/shuLhan/go-bindata v3.4.0+incompatible // indirect
 	github.com/sirupsen/logrus v1.2.0
 	github.com/smartystreets/assertions v0.0.0-20180927180507-b2de0cb4f26d // indirect
 	github.com/smartystreets/goconvey v0.0.0-20181108003508-044398e4856c // indirect
