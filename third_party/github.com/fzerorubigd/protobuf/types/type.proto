@@ -4,7 +4,7 @@ package types;
 
 option go_package = "typespb";
 option java_multiple_files = true;
-option java_outer_classname = "TypesProto";
+option java_outer_classname = "TypeProto";
 option java_package = "com.types";
 
 message Timestamp {
@@ -18,4 +18,9 @@ message JSONArray {
 
 message JSONMap {
   map<string, string> data = 1;
+}
+
+message NullString {
+  string string = 1;
+  bool valid = 2;
 }
