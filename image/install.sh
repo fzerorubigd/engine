@@ -15,7 +15,7 @@ $minimal_apt_get_install wget sudo git zsh nano libsqlite3-dev autoconf bison bu
 # Install golang
 cd /tmp
 curl https://godeb.s3.amazonaws.com/godeb-amd64.tar.gz | gunzip | tar xvf -
-/tmp/godeb install 1.11.3
+/tmp/godeb install 1.11.4
 
 GOBIN=/usr/local/bin GOPATH=/tmp go get -v -u github.com/mailhog/MailHog
 pip install --no-cache-dir psycopg2-binary pgcli

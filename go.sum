@@ -20,12 +20,6 @@ github.com/fullstorydev/grpchan v0.0.0-20181120185831-564614157981 h1:cmdBpP8B9Y
 github.com/fullstorydev/grpchan v0.0.0-20181120185831-564614157981/go.mod h1:9v+0OFuNxrjTr5Ot9R89Ws8JdIBmaqQLT6Mg+n3tkcw=
 github.com/fzerorubigd/expand v0.0.0-20150817182922-fd359294116f h1:gLLBGceElLPz0apnj6kmEjCt4cWpqEiZrCeA5aPMt9E=
 github.com/fzerorubigd/expand v0.0.0-20150817182922-fd359294116f/go.mod h1:MHtXGD5Luur8mepRiP2TvuiyWCHbh1dyyNdIwd5Vi6k=
-github.com/fzerorubigd/protobuf v0.0.0-20181215144254-2323e1253696 h1:HiR6xLLOXqNdRYXeczuvLkhAzrjt/m6bnPrnT8+vLQg=
-github.com/fzerorubigd/protobuf v0.0.0-20181215144254-2323e1253696/go.mod h1:ZycH95FHoVHOjfqWCCDZFaclJeoSRNTCmoJocPWvMfg=
-github.com/fzerorubigd/protobuf v0.0.0-20181222235006-8c0dca083aa3 h1:TJA83MfX+BNQpAfe7HsihUOKyCWJKJNYzbpihhpJ8dU=
-github.com/fzerorubigd/protobuf v0.0.0-20181222235006-8c0dca083aa3/go.mod h1:ZycH95FHoVHOjfqWCCDZFaclJeoSRNTCmoJocPWvMfg=
-github.com/fzerorubigd/protobuf v0.0.0-20181223003124-6e93ab630467 h1:ZGeah83npZyRljZOKMOUfYzeuNe1LSR9XADwjWxim9s=
-github.com/fzerorubigd/protobuf v0.0.0-20181223003124-6e93ab630467/go.mod h1:ZycH95FHoVHOjfqWCCDZFaclJeoSRNTCmoJocPWvMfg=
 github.com/fzerorubigd/protobuf v0.0.0-20181223122235-cbc88b1cd266 h1:q5YYVWPsaC/L7lQlKVeILxQBgXIwDqxttEqp6FePtDA=
 github.com/fzerorubigd/protobuf v0.0.0-20181223122235-cbc88b1cd266/go.mod h1:ZycH95FHoVHOjfqWCCDZFaclJeoSRNTCmoJocPWvMfg=
 github.com/go-playground/locales v0.12.1 h1:2FITxuFt/xuCNP1Acdhv62OzaCiviiE4kotfhkmOqEc=
@@ -169,7 +163,7 @@ github.com/gorilla/pat v0.0.0-20180118222023-199c85a7f6d1/go.mod h1:YeAe0gNeiNT5
 github.com/gorilla/securecookie v1.1.1/go.mod h1:ra0sb63/xPlUeL+yeDciTfxMRAA+MP+HVt/4epWDjd4=
 github.com/gorilla/sessions v1.1.2/go.mod h1:8KCfur6+4Mqcc6S0FEfKuN15Vl5MgXW92AE8ovaJD0w=
 github.com/gorilla/sessions v1.1.3/go.mod h1:8KCfur6+4Mqcc6S0FEfKuN15Vl5MgXW92AE8ovaJD0w=
-github.com/grpc-ecosystem/go-grpc-middleware v1.0.0 h1:BWIsLfhgKhV5g/oF34aRjniBHLTZe5DNekSjbAjIS6c=
+github.com/grpc-ecosystem/go-grpc-middleware v1.0.0 h1:Iju5GlWwrvL6UBg4zJJt3btmonfrMlCDdsejg4CZE7c=
 github.com/grpc-ecosystem/go-grpc-middleware v1.0.0/go.mod h1:FiyG127CGDf3tlThmgyCl78X/SZQqEOJBCDaAfeWzPs=
 github.com/grpc-ecosystem/grpc-gateway v1.6.2 h1:8KyC64BiO8ndiGHY5DlFWWdangUPC9QHPakFRre/Ud0=
 github.com/grpc-ecosystem/grpc-gateway v1.6.2/go.mod h1:RSKVYQBd5MCa4OVpNdGskqpgL2+G+NZTnrVHpWWfpdw=
@@ -244,7 +238,6 @@ github.com/satori/go.uuid v1.2.0/go.mod h1:dA0hQrYB0VpLJoorglMZABFdXlWrHn1NEOzdh
 github.com/serenize/snaker v0.0.0-20171204205717-a683aaf2d516/go.mod h1:Yow6lPLSAXx2ifx470yD/nUe22Dv5vBvxK/UK9UUTVs=
 github.com/sergi/go-diff v1.0.0/go.mod h1:0CfEIISq7TuYL3j771MWULgwwjU+GofnZX9QAmXWZgo=
 github.com/shopspring/decimal v0.0.0-20180709203117-cd690d0c9e24/go.mod h1:M+9NzErvs504Cn4c5DxATwIqPbtswREoFCre64PpcG4=
-github.com/shuLhan/go-bindata v3.4.0+incompatible h1:w4Oo193QJfu7T2nNkUkt4bymbgLJKQiCAqc3jbVRGoc=
 github.com/shuLhan/go-bindata v3.4.0+incompatible/go.mod h1:pkcPAATLBDD2+SpAPnX5vEM90F7fcwHCvvLCMXcmw3g=
 github.com/shurcooL/go v0.0.0-20180423040247-9e1955d9fb6e/go.mod h1:TDJrrUr11Vxrven61rcy3hJMUqaf/CLWYhHNPmT14Lk=
 github.com/shurcooL/go-goon v0.0.0-20170922171312-37c2f522c041/go.mod h1:N5mDOmsrJOB+vfqUK+7DmDyjhSLIIBnXo9lvZJj3MWQ=
