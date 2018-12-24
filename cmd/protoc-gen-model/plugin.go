@@ -133,9 +133,9 @@ func (p *plugin) Generate(file *generator.FileDescriptor) {
 		p.P("/*")
 		p.P(pretty.Sprint(models[i]))
 		p.P("*/")
-		p.createFunction(models[i])
-		p.updateFunction(models[i])
 		if models[i].hasID {
+			p.createFunction(models[i])
+			p.updateFunction(models[i])
 			p.byPrimaryFunction(models[i])
 		}
 		p.scanModel(models[i])
