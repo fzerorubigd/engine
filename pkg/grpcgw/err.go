@@ -39,6 +39,11 @@ func (gw *gwError) Message() string {
 	return gw.Msg
 }
 
+// NewNotFound return not found error
+func NewNotFound(err error) error {
+	return NewBadRequestStatus(err, "Not found", http.StatusNotFound)
+}
+
 // NewBadRequest is the bad request
 func NewBadRequest(err error, message string) error {
 	return NewBadRequestStatus(err, message, http.StatusBadRequest)
