@@ -18,6 +18,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network "forwarded_port", guest: 8090,    	host: 8090     # webserver
   config.vm.network "forwarded_port", guest: 8080,    	host: 8080     # goconvey
   config.vm.network "forwarded_port", guest: 8025,    	host: 8025     # mailhog
+  config.vm.network "forwarded_port", guest: 5432,      host: 5432     # postgres
   config.vm.network "forwarded_port", guest: 22,        host: 5555     # ssh server
   config.vm.synced_folder ".", "/home/develop/balloon", owner: "develop", group: "develop", create: true
 
