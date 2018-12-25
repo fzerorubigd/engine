@@ -114,4 +114,6 @@ run-server: code-gen build-server
 	@echo "Running..."
 	$(BIN)/server 2>&1
 
+build: build-server tools-migration
+
 .PHONY: swagger-to-go proto swagger build-server run-server generate

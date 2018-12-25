@@ -5,7 +5,7 @@ ADD . /balloon
 # I don't need to set GOPATH since the Makefile takes care of that
 RUN apk add --no-cache --virtual .build-deps git gcc g++ libc-dev make \
     && apk add --no-cache ca-certificates bash \
-    && cd /balloon && make build-server \
+    && cd /balloon && make build \
     && apk del .build-deps
 
 FROM alpine:3.6
