@@ -40,16 +40,6 @@ var (
 	}
 )
 
-type security struct {
-	In   string `json:"in"`
-	Name string `json:"name"`
-	Type string `json:"type"`
-}
-
-type securityDefinitions struct {
-	Security map[string]security
-}
-
 type swaggerFile struct {
 	Swagger string `json:"swagger"`
 	Info    struct {
@@ -57,7 +47,6 @@ type swaggerFile struct {
 		Version string `json:"version"`
 	} `json:"info"`
 
-	//SecurityDefinitions securityDefinitions    `json:"security_definitions"`
 	Host                string                 `json:"host"`
 	Schemes             []string               `json:"schemes"`
 	Consumes            []string               `json:"consumes"`
@@ -74,11 +63,6 @@ var (
 			Title   string `json:"title"`
 			Version string `json:"version"`
 		}{Title: "Balloon Swagger", Version: "1.0"},
-		//SecurityDefinitions: securityDefinitions{
-		//	Security: map[string]security{
-		//		"Authentication": {Name: "Authentication", In: "header", Type: "apiKey"},
-		//	},
-		//},
 		Schemes:     []string{"http", "https"},
 		Consumes:    []string{"application/json"},
 		Produces:    []string{"application/json"},
@@ -87,18 +71,6 @@ var (
 		Definitions: make(map[string]interface{}),
 	}
 )
-
-func address() string {
-	p := strings.Split(addr.String(), ":")
-	if len(p) != 2 {
-		return addr.String()
-	}
-	if p[0] == "" {
-		return "127.0.0.1:" + p[1]
-	}
-
-	return addr.String()
-}
 
 func swaggerHandler(w http.ResponseWriter, r *http.Request) {
 	defer Recover(w)
@@ -109,6 +81,7 @@ func swaggerHandler(w http.ResponseWriter, r *http.Request) {
 	fl := strings.TrimPrefix(r.RequestURI, "/v1/swagger/")
 	log.Info("Swagger file requested", log.String("file", fl))
 	if fl == "index.json" {
+		w.Header().Add("Content-Type", "application/json")
 		var d = data
 		d.Host = r.Host
 		if err := json.NewEncoder(w).Encode(d); err != nil {
