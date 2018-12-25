@@ -82,7 +82,7 @@ var (
 		Schemes:     []string{"http", "https"},
 		Consumes:    []string{"application/json"},
 		Produces:    []string{"application/json"},
-		Host:        address(),
+		Host:        "",
 		Paths:       make(map[string]interface{}),
 		Definitions: make(map[string]interface{}),
 	}
@@ -109,7 +109,9 @@ func swaggerHandler(w http.ResponseWriter, r *http.Request) {
 	fl := strings.TrimPrefix(r.RequestURI, "/v1/swagger/")
 	log.Info("Swagger file requested", log.String("file", fl))
 	if fl == "index.json" {
-		if err := json.NewEncoder(w).Encode(data); err != nil {
+		var d = data
+		d.Host = r.Host
+		if err := json.NewEncoder(w).Encode(d); err != nil {
 			log.Error("Failed to serve swagger", log.Err(err))
 			w.WriteHeader(http.StatusInternalServerError)
 		}

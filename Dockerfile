@@ -12,7 +12,7 @@ FROM alpine:3.6
 
 COPY --from=0 /balloon/bin/server /bin/
 COPY --from=0 /balloon/bin/migration /bin/
-
+ADD scripts/dokku-run.sh /bin/run.sh
 
 EXPOSE 80
 

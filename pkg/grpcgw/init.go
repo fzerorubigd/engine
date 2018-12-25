@@ -2,10 +2,13 @@ package grpcgw
 
 import (
 	"context"
+	"fmt"
 	"net/http"
+	"os"
 	"sync"
 	"time"
 
+	"gopkg.in/fzerorubigd/onion.v3"
 	"github.com/fullstorydev/grpchan/inprocgrpc"
 	"github.com/fzerorubigd/balloon/pkg/config"
 	"github.com/fzerorubigd/balloon/pkg/log"
@@ -34,7 +37,7 @@ var (
 	interceptors []Interceptor
 	lock         sync.RWMutex
 
-	addr = config.RegisterString("grpcw.http.addr", ":8090", "http address to listen to")
+	addr onion.String
 )
 
 // Register new controller into system
@@ -109,4 +112,16 @@ func Serve(ctx context.Context) {
 	if err := srv.Shutdown(nCtx); err != nil {
 		log.Error("Server shutdown failed", log.Err(err))
 	}
+}
+
+func init() {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8090"
+	}
+	addr = config.RegisterString(
+		"grpcw.http.addr",
+		fmt.Sprintf(":%s", port),
+		"http address to listen to",
+	)
 }
