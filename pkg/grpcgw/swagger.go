@@ -57,7 +57,7 @@ type swaggerFile struct {
 		Version string `json:"version"`
 	} `json:"info"`
 
-	SecurityDefinitions securityDefinitions    `json:"security_definitions"`
+	//SecurityDefinitions securityDefinitions    `json:"security_definitions"`
 	Host                string                 `json:"host"`
 	Schemes             []string               `json:"schemes"`
 	Consumes            []string               `json:"consumes"`
@@ -74,11 +74,11 @@ var (
 			Title   string `json:"title"`
 			Version string `json:"version"`
 		}{Title: "Balloon Swagger", Version: "1.0"},
-		SecurityDefinitions: securityDefinitions{
-			Security: map[string]security{
-				"Authentication": {Name: "Authentication", In: "header", Type: "apiKey"},
-			},
-		},
+		//SecurityDefinitions: securityDefinitions{
+		//	Security: map[string]security{
+		//		"Authentication": {Name: "Authentication", In: "header", Type: "apiKey"},
+		//	},
+		//},
 		Schemes:     []string{"http", "https"},
 		Consumes:    []string{"application/json"},
 		Produces:    []string{"application/json"},
