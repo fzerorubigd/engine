@@ -6,14 +6,11 @@ import (
 	"testing"
 
 	"github.com/fullstorydev/grpchan/inprocgrpc"
-
 	"github.com/fzerorubigd/balloon/modules/user/proto"
 	"github.com/fzerorubigd/balloon/pkg/grpcgw"
-	"github.com/stretchr/testify/require"
-
-	"github.com/stretchr/testify/assert"
-
 	"github.com/fzerorubigd/balloon/pkg/mockery"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 var ch *inprocgrpc.Channel
