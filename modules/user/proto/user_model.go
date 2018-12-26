@@ -50,11 +50,6 @@ func (m *User) VerifyPassword(password string) bool {
 	return bcrypt.CompareHashAndPassword([]byte(m.Password), []byte(password)) == nil
 }
 
-// HasPassword check if user set password or not
-func (m *User) HasPassword() bool {
-	return m.Password != noPassString
-}
-
 // FindUserByEmailPassword try to login user with username and password
 func (m *Manager) FindUserByEmailPassword(ctx context.Context, email, password string) (*User, error) {
 	u, err := m.FindUserByEmail(ctx, email)
@@ -117,9 +112,9 @@ func (m *Manager) FindUserByIndirectToken(ctx context.Context, token string) (*U
 		return nil, err
 	}
 	var u User
-	if err := proto.Unmarshal([]byte(t), &u); err != nil {
-		return nil, err
-	}
+	// Invalid data is a bug
+	assert.Nil(proto.Unmarshal([]byte(t), &u))
+
 	return &u, nil
 }
 
