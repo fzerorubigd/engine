@@ -9,7 +9,7 @@ echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" 
 apt update
 $minimal_apt_get_install wget sudo git zsh nano libsqlite3-dev autoconf bison build-essential libssl-dev \
                 libyaml-dev libreadline6 libreadline6-dev zlib1g zlib1g-dev htop redis-server postgresql postgresql-contrib \
-                mercurial ruby-dev realpath pkg-config unzip dnsutils re2c python-pip openjdk-8-jre \
+                mercurial ruby-dev realpath pkg-config unzip dnsutils re2c python-pip openjdk-8-jre jq \
                 python-dev libpq-dev tmux bzr libsodium-dev cmake python-setuptools iputils-ping iproute2
 
 # Install golang

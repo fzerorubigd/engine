@@ -4,6 +4,7 @@ package postgres
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"time"
 
@@ -17,7 +18,48 @@ import (
 var (
 	db  *sql.DB
 	all []initializer.Simple
+
+	DefaultInitDB func(context.Context) (*sql.DB, error)
 )
+
+func realInstanse(ctx context.Context) (*sql.DB, error) {
+	dsn := fmt.Sprintf(
+		"host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
+		host.String(),
+		port.Int(),
+		user.String(),
+		pass.String(),
+		dbname.String(),
+		sslmode.String(),
+	)
+	pgDB, err := sql.Open("postgres", dsn)
+	if err != nil {
+		return nil, err
+	}
+
+	pgDB.SetMaxIdleConns(maxIdle.Int())
+	pgDB.SetMaxOpenConns(maxCon.Int())
+
+	// TODO : use better retry function
+	cnt := 1
+	for {
+		err := pgDB.Ping()
+		if err == nil {
+			break
+		}
+		log.Error("Can not ping database", log.Err(err))
+		select {
+		case <-time.After(time.Second * time.Duration(cnt)):
+			cnt++
+		case <-ctx.Done():
+			return nil, errors.New("context canceled")
+		}
+		if cnt > 10 {
+			cnt = 10
+		}
+	}
+	return pgDB, nil
+}
 
 // Hooker interface :))))) You have a dirty mind.
 type Hooker interface {
@@ -35,40 +77,8 @@ func (modelsInitializer) Healthy(context.Context) error {
 // Initialize the modules, its safe to call this as many time as you want.
 func (modelsInitializer) Initialize(ctx context.Context) {
 	var err error
-	dsn := fmt.Sprintf(
-		"host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
-		host.String(),
-		port.Int(),
-		user.String(),
-		pass.String(),
-		dbname.String(),
-		sslmode.String(),
-	)
-	db, err = sql.Open("postgres", dsn)
+	db, err = DefaultInitDB(ctx)
 	assert.Nil(err)
-
-	db.SetMaxIdleConns(maxIdle.Int())
-	db.SetMaxOpenConns(maxCon.Int())
-
-	// TODO : use better retry function
-	cnt := 1
-	for {
-		err := db.Ping()
-		if err == nil {
-			break
-		}
-		log.Error("Can not ping database", log.Err(err))
-		select {
-		case <-time.After(time.Second * time.Duration(cnt)):
-			cnt++
-		case <-ctx.Done():
-			return
-		}
-		if cnt > 10 {
-			cnt = 10
-		}
-	}
-
 	model.Initialize(db)
 
 	for i := range all {
@@ -98,5 +108,6 @@ func Register(m ...initializer.Simple) {
 }
 
 func init() {
+	DefaultInitDB = realInstanse
 	initializer.Register(&modelsInitializer{}, 0)
 }

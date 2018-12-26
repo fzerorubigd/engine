@@ -8,17 +8,18 @@ import (
 	"sync"
 	"time"
 
-	"gopkg.in/fzerorubigd/onion.v3"
+	"github.com/grpc-ecosystem/go-grpc-middleware"
+
 	"github.com/fullstorydev/grpchan/inprocgrpc"
 	"github.com/fzerorubigd/balloon/pkg/config"
 	"github.com/fzerorubigd/balloon/pkg/log"
-	"github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
 	"github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	"github.com/grpc-ecosystem/go-grpc-middleware/tags"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/rs/cors"
 	"google.golang.org/grpc"
+	"gopkg.in/fzerorubigd/onion.v3"
 )
 
 // Controller is the simple controller interface
@@ -53,10 +54,8 @@ func RegisterInterceptors(i Interceptor) {
 	interceptors = append(interceptors, i)
 }
 
-func Serve(ctx context.Context) {
-	lock.RLock()
-	defer lock.RUnlock()
-
+// GRPCChannel is a helper function, it is exported for tests only, do not use it!
+func GRPCChannel() *inprocgrpc.Channel {
 	unaryMiddle := []grpc.UnaryServerInterceptor{
 		grpc_recovery.UnaryServerInterceptor(),
 		grpc_ctxtags.UnaryServerInterceptor(),
@@ -77,15 +76,22 @@ func Serve(ctx context.Context) {
 			streamMiddle = append(streamMiddle, interceptors[i].Stream)
 		}
 	}
+	c := &inprocgrpc.Channel{}
+	c = c.WithServerUnaryInterceptor(grpc_middleware.ChainUnaryServer(unaryMiddle...)).
+		WithServerStreamInterceptor(grpc_middleware.ChainStreamServer(streamMiddle...))
+
+	return c
+}
+
+func Serve(ctx context.Context) {
+	lock.RLock()
+	defer lock.RUnlock()
 
 	var (
-		c         = &inprocgrpc.Channel{}
+		c         = GRPCChannel()
 		normalMux = http.NewServeMux()
 		mux       = runtime.NewServeMux()
 	)
-
-	c = c.WithServerUnaryInterceptor(grpc_middleware.ChainUnaryServer(unaryMiddle...)).
-		WithServerStreamInterceptor(grpc_middleware.ChainStreamServer(streamMiddle...))
 
 	normalMux.HandleFunc("/v1/swagger/", swaggerHandler)
 	for i := range all {

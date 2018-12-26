@@ -22,6 +22,8 @@ type GWError interface {
 	Status() int
 	// Message to outside user
 	Message() string
+	// Fields return the fields or nil
+	Fields() map[string]string
 }
 
 type gwError struct {
@@ -37,6 +39,10 @@ func (gw *gwError) Status() int {
 
 func (gw *gwError) Message() string {
 	return gw.Msg
+}
+
+func (gw *gwError) Fields() map[string]string {
+	return gw.F
 }
 
 // NewNotFound return not found error

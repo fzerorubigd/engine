@@ -2,6 +2,7 @@ module github.com/fzerorubigd/balloon
 
 require (
 	cloud.google.com/go v0.34.0 // indirect
+	github.com/DATA-DOG/go-txdb v0.1.0
 	github.com/fullstorydev/grpchan v0.0.0-20181120185831-564614157981
 	github.com/fzerorubigd/expand v0.0.0-20150817182922-fd359294116f
 	github.com/fzerorubigd/protobuf v0.0.0-20181224204551-e0461d7c31a7
@@ -28,6 +29,7 @@ require (
 	github.com/smartystreets/assertions v0.0.0-20180927180507-b2de0cb4f26d // indirect
 	github.com/smartystreets/goconvey v0.0.0-20181108003508-044398e4856c // indirect
 	github.com/spf13/pflag v1.0.3 // indirect
+	github.com/stretchr/testify v1.2.2
 	github.com/ziutek/mymysql v1.5.4 // indirect
 	go.uber.org/atomic v1.3.2 // indirect
 	go.uber.org/multierr v1.1.0 // indirect

@@ -6,11 +6,8 @@ import (
 	"strings"
 
 	"github.com/fzerorubigd/balloon/pkg/log"
-
 	"github.com/jmoiron/sqlx"
-
 	_ "github.com/lib/pq" // Make sure postgres is included in any build
-	"github.com/sirupsen/logrus"
 )
 
 var (
@@ -46,7 +43,7 @@ func (m *Manager) Begin() error {
 // Commit is for committing transaction. panic if transaction is not started
 func (m *Manager) Commit() error {
 	if !m.transaction {
-		logrus.Panic("Not in transaction")
+		log.Panic("Not in transaction")
 	}
 	err := m.tx.Commit()
 	if err != nil {

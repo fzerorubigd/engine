@@ -4,11 +4,11 @@ import (
 	"context"
 	"net/http"
 
-	userpb "github.com/fzerorubigd/balloon/modules/user/proto"
+	"github.com/fzerorubigd/balloon/modules/user/proto"
 	"github.com/fzerorubigd/balloon/pkg/assert"
 	"github.com/fzerorubigd/balloon/pkg/grpcgw"
 	"github.com/fzerorubigd/balloon/pkg/resources"
-	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
+	"github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
 )
@@ -37,6 +37,9 @@ func auth(ctx context.Context) (context.Context, error) {
 		return ctx, nil
 	}
 	tok, err := grpc_auth.AuthFromMD(ctx, "bearer")
+	if err != nil {
+		return ctx, grpcgw.NewBadRequestStatus(err, "invalid token format", http.StatusUnauthorized)
+	}
 	m := userpb.NewManager()
 	u, err := m.FindUserByIndirectToken(ctx, tok)
 	if err != nil {

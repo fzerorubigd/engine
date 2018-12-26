@@ -5,11 +5,10 @@ import (
 	"time"
 
 	"github.com/fzerorubigd/balloon/modules/user/middlewares"
-	userpb "github.com/fzerorubigd/balloon/modules/user/proto"
+	"github.com/fzerorubigd/balloon/modules/user/proto"
 	"github.com/fzerorubigd/balloon/pkg/assert"
 	"github.com/fzerorubigd/balloon/pkg/config"
 	"github.com/fzerorubigd/balloon/pkg/grpcgw"
-	"github.com/pkg/errors"
 )
 
 var (
@@ -41,6 +40,7 @@ func (uc *userController) Ping(ctx context.Context, _ *userpb.PingRequest) (*use
 	tok := middlewares.MustExtractToken(ctx)
 
 	return &userpb.UserResponse{
+		Id:     u.GetId(),
 		Token:  tok,
 		Status: u.GetStatus(),
 		Email:  u.GetEmail(),
@@ -52,7 +52,7 @@ func (uc *userController) Login(ctx context.Context, lr *userpb.LoginRequest) (*
 
 	u, err := m.FindUserByEmailPassword(ctx, lr.GetEmail(), lr.GetPassword())
 	if err != nil {
-		return nil, errors.Wrap(err, "email and/or password is wrong")
+		return nil, grpcgw.NewBadRequest(err, "email and/or password is wrong")
 	}
 
 	resp := userpb.UserResponse{
