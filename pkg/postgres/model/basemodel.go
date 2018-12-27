@@ -117,6 +117,16 @@ func (m *Manager) TruncateTables(cascade, resetIdentity bool, tbl ...string) err
 	return err
 }
 
+// PrefixArray is helper function for appending table name to fields name
+func (m *Manager) PrefixArray(prefix string, fields ...string) []string {
+	ret := make([]string, len(fields))
+	for i := range fields {
+		ret[i] = prefix + fields[i]
+	}
+
+	return ret
+}
+
 // Initialize the module
 func Initialize(d *sql.DB) {
 	dbmap = sqlx.NewDb(d, "postgres")
