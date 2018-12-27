@@ -96,9 +96,10 @@ func (m *Manager) GetUserByPrimary(ctx context.Context, id int64) (*User, error)
 	return m.scanUser(row)
 }
 
-func (m *Manager) scanUser(row github_com_fzerorubigd_balloon_pkg_postgres_model.Scanner) (*User, error) {
+func (m *Manager) scanUser(row github_com_fzerorubigd_balloon_pkg_postgres_model.Scanner, extra ...interface{}) (*User, error) {
 	var u User
-	err := row.Scan(&u.Id, &u.Email, &u.Password, &u.Status, &u.CreatedAt, &u.UpdatedAt, &u.LastLogin)
+	all := append([]interface{}{&u.Id, &u.Email, &u.Password, &u.Status, &u.CreatedAt, &u.UpdatedAt, &u.LastLogin}, extra...)
+	err := row.Scan(all...)
 	if err != nil {
 		return nil, err
 	}

@@ -290,7 +290,7 @@ func (p *plugin) byPrimaryFunction(msg modelData) {
 
 func (p *plugin) scanModel(msg modelData) {
 	p.P()
-	p.P("func (m *Manager) scan", msg.model, "(row ", p.modelImport.Use(), ".Scanner) (*", msg.model, ", error){")
+	p.P("func (m *Manager) scan", msg.model, "(row ", p.modelImport.Use(), ".Scanner, extra ...interface{}) (*", msg.model, ", error){")
 	p.P("var ", msg.receiver, " ", msg.model)
 	values := make([]string, len(msg.dbFields))
 	for j, dbf := range msg.dbFields {
@@ -302,7 +302,8 @@ func (p *plugin) scanModel(msg modelData) {
 			values[j] = fmt.Sprintf("&%s.%s", msg.receiver, msg.goFields[j])
 		}
 	}
-	p.P("err := row.Scan(", strings.Join(values, ", "), ")")
+	p.P("all := append([]interface{}{", strings.Join(values, ", "), "}, extra...)")
+	p.P("err := row.Scan(all...)")
 	p.P("if err != nil {")
 	p.In()
 	p.P("return nil, err")
