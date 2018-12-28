@@ -87,7 +87,7 @@ mig-down: tools-migration
 test: tools-migration
 	BAL_SERVICES_POSTGRES_USER="$(DB_USER)_test" BAL_SERVICES_POSTGRES_DB="$(DB_NAME)_test" $(BIN)/migration -action=down-all
 	BAL_SERVICES_POSTGRES_USER="$(DB_USER)_test" BAL_SERVICES_POSTGRES_DB="$(DB_NAME)_test" $(BIN)/migration -action=up
-	$(GO) test ./... -cover
+	$(GO) test ./... -coverprofile cover.cp
 
 proto: $(BIN)/prototool $(BIN)/protoc-gen-go $(BIN)/protoc-gen-grpc-gateway $(BIN)/protoc-gen-swagger $(BIN)/protoc-gen-grpchan $(BIN)/protoc-gen-gogo generators
 	$(BIN)/prototool generate
