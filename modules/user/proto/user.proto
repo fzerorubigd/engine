@@ -14,42 +14,6 @@ import "google/api/annotations.proto";
 import "protoc-gen-swagger/options/annotations.proto";
 
 option (extra.schema_name_all) = "aaa";
-//
-//option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
-//	security_definitions: {
-//      security: {
-//        key: "Authentication";
-//        value: {
-//          type: TYPE_API_KEY;
-//          in: IN_HEADER;
-//          name: "Authentication";
-//        }
-//      }
-//    }
-//    responses: {
-//      key: "403";
-//      value: {
-//        description: "Returned when the user does not have permission to access the resource.";
-//      }
-//    }
-//    responses: {
-//      key: "401";
-//      value: {
-//        description: "Returned when the resource does not exist.";
-//        schema: {
-//          json_schema: {
-//            ref: ".user.ErrorResponse";
-//          }
-//        }
-//      }
-//    }
-//};
-//
-//message ErrorResponse {
-//  string error = 1;
-//  string message = 2;
-//  int32 code = 3;
-//}
 
 enum UserStatus {
   USER_STATUS_INVALID = 0;
@@ -63,16 +27,17 @@ message User {
   option (extra.table_name) = "users";
   int64 id = 1 [(gogoproto.moretags) = "db:\"id\" "];
   string email = 2 [(gogoproto.moretags) = "db:\"email\" "];
-  string password = 3 [(gogoproto.moretags) = "db:\"password\" "];
-  UserStatus status = 4 [(gogoproto.moretags) = "db:\"status\" "];
-  types.Timestamp created_at = 5 [(gogoproto.moretags) = "db:\"created_at\" "];
-  types.Timestamp updated_at = 6 [(gogoproto.moretags) = "db:\"updated_at\" "];
-  types.Timestamp last_login = 7 [(gogoproto.moretags) = "db:\"last_login\" "];
+  string display_name = 3 [(gogoproto.moretags) = "db:\"display_name\" "];
+  string password = 4 [(gogoproto.moretags) = "db:\"password\" "];
+  UserStatus status = 5 [(gogoproto.moretags) = "db:\"status\" "];
+  types.Timestamp created_at = 6 [(gogoproto.moretags) = "db:\"created_at\" "];
+  types.Timestamp updated_at = 7 [(gogoproto.moretags) = "db:\"updated_at\" "];
+  types.Timestamp last_login = 8 [(gogoproto.moretags) = "db:\"last_login\" "];
 }
 
 message UserResponse {
   int64 id = 1;
-  string email = 2;
+  string display_name = 2;
   string token = 3;
   UserStatus status = 4;
 }
@@ -88,7 +53,8 @@ message LogoutResponse {}
 
 message RegisterRequest {
   string email = 1 [(gogoproto.moretags) = "validate:\"email,required\" "];
-  string password = 2 [(gogoproto.moretags) = "validate:\"gte=6,required\" "];
+  string display_name = 2 [(gogoproto.moretags) = "validate:\"gte=3,required\" "];
+  string password = 3 [(gogoproto.moretags) = "validate:\"gte=6,required\" "];
 }
 
 message PingRequest {}

@@ -57,8 +57,9 @@ func TestUserController_Register_Invalid(t *testing.T) {
 
 	u := newClient()
 	r, err := u.Register(ctx, &userpb.RegisterRequest{
-		Email:    "invalid_email",
-		Password: "123",
+		Email:       "invalid_email",
+		DisplayName: "abcdef",
+		Password:    "123",
 	})
 	assert.Nil(t, r)
 	assert.Error(t, err)
@@ -68,8 +69,9 @@ func TestUserController_Register_Invalid(t *testing.T) {
 	assert.Equal(t, http.StatusBadRequest, gErr.Status())
 
 	r, err = u.Register(ctx, &userpb.RegisterRequest{
-		Email:    "master@cerulean.ir", // Email from migration
-		Password: "12345678",
+		Email:       "master@cerulean.ir", // Email from migration
+		DisplayName: "abcdef",
+		Password:    "12345678",
 	})
 	assert.Nil(t, r)
 	assert.Error(t, err)
@@ -86,12 +88,13 @@ func TestUserController_Register(t *testing.T) {
 
 	u := newClient()
 	r, err := u.Register(ctx, &userpb.RegisterRequest{
-		Email:    "valid@gmail.com",
-		Password: "123456",
+		Email:       "valid@gmail.com",
+		DisplayName: "display",
+		Password:    "123456",
 	})
 
 	assert.NoError(t, err)
-	assert.Equal(t, "valid@gmail.com", r.Email)
+	assert.Equal(t, "display", r.DisplayName)
 	assert.Equal(t, userpb.UserStatus_USER_STATUS_REGISTERED, r.Status)
 	assert.NotZerof(t, r.Id, "User Id is not valid")
 
@@ -103,7 +106,7 @@ func TestUserController_Register(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, r.Id, r2.Id)
 	assert.Equal(t, r.Status, r2.Status)
-	assert.Equal(t, r.Email, r2.Email)
+	assert.Equal(t, r.DisplayName, r2.DisplayName)
 }
 
 func TestUserController_Logout(t *testing.T) {
@@ -118,8 +121,9 @@ func TestUserController_Logout(t *testing.T) {
 	assert.Equal(t, http.StatusUnauthorized, gErr.Status())
 
 	r1, err := u.Register(ctx, &userpb.RegisterRequest{
-		Email:    "valid@gmail.com",
-		Password: "bita123",
+		Email:       "valid@gmail.com",
+		DisplayName: "display",
+		Password:    "bita123",
 	})
 	assert.NoError(t, err)
 
@@ -145,8 +149,9 @@ func TestUserController_Ping(t *testing.T) {
 	assert.Equal(t, http.StatusUnauthorized, gErr.Status())
 
 	r1, err := u.Register(ctx, &userpb.RegisterRequest{
-		Email:    "valid@gmail.com",
-		Password: "bita123",
+		Email:       "valid@gmail.com",
+		DisplayName: "display",
+		Password:    "bita123",
 	})
 	assert.NoError(t, err)
 
@@ -161,8 +166,9 @@ func TestUserController_ChangePassword(t *testing.T) {
 
 	u := newClient()
 	r1, err := u.Register(ctx, &userpb.RegisterRequest{
-		Email:    "valid@gmail.com",
-		Password: "bita123",
+		Email:       "valid@gmail.com",
+		DisplayName: "display",
+		Password:    "bita123",
 	})
 	assert.NoError(t, err)
 
@@ -194,6 +200,6 @@ func TestUserController_ChangePassword(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.Equal(t, r3.Id, r1.Id)
-	assert.Equal(t, r3.Email, r1.Email)
+	assert.Equal(t, r3.DisplayName, r1.DisplayName)
 	assert.Equal(t, r3.Status, r1.Status)
 }

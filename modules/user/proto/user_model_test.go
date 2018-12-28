@@ -22,7 +22,7 @@ func TestManager_RegisterUser(t *testing.T) {
 	defer mockery.Start(t, ctx)()
 
 	m := NewManager()
-	u, err := m.RegisterUser(ctx, "valid@gmail.com", "bita123")
+	u, err := m.RegisterUser(ctx, "valid@gmail.com", "name", "bita123")
 	require.NoError(t, err)
 	assert.True(t, u.VerifyPassword("bita123"))
 
@@ -31,7 +31,7 @@ func TestManager_RegisterUser(t *testing.T) {
 	compareUser(t, u, u1)
 
 	// duplicate email
-	u, err = m.RegisterUser(ctx, "valid@gmail.com", "bita123")
+	u, err = m.RegisterUser(ctx, "valid@gmail.com", "name", "bita123")
 	assert.Nil(t, u)
 	assert.Error(t, err)
 }
@@ -41,7 +41,7 @@ func TestManager_FindUserByEmail(t *testing.T) {
 	defer mockery.Start(t, ctx)()
 
 	m := NewManager()
-	u, err := m.RegisterUser(ctx, "valid@gmail.com", "bita123")
+	u, err := m.RegisterUser(ctx, "valid@gmail.com", "name", "bita123")
 	require.NoError(t, err)
 
 	u1, err := m.FindUserByEmail(ctx, "valid@gmail.com")
@@ -59,7 +59,7 @@ func TestManager_FindUserByEmailPassword(t *testing.T) {
 	defer mockery.Start(t, ctx)()
 
 	m := NewManager()
-	u, err := m.RegisterUser(ctx, "valid@gmail.com", "bita123")
+	u, err := m.RegisterUser(ctx, "valid@gmail.com", "name", "bita123")
 	require.NoError(t, err)
 
 	u1, err := m.FindUserByEmailPassword(ctx, "valid@gmail.com", "bita123")
@@ -89,7 +89,7 @@ func TestManager_FindUserByIndirectToken(t *testing.T) {
 	defer mockery.Start(t, ctx)()
 
 	m := NewManager()
-	u, err := m.RegisterUser(ctx, "valid@gmail.com", "bita123")
+	u, err := m.RegisterUser(ctx, "valid@gmail.com", "name", "bita123")
 	require.NoError(t, err)
 
 	token := m.CreateToken(ctx, u, time.Hour)

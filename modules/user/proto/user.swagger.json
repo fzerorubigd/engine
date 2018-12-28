@@ -176,6 +176,9 @@
         "email": {
           "type": "string"
         },
+        "display_name": {
+          "type": "string"
+        },
         "password": {
           "type": "string"
         }
@@ -188,7 +191,7 @@
           "type": "string",
           "format": "int64"
         },
-        "email": {
+        "display_name": {
           "type": "string"
         },
         "token": {

@@ -49,9 +49,9 @@ func (um userMock) Ping(ctx context.Context, pr *userpb.PingRequest) (*userpb.Us
 
 	// All fields are not required
 	return &userpb.UserResponse{
-		Email: um.u.Email,
-		Id:    um.u.Id,
-		Token: um.token,
+		DisplayName: um.u.DisplayName,
+		Id:          um.u.Id,
+		Token:       um.token,
 	}, nil
 }
 
@@ -74,8 +74,9 @@ func TestMiddlewareSystem(t *testing.T) {
 	defer mockery.Start(t, ctx)()
 
 	user := &userpb.User{
-		Email: "valid@email.com",
-		Id:    1,
+		Email:       "valid@email.com",
+		DisplayName: "display",
+		Id:          1,
 	}
 
 	mock := &userMock{
@@ -90,7 +91,7 @@ func TestMiddlewareSystem(t *testing.T) {
 	r, err := cl.Ping(nctx, &userpb.PingRequest{})
 	assert.NoError(t, err)
 	assert.Equal(t, r.Id, user.Id)
-	assert.Equal(t, r.Email, user.Email)
+	assert.Equal(t, r.DisplayName, user.DisplayName)
 	assert.Equal(t, r.Token, mock.token)
 
 	r1, err := cl.Login(ctx, &userpb.LoginRequest{

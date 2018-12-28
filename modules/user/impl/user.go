@@ -40,10 +40,10 @@ func (uc *userController) Ping(ctx context.Context, _ *userpb.PingRequest) (*use
 	tok := middlewares.MustExtractToken(ctx)
 
 	return &userpb.UserResponse{
-		Id:     u.GetId(),
-		Token:  tok,
-		Status: u.GetStatus(),
-		Email:  u.GetEmail(),
+		Id:          u.GetId(),
+		Token:       tok,
+		Status:      u.GetStatus(),
+		DisplayName: u.DisplayName,
 	}, nil
 }
 
@@ -56,10 +56,10 @@ func (uc *userController) Login(ctx context.Context, lr *userpb.LoginRequest) (*
 	}
 
 	resp := userpb.UserResponse{
-		Email:  u.GetEmail(),
-		Status: u.GetStatus(),
-		Id:     u.GetId(),
-		Token:  m.CreateToken(ctx, u, expire.Duration()),
+		DisplayName: u.GetDisplayName(),
+		Status:      u.GetStatus(),
+		Id:          u.GetId(),
+		Token:       m.CreateToken(ctx, u, expire.Duration()),
 	}
 
 	return &resp, nil
@@ -74,16 +74,16 @@ func (uc *userController) Logout(ctx context.Context, _ *userpb.LogoutRequest) (
 func (uc *userController) Register(ctx context.Context, ru *userpb.RegisterRequest) (*userpb.UserResponse, error) {
 	m := userpb.NewManager()
 
-	u, err := m.RegisterUser(ctx, ru.GetEmail(), ru.GetPassword())
+	u, err := m.RegisterUser(ctx, ru.GetEmail(), ru.GetDisplayName(), ru.GetPassword())
 	if err != nil {
 		return nil, grpcgw.NewBadRequest(err, "duplicate email")
 	}
 
 	return &userpb.UserResponse{
-		Id:     u.GetId(),
-		Status: u.GetStatus(),
-		Email:  u.GetEmail(),
-		Token:  m.CreateToken(ctx, u, expire.Duration()),
+		Id:          u.GetId(),
+		Status:      u.GetStatus(),
+		DisplayName: u.GetDisplayName(),
+		Token:       m.CreateToken(ctx, u, expire.Duration()),
 	}, nil
 }
 

@@ -82,15 +82,16 @@ func (m *Manager) FindUserByEmail(ctx context.Context, e string) (*User, error) 
 }
 
 // RegisterUser is to register new user
-func (m *Manager) RegisterUser(ctx context.Context, email, pass string) (*User, error) {
+func (m *Manager) RegisterUser(ctx context.Context, email, name, pass string) (*User, error) {
 	u := User{
-		Email:    email,
-		Password: pass,
-		Status:   UserStatus_USER_STATUS_REGISTERED,
+		Email:       email,
+		DisplayName: name,
+		Password:    pass,
+		Status:      UserStatus_USER_STATUS_REGISTERED,
 	}
 
 	if err := m.CreateUser(ctx, &u); err != nil {
-		return nil, errors.Wrap(err, "Already registered")
+		return nil, errors.Wrap(err, "already registered")
 	}
 
 	return &u, nil
