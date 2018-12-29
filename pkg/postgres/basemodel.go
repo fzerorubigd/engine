@@ -22,7 +22,7 @@ var (
 	DefaultInitDB func(context.Context) (*sql.DB, error)
 )
 
-func realInstanse(ctx context.Context) (*sql.DB, error) {
+func realInstance(ctx context.Context) (*sql.DB, error) {
 	dsn := fmt.Sprintf(
 		"host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
 		host.String(),
@@ -108,6 +108,6 @@ func Register(m ...initializer.Simple) {
 }
 
 func init() {
-	DefaultInitDB = realInstanse
+	DefaultInitDB = realInstance
 	initializer.Register(&modelsInitializer{}, 0)
 }
