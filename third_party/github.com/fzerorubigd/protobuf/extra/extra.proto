@@ -11,7 +11,6 @@ import "google/protobuf/descriptor.proto";
 
 extend google.protobuf.FileOptions {
   string schema_name_all = 52001;
-  string table_name_all = 52002;
 }
 
 extend google.protobuf.MessageOptions {

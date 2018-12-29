@@ -5,9 +5,7 @@ require (
 	github.com/DATA-DOG/go-txdb v0.1.0
 	github.com/fullstorydev/grpchan v0.0.0-20181120185831-564614157981
 	github.com/fzerorubigd/expand v0.0.0-20150817182922-fd359294116f
-	github.com/fzerorubigd/protobuf v0.0.0-20181224204551-e0461d7c31a7
-	github.com/go-openapi/errors v0.18.0 // indirect
-	github.com/go-openapi/runtime v0.18.0 // indirect
+	github.com/fzerorubigd/protobuf v0.0.0-20181229110039-bd681f241497
 	github.com/go-playground/locales v0.12.1 // indirect
 	github.com/go-playground/universal-translator v0.16.0 // indirect
 	github.com/go-redis/redis v6.14.2+incompatible
@@ -25,7 +23,6 @@ require (
 	github.com/pkg/errors v0.8.0
 	github.com/rs/cors v1.6.0
 	github.com/rubenv/sql-migrate v0.0.0-20181106121204-ba2c6a7295c5
-	github.com/sirupsen/logrus v1.2.0
 	github.com/smartystreets/assertions v0.0.0-20180927180507-b2de0cb4f26d // indirect
 	github.com/smartystreets/goconvey v0.0.0-20181108003508-044398e4856c // indirect
 	github.com/spf13/pflag v1.0.3 // indirect
@@ -46,4 +43,5 @@ require (
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v9 v9.23.0
 	gopkg.in/gorp.v1 v1.7.2 // indirect
+	gopkg.in/yaml.v2 v2.2.2 // indirect
 )

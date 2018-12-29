@@ -24,3 +24,8 @@ message NullString {
   string string = 1;
   bool valid = 2;
 }
+
+message NullInt64 {
+  int64 int64 = 1;
+  bool valid = 2;
+}

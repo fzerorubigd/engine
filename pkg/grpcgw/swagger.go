@@ -63,7 +63,7 @@ var (
 			Title   string `json:"title"`
 			Version string `json:"version"`
 		}{Title: "Balloon Swagger", Version: "1.0"},
-		Schemes:     []string{"http", "https"},
+		Schemes:     []string{"https", "http"},
 		Consumes:    []string{"application/json"},
 		Produces:    []string{"application/json"},
 		Host:        "",
