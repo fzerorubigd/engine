@@ -8,11 +8,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/grpc-ecosystem/go-grpc-middleware"
-
 	"github.com/fullstorydev/grpchan/inprocgrpc"
 	"github.com/fzerorubigd/balloon/pkg/config"
 	"github.com/fzerorubigd/balloon/pkg/log"
+	"github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
 	"github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	"github.com/grpc-ecosystem/go-grpc-middleware/tags"
