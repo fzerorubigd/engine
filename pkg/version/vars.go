@@ -3,28 +3,42 @@ package version
 import "os"
 
 var (
-	hash  = "NOT_EXTRACTED"
-	short = "NOT_EXTRACTED"
-	date  = "04-08-17-00-10-22"
-	build = "04-08-17-00-10-22"
-	count = "115"
+	hash  = "--"
+	short = "--"
+	date  = "--"
+	build = "--"
+	count = "-1"
 )
 
 func init() {
-	if o := os.Getenv("LONGHASH"); o != "" {
-		hash = o
+	if hash == "--" {
+		if o := os.Getenv("LONG_HASH"); o != "" {
+			hash = o
+		}
 	}
 
-	if o := os.Getenv("SHORTHASH"); o != "" {
-		short = o
+	if short == "--" {
+		if o := os.Getenv("SHORT_HASH"); o != "" {
+			short = o
+		}
 	}
 
-	if o := os.Getenv("COMMITDATE"); o != "" {
-		date = o
+	if date == "--" {
+		if o := os.Getenv("COMMIT_DATE"); o != "" {
+			date = o
+		}
 	}
 
-	if o := os.Getenv("COMMITCOUNT"); o != "" {
-		count = o
+	if build == "--" {
+		if o := os.Getenv("BUILD_DATE"); o != "" {
+			build = o
+		}
+	}
+
+	if count == "-1" {
+		if o := os.Getenv("COMMITCOUNT"); o != "" {
+			count = o
+		}
 	}
 
 }
