@@ -1,4 +1,7 @@
 package mockery
 
 // TODO : use another redis?
-import _ "github.com/fzerorubigd/balloon/pkg/redis"
+import (
+	// Make sure redis is available in tests
+	_ "github.com/fzerorubigd/balloon/pkg/redis"
+)

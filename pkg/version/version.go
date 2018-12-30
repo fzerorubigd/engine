@@ -5,9 +5,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/fzerorubigd/balloon/pkg/log"
-
 	"github.com/fzerorubigd/balloon/pkg/initializer"
+	"github.com/fzerorubigd/balloon/pkg/log"
 	"go.uber.org/zap/zapcore"
 )
 

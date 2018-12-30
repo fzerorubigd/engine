@@ -17,7 +17,8 @@ var (
 	alreadyRegistered bool
 )
 
-func Start(t *testing.T, ctx context.Context) func() {
+// Start the mockery, used for tests only
+func Start(ctx context.Context, t *testing.T) func() {
 	if !alreadyRegistered {
 		alreadyRegistered = true
 		config.Initialize("testing", "T")

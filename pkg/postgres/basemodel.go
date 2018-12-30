@@ -19,6 +19,7 @@ var (
 	db  *sql.DB
 	all []initializer.Simple
 
+	// DefaultInitDB is a function for create a db instance, usable for change test db
 	DefaultInitDB func(context.Context) (*sql.DB, error)
 )
 

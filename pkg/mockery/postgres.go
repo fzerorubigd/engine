@@ -5,9 +5,8 @@ import (
 	"database/sql"
 
 	"github.com/fzerorubigd/balloon/pkg/assert"
-	"github.com/fzerorubigd/balloon/pkg/random"
-
 	"github.com/fzerorubigd/balloon/pkg/config"
+	"github.com/fzerorubigd/balloon/pkg/random"
 )
 
 var (

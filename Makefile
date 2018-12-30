@@ -68,13 +68,18 @@ $(BIN)/protoc-gen-grpchan:
 $(BIN)/go-bindata:
 	$(GET) github.com/shuLhan/go-bindata/cmd/go-bindata
 
+$(BIN)/flint:
+	$(GET) github.com/fraugster/flint
+
+$(BIN)/golint:
+	$(GET) golang.org/x/lint/golint
+
 swagger-to-go:
 	$(INSTALL) ./cmd/swagger-to-go
 
 generators:
 	$(INSTALL) ./cmd/protoc-gen-wrapper
 	$(INSTALL) ./cmd/protoc-gen-model
-
 
 tools-migration: $(BIN)/go-bindata $(addsuffix -migration,$(dir $(wildcard $(ROOT)/modules/*/)))
 	$(INSTALL) ./cmd/migration
@@ -105,15 +110,11 @@ swagger: swagger-to-go proto $(addsuffix -swagger,$(dir $(wildcard $(ROOT)/modul
 
 code-gen: swagger
 
-LINTER:=$(BIN)/gometalinter.v2
-LINTERCMD:=$(LINTER) -e ".*.pb.go" -e ".*_test.go" -e "$(ROOT)/vendor/.*" --cyclo-over=19 --line-length=120 --deadline=100s --disable-all --enable=structcheck --enable=deadcode --enable=gocyclo --enable=ineffassign --enable=golint --enable=goimports --enable=errcheck --enable=varcheck --enable=goconst --enable=gosimple --enable=staticcheck --enable=unused --enable=misspell
-
-$(LINTER):
-	$(GET) gopkg.in/alecthomas/gometalinter.v2
-	$(LINTER) --install
-
-lint: $(LINTER) $(addsuffix -lint,$(wildcard $(ROOT)/modules/*))
-	$(LINTERCMD) $(ROOT)/cmd/...
+lint: $(BIN)/golint $(BIN)/flint
+#	TODO Add errcheck when it fixed
+	$(GO) vet ./...
+	$(BIN)/golint ./...
+	$(BIN)/flint ./...
 
 build-server:
 	@echo "Building server"

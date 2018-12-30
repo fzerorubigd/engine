@@ -3,9 +3,8 @@ package config
 import (
 	"os"
 
-	"github.com/fzerorubigd/balloon/pkg/log"
-
 	"github.com/fzerorubigd/balloon/pkg/assert"
+	"github.com/fzerorubigd/balloon/pkg/log"
 	"github.com/fzerorubigd/expand"
 	onion "gopkg.in/fzerorubigd/onion.v3"
 	"gopkg.in/fzerorubigd/onion.v3/extraenv"

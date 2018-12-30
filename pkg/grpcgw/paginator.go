@@ -10,6 +10,7 @@ var (
 	perPage    = config.RegisterInt("grpcw.per_page", 10, "http default item per page")
 )
 
+// Pager is interface for payload with pagination support
 type Pager interface {
 	GetPage() int64
 	GetPerPage() int64

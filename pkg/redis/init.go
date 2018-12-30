@@ -14,7 +14,7 @@ import (
 
 var (
 	// Client the actual pool to use with redis
-	Client RedisClient
+	Client ClientInterface
 	all    []initializer.Simple
 	lock   sync.RWMutex
 )

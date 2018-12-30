@@ -71,7 +71,7 @@ func newClient(u *userMock) userpb.UserSystemClient {
 
 func TestMiddlewareSystem(t *testing.T) {
 	ctx := context.Background()
-	defer mockery.Start(t, ctx)()
+	defer mockery.Start(ctx, t)()
 
 	user := &userpb.User{
 		Email:       "valid@email.com",

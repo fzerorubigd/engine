@@ -25,7 +25,7 @@ func newClient() userpb.UserSystemClient {
 
 func TestUserController_Login_Invalid(t *testing.T) {
 	ctx := context.Background()
-	defer mockery.Start(t, ctx)()
+	defer mockery.Start(ctx, t)()
 
 	u := newClient()
 	r, err := u.Login(ctx, &userpb.LoginRequest{
@@ -53,7 +53,7 @@ func TestUserController_Login_Invalid(t *testing.T) {
 
 func TestUserController_Register_Invalid(t *testing.T) {
 	ctx := context.Background()
-	defer mockery.Start(t, ctx)()
+	defer mockery.Start(ctx, t)()
 
 	u := newClient()
 	r, err := u.Register(ctx, &userpb.RegisterRequest{
@@ -84,7 +84,7 @@ func TestUserController_Register_Invalid(t *testing.T) {
 
 func TestUserController_Register(t *testing.T) {
 	ctx := context.Background()
-	defer mockery.Start(t, ctx)()
+	defer mockery.Start(ctx, t)()
 
 	u := newClient()
 	r, err := u.Register(ctx, &userpb.RegisterRequest{
@@ -111,7 +111,7 @@ func TestUserController_Register(t *testing.T) {
 
 func TestUserController_Logout(t *testing.T) {
 	ctx := context.Background()
-	defer mockery.Start(t, ctx)()
+	defer mockery.Start(ctx, t)()
 
 	u := newClient()
 	r, err := u.Logout(ctx, &userpb.LogoutRequest{})
@@ -139,7 +139,7 @@ func TestUserController_Logout(t *testing.T) {
 
 func TestUserController_Ping(t *testing.T) {
 	ctx := context.Background()
-	defer mockery.Start(t, ctx)()
+	defer mockery.Start(ctx, t)()
 
 	u := newClient()
 	r, err := u.Logout(ctx, &userpb.LogoutRequest{})
@@ -162,7 +162,7 @@ func TestUserController_Ping(t *testing.T) {
 
 func TestUserController_ChangePassword(t *testing.T) {
 	ctx := context.Background()
-	defer mockery.Start(t, ctx)()
+	defer mockery.Start(ctx, t)()
 
 	u := newClient()
 	r1, err := u.Register(ctx, &userpb.RegisterRequest{

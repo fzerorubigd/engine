@@ -19,7 +19,7 @@ func compareUser(t *testing.T, u1, u2 *User) {
 
 func TestManager_RegisterUser(t *testing.T) {
 	ctx := context.Background()
-	defer mockery.Start(t, ctx)()
+	defer mockery.Start(ctx, t)()
 
 	m := NewManager()
 	u, err := m.RegisterUser(ctx, "valid@gmail.com", "name", "bita123")
@@ -38,7 +38,7 @@ func TestManager_RegisterUser(t *testing.T) {
 
 func TestManager_FindUserByEmail(t *testing.T) {
 	ctx := context.Background()
-	defer mockery.Start(t, ctx)()
+	defer mockery.Start(ctx, t)()
 
 	m := NewManager()
 	u, err := m.RegisterUser(ctx, "valid@gmail.com", "name", "bita123")
@@ -56,7 +56,7 @@ func TestManager_FindUserByEmail(t *testing.T) {
 
 func TestManager_FindUserByEmailPassword(t *testing.T) {
 	ctx := context.Background()
-	defer mockery.Start(t, ctx)()
+	defer mockery.Start(ctx, t)()
 
 	m := NewManager()
 	u, err := m.RegisterUser(ctx, "valid@gmail.com", "name", "bita123")
@@ -86,7 +86,7 @@ func TestManager_FindUserByEmailPassword(t *testing.T) {
 
 func TestManager_FindUserByIndirectToken(t *testing.T) {
 	ctx := context.Background()
-	defer mockery.Start(t, ctx)()
+	defer mockery.Start(ctx, t)()
 
 	m := NewManager()
 	u, err := m.RegisterUser(ctx, "valid@gmail.com", "name", "bita123")

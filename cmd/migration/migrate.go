@@ -3,9 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/fzerorubigd/balloon/cmd"
 	"os"
 
+	"github.com/fzerorubigd/balloon/cmd"
 	"github.com/fzerorubigd/balloon/pkg/cli"
 	"github.com/fzerorubigd/balloon/pkg/initializer"
 	"github.com/fzerorubigd/balloon/pkg/log"
@@ -29,17 +29,29 @@ func main() {
 	m := &model.Manager{}
 	if *action == "up" {
 		n, err = migration.Do(m, migration.Up, 0)
+		if err != nil {
+			log.Fatal("Migration failed", log.Err(err))
+		}
 		fmt.Printf("\n\n%d migration is applied\n", n)
 	} else if *action == "down" {
 		n, err = migration.Do(m, migration.Down, 1)
+		if err != nil {
+			log.Fatal("Migration failed", log.Err(err))
+		}
 		fmt.Printf("\n\n%d migration is applied\n", n)
 	} else if *action == "down-all" {
 		n, err = migration.Do(m, migration.Down, 0)
+		if err != nil {
+			log.Fatal("Migration failed", log.Err(err))
+		}
 		fmt.Printf("\n\n%d migration is applied\n", n)
 	} else if *action == "redo" {
 		n, err = migration.Do(m, migration.Down, 1)
 		if err == nil {
 			n, err = migration.Do(m, migration.Up, 1)
+		}
+		if err != nil {
+			log.Fatal("Migration failed", log.Err(err))
 		}
 		fmt.Printf("\n\n%d migration is applied\n", n)
 

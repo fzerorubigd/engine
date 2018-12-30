@@ -5,9 +5,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/fzerorubigd/protobuf/extra"
-
 	"github.com/fzerorubigd/balloon/pkg/assert"
+	"github.com/fzerorubigd/protobuf/extra"
 	"github.com/gogo/protobuf/proto"
 	"github.com/gogo/protobuf/protoc-gen-gogo/generator"
 	"github.com/gogo/protobuf/vanity"

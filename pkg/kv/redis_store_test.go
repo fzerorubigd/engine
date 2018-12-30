@@ -5,15 +5,14 @@ import (
 	"testing"
 	"time"
 
+	"github.com/fzerorubigd/balloon/pkg/mockery"
 	"github.com/fzerorubigd/balloon/pkg/random"
 	"github.com/stretchr/testify/assert"
-
-	"github.com/fzerorubigd/balloon/pkg/mockery"
 )
 
 func TestStoreKey(t *testing.T) {
 	ctx := context.Background()
-	defer mockery.Start(t, ctx)()
+	defer mockery.Start(ctx, t)()
 
 	key1, key2 := <-random.ID, <-random.ID
 	assert.NoError(t, StoreKey(key1, "value1", time.Minute))
@@ -33,7 +32,7 @@ func TestStoreKey(t *testing.T) {
 
 func TestFetchKey(t *testing.T) {
 	ctx := context.Background()
-	defer mockery.Start(t, ctx)()
+	defer mockery.Start(ctx, t)()
 
 	s, err := FetchKey(<-random.ID + <-random.ID)
 	assert.Error(t, err)

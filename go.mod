@@ -3,6 +3,7 @@ module github.com/fzerorubigd/balloon
 require (
 	cloud.google.com/go v0.34.0 // indirect
 	github.com/DATA-DOG/go-txdb v0.1.0
+	github.com/fraugster/flint v0.1.0 // indirect
 	github.com/fullstorydev/grpchan v0.0.0-20181120185831-564614157981
 	github.com/fzerorubigd/expand v0.0.0-20150817182922-fd359294116f
 	github.com/fzerorubigd/protobuf v0.0.0-20181229110039-bd681f241497
@@ -32,6 +33,7 @@ require (
 	go.uber.org/multierr v1.1.0 // indirect
 	go.uber.org/zap v1.9.1
 	golang.org/x/crypto v0.0.0-20181112202954-3d3f9f413869
+	golang.org/x/lint v0.0.0-20181217174547-8f45f776aaf1 // indirect
 	golang.org/x/net v0.0.0-20181220203305-927f97764cc3
 	golang.org/x/oauth2 v0.0.0-20181203162652-d668ce993890 // indirect
 	golang.org/x/sync v0.0.0-20181221193216-37e7f081c4d4 // indirect

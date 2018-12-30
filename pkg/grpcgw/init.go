@@ -27,6 +27,7 @@ type Controller interface {
 	Init(context.Context, *inprocgrpc.Channel, *runtime.ServeMux)
 }
 
+// Interceptor type used to register both interceptors at the same time
 type Interceptor struct {
 	Unary  grpc.UnaryServerInterceptor
 	Stream grpc.StreamServerInterceptor
@@ -82,6 +83,7 @@ func GRPCChannel() *inprocgrpc.Channel {
 	return c
 }
 
+// Serve start the server and wait
 func Serve(ctx context.Context) {
 	lock.RLock()
 	defer lock.RUnlock()

@@ -6,12 +6,10 @@ import (
 	"io"
 	"net/http"
 
-	"gopkg.in/go-playground/validator.v9"
-
-	"github.com/pkg/errors"
-
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/pkg/errors"
 	"google.golang.org/grpc/grpclog"
+	"gopkg.in/go-playground/validator.v9"
 )
 
 // GWError is used for the error returned from the grpc implementation
