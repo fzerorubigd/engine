@@ -29,6 +29,16 @@ CG_SERVICES_POSTGRES_PASSWORD=$(DB_PASS)
 CG_SERVICES_POSTGRES_DB=$(DB_NAME)
 where-am-i = $(CURDIR)/$(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
 
+# Default target is lint
+lint: $(BIN)/golint $(BIN)/flint
+#	TODO Add errcheck when it fixed
+	$(GO) vet ./...
+	$(BIN)/golint ./...
+	$(BIN)/flint ./...
+
+clean:
+	$(GIT) clean -fX ./
+
 # Include modules make file
 include $(wildcard $(ROOT)/modules/*/module.mk)
 
@@ -109,12 +119,6 @@ swagger-ui: $(BIN)/go-bindata
 swagger: swagger-to-go proto $(addsuffix -swagger,$(dir $(wildcard $(ROOT)/modules/*/)))
 
 code-gen: swagger
-
-lint: $(BIN)/golint $(BIN)/flint
-#	TODO Add errcheck when it fixed
-	$(GO) vet ./...
-	$(BIN)/golint ./...
-	$(BIN)/flint ./...
 
 build-server:
 	@echo "Building server"
