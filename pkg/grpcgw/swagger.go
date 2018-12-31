@@ -47,12 +47,12 @@ type swaggerFile struct {
 		Version string `json:"version"`
 	} `json:"info"`
 
-	Host                string                 `json:"host"`
-	Schemes             []string               `json:"schemes"`
-	Consumes            []string               `json:"consumes"`
-	Produces            []string               `json:"produces"`
-	Paths               map[string]interface{} `json:"paths"`
-	Definitions         map[string]interface{} `json:"definitions"`
+	Host        string                 `json:"host"`
+	Schemes     []string               `json:"schemes"`
+	Consumes    []string               `json:"consumes"`
+	Produces    []string               `json:"produces"`
+	Paths       map[string]interface{} `json:"paths"`
+	Definitions map[string]interface{} `json:"definitions"`
 }
 
 var (
