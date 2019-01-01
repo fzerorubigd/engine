@@ -66,6 +66,12 @@ message ChangePasswordRequest {
 
 message ChangePasswordResponse {}
 
+message ChangeDisplayNameRequest {
+  string display_name = 1 [(gogoproto.moretags) = "validate:\"gte=3,required\" "];
+}
+
+message ChangeDisplayNameResponse {}
+
 service UserSystem {
   rpc Login(LoginRequest) returns (UserResponse) {
     option (google.api.http) = {
@@ -114,6 +120,22 @@ service UserSystem {
   rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse) {
     option (google.api.http) = {
       post: "/v1/user/change/password"
+      body: "*"
+    };
+    option (extra.resource) = "";
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			security: {
+				security_requirement: {
+					key: "Authentication"
+                    value: {}
+                }
+            }
+    };
+  }
+
+  rpc ChangeDisplayName(ChangeDisplayNameRequest) returns (ChangeDisplayNameResponse) {
+    option (google.api.http) = {
+      post: "/v1/user/change/displayname"
       body: "*"
     };
     option (extra.resource) = "";

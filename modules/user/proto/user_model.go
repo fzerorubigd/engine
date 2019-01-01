@@ -98,12 +98,17 @@ func (m *Manager) RegisterUser(ctx context.Context, email, name, pass string) (*
 }
 
 // CreateToken TODO: NEEDS COMMENT INFO
-func (m *Manager) CreateToken(_ context.Context, u *User, d time.Duration) string {
+func (m *Manager) CreateToken(ctx context.Context, u *User, d time.Duration) string {
 	t := <-random.ID
+	m.UpdateToken(ctx, u, d, t)
+	return t
+}
+
+// UpdateToken try to update/create token
+func (m *Manager) UpdateToken(_ context.Context, u *User, d time.Duration, token string) {
 	v, err := proto.Marshal(u)
 	assert.Nil(err)
-	kv.MustStoreKey(t, string(v), d)
-	return t
+	kv.MustStoreKey(token, string(v), d)
 }
 
 // FindUserByIndirectToken TODO: NEEDS COMMENT INFO

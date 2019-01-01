@@ -15,6 +15,37 @@
     "application/json"
   ],
   "paths": {
+    "/v1/user/change/displayname": {
+      "post": {
+        "operationId": "ChangeDisplayName",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/userChangeDisplayNameResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userChangeDisplayNameRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserSystem"
+        ],
+        "security": [
+          {
+            "Authentication": []
+          }
+        ]
+      }
+    },
     "/v1/user/change/password": {
       "post": {
         "operationId": "ChangePassword",
@@ -142,6 +173,17 @@
     }
   },
   "definitions": {
+    "userChangeDisplayNameRequest": {
+      "type": "object",
+      "properties": {
+        "display_name": {
+          "type": "string"
+        }
+      }
+    },
+    "userChangeDisplayNameResponse": {
+      "type": "object"
+    },
     "userChangePasswordRequest": {
       "type": "object",
       "properties": {

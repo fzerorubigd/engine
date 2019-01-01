@@ -18,7 +18,15 @@ var (
 type userController struct {
 }
 
-func (uc *userController) Initialize(ctx context.Context) {
+func (uc *userController) ChangeDisplayName(ctx context.Context, cd *userpb.ChangeDisplayNameRequest) (*userpb.ChangeDisplayNameResponse, error) {
+	u := middlewares.MustExtractUser(ctx)
+	m := userpb.NewManager()
+	u, err := m.GetUserByPrimary(ctx, u.Id)
+	assert.Nil(err)
+	u.DisplayName = cd.DisplayName
+	assert.Nil(m.UpdateUser(ctx, u))
+	m.UpdateToken(ctx, u, expire.Duration(), middlewares.MustExtractToken(ctx))
+	return &userpb.ChangeDisplayNameResponse{}, nil
 }
 
 func (uc *userController) ChangePassword(ctx context.Context, cpr *userpb.ChangePasswordRequest) (*userpb.ChangePasswordResponse, error) {
@@ -85,6 +93,9 @@ func (uc *userController) Register(ctx context.Context, ru *userpb.RegisterReque
 		DisplayName: u.GetDisplayName(),
 		Token:       m.CreateToken(ctx, u, expire.Duration()),
 	}, nil
+}
+
+func (uc *userController) Initialize(ctx context.Context) {
 }
 
 func init() {

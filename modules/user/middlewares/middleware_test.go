@@ -18,6 +18,10 @@ type userMock struct {
 	u     *userpb.User
 }
 
+func (um userMock) ChangeDisplayName(context.Context, *userpb.ChangeDisplayNameRequest) (*userpb.ChangeDisplayNameResponse, error) {
+	panic("implement me")
+}
+
 func (um userMock) Login(ctx context.Context, _ *userpb.LoginRequest) (*userpb.UserResponse, error) {
 	// this is not protected route
 	u, err := ExtractUser(ctx)

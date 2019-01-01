@@ -63,3 +63,12 @@ func (c *userSystemChannelClient) ChangePassword(ctx context.Context, in *Change
 	}
 	return out, nil
 }
+
+func (c *userSystemChannelClient) ChangeDisplayName(ctx context.Context, in *ChangeDisplayNameRequest, opts ...grpc.CallOption) (*ChangeDisplayNameResponse, error) {
+	out := new(ChangeDisplayNameResponse)
+	err := c.ch.Invoke(ctx, "/user.UserSystem/ChangeDisplayName", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}

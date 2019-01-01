@@ -203,3 +203,33 @@ func TestUserController_ChangePassword(t *testing.T) {
 	assert.Equal(t, r3.DisplayName, r1.DisplayName)
 	assert.Equal(t, r3.Status, r1.Status)
 }
+
+func TestUserController_ChangeDisplayName(t *testing.T) {
+	ctx := context.Background()
+	defer mockery.Start(ctx, t)()
+
+	u := newClient()
+	r1, err := u.Register(ctx, &userpb.RegisterRequest{
+		Email:       "valid@gmail.com",
+		DisplayName: "display",
+		Password:    "bita123",
+	})
+	assert.NoError(t, err)
+
+	ctx = mockery.AuthorizeToken(ctx, r1.Token)
+
+	r3, err := u.Ping(ctx, &userpb.PingRequest{})
+	require.NoError(t, err)
+	assert.Equal(t, "display", r3.DisplayName)
+
+	r2, err := u.ChangeDisplayName(ctx, &userpb.ChangeDisplayNameRequest{
+		DisplayName: "rename",
+	})
+
+	require.NoError(t, err)
+	assert.NotNil(t, r2)
+
+	r3, err = u.Ping(ctx, &userpb.PingRequest{})
+	require.NoError(t, err)
+	assert.Equal(t, "rename", r3.DisplayName)
+}
