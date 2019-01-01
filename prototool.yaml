@@ -2,6 +2,7 @@
 excludes:
   - ./third_party
   - ./tmp
+  - ./vendor
 
 # Protoc directives.
 protoc:

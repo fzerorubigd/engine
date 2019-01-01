@@ -27,6 +27,7 @@ CG_SERVICES_POSTGRES_USER=$(DB_USER)
 CG_SERVICES_POSTGRES_PASSWORD=$(DB_PASS)
 CG_SERVICES_POSTGRES_DB=$(DB_NAME)
 where-am-i = $(CURDIR)/$(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
+export GO111MODULE=off
 
 # Default target is lint
 lint: $(BIN)/golint $(BIN)/flint
