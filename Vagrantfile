@@ -20,11 +20,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network "forwarded_port", guest: 8025,    	host: 8025     # mailhog
   config.vm.network "forwarded_port", guest: 5432,      host: 5432     # postgres
   config.vm.network "forwarded_port", guest: 22,        host: 5555     # ssh server
-  config.vm.synced_folder ".", "/home/develop/balloon", owner: "develop", group: "develop", create: true
+  config.vm.synced_folder ".", "/home/develop/go/src/github.com/fzerorubigd/balloon", owner: "develop", group: "develop", create: true
 
   config.vm.provider "docker" do |d|
     d.build_dir = "./image"
     d.has_ssh = true
-    d.cmd = ["/bin/bash", "/home/develop/balloon/scripts/init.sh"]
+    d.cmd = ["/bin/bash", "/home/develop/go/src/github.com/fzerorubigd/balloon/scripts/init.sh"]
   end
 end

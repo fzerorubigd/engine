@@ -1,6 +1,5 @@
 export ROOT:=$(realpath $(dir $(firstword $(MAKEFILE_LIST))))
 export BIN:=$(ROOT)/bin
-export GOPATH:=$(mktemp)
 export GOBIN:=$(BIN)
 export PATH:=$(BIN):$(PATH)
 APP_NAME:=balloon
@@ -32,12 +31,16 @@ where-am-i = $(CURDIR)/$(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
 # Default target is lint
 lint: $(BIN)/golint $(BIN)/flint
 #	TODO Add errcheck when it fixed
-	$(GO) vet ./...
-	$(BIN)/golint ./...
-	$(BIN)/flint ./...
+	$(GO) vet ./cmd/... ./pkg/... ./modules/...
+	$(BIN)/golint ./cmd/... ./pkg/... ./modules/...
+	$(BIN)/flint ./cmd/... ./pkg/... ./modules/...
 
 clean:
 	$(GIT) clean -fX ./
+
+vendor:
+	GO111MODULE=on $(GO) get ./cmd/... ./pkg/... ./modules/...
+	GO111MODULE=on $(GO) mod vendor
 
 # Include modules make file
 include $(wildcard $(ROOT)/modules/*/module.mk)
@@ -130,4 +133,4 @@ run-server: code-gen build-server
 
 all: build-server tools-migration
 
-.PHONY: swagger-to-go proto swagger build-server run-server generate
+.PHONY: swagger-to-go proto swagger build-server run-server generate vendor
