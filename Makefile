@@ -30,11 +30,12 @@ where-am-i = $(CURDIR)/$(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
 export GO111MODULE=off
 
 # Default target is lint
-lint: $(BIN)/golint $(BIN)/flint
+lint: $(BIN)/golint $(BIN)/flint $(BIN)/errcheck
 #	TODO Add errcheck when it fixed
 	$(GO) vet ./cmd/... ./pkg/... ./modules/...
 	$(BIN)/golint ./cmd/... ./pkg/... ./modules/...
 	$(BIN)/flint ./cmd/... ./pkg/... ./modules/...
+	$(BIN)/errcheck ./cmd/... ./pkg/... ./modules/...
 
 clean:
 	$(GIT) clean -fX ./
@@ -88,6 +89,12 @@ $(BIN)/flint:
 $(BIN)/golint:
 	$(GET) golang.org/x/lint/golint
 
+$(BIN)/reflex:
+	$(GET) github.com/cespare/reflex
+
+$(BIN)/errcheck:
+	$(GET) github.com/kisielk/errcheck
+
 swagger-to-go:
 	$(INSTALL) ./cmd/swagger-to-go
 
@@ -133,5 +140,8 @@ run-server: code-gen build-server
 	$(BIN)/server 2>&1
 
 all: build-server tools-migration
+
+watch: $(BIN)/reflex
+	$(BIN)/reflex -r '\.proto$$' make code-gen
 
 .PHONY: swagger-to-go proto swagger build-server run-server generate vendor
