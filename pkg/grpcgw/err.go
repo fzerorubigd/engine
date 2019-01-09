@@ -8,7 +8,9 @@ import (
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/pkg/errors"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
+	"google.golang.org/grpc/status"
 	"gopkg.in/go-playground/validator.v9"
 )
 
@@ -69,6 +71,32 @@ func NewBadRequestStatus(err error, message string, status int) error {
 	return ret
 }
 
+type grpcErr interface {
+	GRPCStatus() *status.Status
+}
+
+func tryGRPCError(err error) GWError {
+	g, ok := err.(grpcErr)
+	if !ok {
+		return &gwError{
+			Msg: "unknown",
+			S:   http.StatusInternalServerError,
+		}
+	}
+	switch g.GRPCStatus().Code() {
+	case codes.InvalidArgument:
+		return &gwError{
+			S:   http.StatusBadRequest,
+			Msg: "invalid json input",
+		}
+	default:
+		return &gwError{
+			Msg: "please report this: " + g.GRPCStatus().Code().String(),
+			S:   http.StatusInternalServerError,
+		}
+	}
+}
+
 // defaultHTTPError is my first try to overwrite the default
 func defaultHTTPError(ctx context.Context, _ *runtime.ServeMux, marshaler runtime.Marshaler, w http.ResponseWriter, _ *http.Request, err error) {
 	const fallback = `{"error": "failed to marshal error message"}`
@@ -78,10 +106,7 @@ func defaultHTTPError(ctx context.Context, _ *runtime.ServeMux, marshaler runtim
 
 	body, ok := err.(GWError)
 	if !ok {
-		body = &gwError{
-			Msg: "unknown",
-			S:   http.StatusInternalServerError,
-		}
+		body = tryGRPCError(err)
 	}
 
 	buf, merr := marshaler.Marshal(body)
