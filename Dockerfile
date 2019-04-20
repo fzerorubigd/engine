@@ -17,7 +17,9 @@ COPY --from=0 /go/src/github.com/fzerorubigd/balloon/bin/worker /bin/
 COPY --from=0 /go/src/github.com/fzerorubigd/balloon/bin/migration /bin/
 ADD scripts/server.sh /bin/server.sh
 ADD scripts/worker.sh /bin/worker.sh
-
+ADD scripts/Procfile /bin/Procfile
 RUN chmod a+x /bin/server.sh /bin/worker.sh
 
 EXPOSE 80
+
+WORKDIR /bin
