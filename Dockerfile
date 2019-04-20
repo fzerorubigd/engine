@@ -1,4 +1,4 @@
-FROM golang:1.11-alpine
+FROM golang:1.12-alpine
 
 ADD . /go/src/github.com/fzerorubigd/balloon
 
@@ -21,5 +21,3 @@ ADD scripts/worker.sh /bin/worker.sh
 RUN chmod a+x /bin/server.sh /bin/worker.sh
 
 EXPOSE 80
-
-CMD ["/bin/server.sh"]
