@@ -18,6 +18,22 @@ var (
 type userController struct {
 }
 
+func (uc *userController) ForgotPassword(ctx context.Context, fp *userpb.ForgotPasswordRequest) (*userpb.ForgotPasswordResponse, error) {
+	// m := userpb.NewManager()
+
+	// // TODO : rate limit
+	// u, err := m.FindUserByEmail(ctx, fp.Email)
+	// // This is a little tricky here, even on error we return an ok, the message on the client
+	// // should be complete
+	// if err != nil {
+	// 	return &userpb.ForgotPasswordResponse{}, nil
+	// }
+	//
+	//
+
+	return &userpb.ForgotPasswordResponse{}, nil
+}
+
 func (uc *userController) ChangeDisplayName(ctx context.Context, cd *userpb.ChangeDisplayNameRequest) (*userpb.ChangeDisplayNameResponse, error) {
 	u := middlewares.MustExtractUser(ctx)
 	m := userpb.NewManager()

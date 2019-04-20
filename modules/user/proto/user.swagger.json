@@ -77,6 +77,32 @@
         ]
       }
     },
+    "/v1/user/forgot": {
+      "post": {
+        "operationId": "ForgotPassword",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/userForgotPasswordResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userForgotPasswordRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserSystem"
+        ]
+      }
+    },
     "/v1/user/login": {
       "post": {
         "operationId": "Login",
@@ -196,6 +222,17 @@
       }
     },
     "userChangePasswordResponse": {
+      "type": "object"
+    },
+    "userForgotPasswordRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "userForgotPasswordResponse": {
       "type": "object"
     },
     "userLoginRequest": {

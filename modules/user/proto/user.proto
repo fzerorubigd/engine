@@ -72,6 +72,12 @@ message ChangeDisplayNameRequest {
 
 message ChangeDisplayNameResponse {}
 
+message ForgotPasswordRequest {
+  string email = 1 [(gogoproto.moretags) = "validate:\"email,required\" "];
+}
+
+message ForgotPasswordResponse {}
+
 service UserSystem {
   rpc Login(LoginRequest) returns (UserResponse) {
     option (google.api.http) = {
@@ -86,10 +92,10 @@ service UserSystem {
     };
     option (extra.resource) = "";
         option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
-			security: {
-				security_requirement: {
-					key: "Authentication"
-					value: {}
+            security: {
+                security_requirement: {
+                    key: "Authentication"
+                    value: {}
                 }
             }
         };
@@ -108,9 +114,9 @@ service UserSystem {
     };
     option (extra.resource) = "";
     option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
-			security: {
-				security_requirement: {
-					key: "Authentication"
+            security: {
+                security_requirement: {
+                    key: "Authentication"
                     value: {}
                 }
             }
@@ -124,9 +130,9 @@ service UserSystem {
     };
     option (extra.resource) = "";
     option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
-			security: {
-				security_requirement: {
-					key: "Authentication"
+            security: {
+                security_requirement: {
+                    key: "Authentication"
                     value: {}
                 }
             }
@@ -140,12 +146,20 @@ service UserSystem {
     };
     option (extra.resource) = "";
     option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
-			security: {
-				security_requirement: {
-					key: "Authentication"
+            security: {
+                security_requirement: {
+                    key: "Authentication"
                     value: {}
                 }
             }
     };
   }
+
+  rpc ForgotPassword(ForgotPasswordRequest) returns (ForgotPasswordResponse) {
+    option (google.api.http) = {
+        post: "/v1/user/forgot"
+        body: "*"
+    };
+  }
+
 }

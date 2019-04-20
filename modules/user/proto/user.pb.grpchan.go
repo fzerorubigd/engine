@@ -72,3 +72,12 @@ func (c *userSystemChannelClient) ChangeDisplayName(ctx context.Context, in *Cha
 	}
 	return out, nil
 }
+
+func (c *userSystemChannelClient) ForgotPassword(ctx context.Context, in *ForgotPasswordRequest, opts ...grpc.CallOption) (*ForgotPasswordResponse, error) {
+	out := new(ForgotPasswordResponse)
+	err := c.ch.Invoke(ctx, "/user.UserSystem/ForgotPassword", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}

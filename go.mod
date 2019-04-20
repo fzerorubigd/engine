@@ -4,14 +4,18 @@ require (
 	cloud.google.com/go v0.34.0 // indirect
 	github.com/DATA-DOG/go-txdb v0.1.0
 	github.com/fullstorydev/grpchan v0.0.0-20181120185831-564614157981
+	github.com/fzerorubigd/chapar v0.0.0-20190210094209-31bedf3ca11b
 	github.com/fzerorubigd/expand v0.0.0-20150817182922-fd359294116f
 	github.com/fzerorubigd/protobuf v0.0.0-20181231220536-9808cb7a8089
+	github.com/fzerorubigd/redimock v0.0.0-20190203221554-6d493724ce3b // indirect
 	github.com/go-playground/locales v0.12.1 // indirect
 	github.com/go-playground/universal-translator v0.16.0 // indirect
-	github.com/go-redis/redis v6.14.2+incompatible
+	github.com/go-redis/redis v6.14.2+incompatible // indirect
 	github.com/gobuffalo/packr v1.21.5 // indirect
 	github.com/gogo/protobuf v1.2.0
 	github.com/golang/protobuf v1.2.0
+	github.com/gomodule/redigo v2.0.0+incompatible
+	github.com/google/uuid v1.1.1 // indirect
 	github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.0.0
 	github.com/grpc-ecosystem/grpc-gateway v1.6.3
@@ -39,9 +43,11 @@ require (
 	google.golang.org/appengine v1.4.0 // indirect
 	google.golang.org/genproto v0.0.0-20181221175505-bd9b4fb69e2f
 	google.golang.org/grpc v1.17.0
+	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/fzerorubigd/onion.v3 v3.0.0-20181013165022-7b9c1b5d62cd
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v9 v9.23.0
+	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gopkg.in/gorp.v1 v1.7.2 // indirect
 	gopkg.in/yaml.v2 v2.2.2 // indirect
 )

@@ -175,6 +175,28 @@ func (w *wrappedUserSystemServer) ChangeDisplayName(ctx golang_org_x_net_context
 	return
 }
 
+func (w *wrappedUserSystemServer) ForgotPassword(ctx golang_org_x_net_context.Context, req *ForgotPasswordRequest) (res *ForgotPasswordResponse, err error) {
+	github_com_fzerorubigd_balloon_pkg_log.Info("UserSystem.ForgotPassword request")
+	defer func() {
+		e := recover()
+		if e == nil {
+			return
+		}
+		github_com_fzerorubigd_balloon_pkg_log.Error("Recovering from panic", github_com_fzerorubigd_balloon_pkg_log.Any("panic", e))
+		res, err = nil, github_com_pkg_errors.New("internal server error")
+	}()
+	ctx, err = github_com_fzerorubigd_balloon_pkg_grpcgw.ExecuteMiddleware(ctx, w.original)
+	if err != nil {
+		return nil, err
+	}
+	if err = w.v.Struct(req); err != nil {
+		return nil, github_com_fzerorubigd_balloon_pkg_grpcgw.NewBadRequest(err, "validation failed")
+	}
+
+	res, err = w.original.ForgotPassword(ctx, req)
+	return
+}
+
 func NewWrappedUserSystemServer(server UserSystemServer) WrappedUserSystemController {
 	return &wrappedUserSystemServer{
 		original: server,

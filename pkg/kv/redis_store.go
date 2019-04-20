@@ -4,7 +4,9 @@ import (
 	"time"
 
 	"github.com/fzerorubigd/balloon/pkg/assert"
-	"github.com/fzerorubigd/balloon/pkg/redis"
+	aredis "github.com/fzerorubigd/balloon/pkg/redis"
+	"github.com/gomodule/redigo/redis"
+	"github.com/pkg/errors"
 )
 
 const prefix string = "_REDIS_PREFIX_"
@@ -13,8 +15,13 @@ const prefix string = "_REDIS_PREFIX_"
 
 // StoreKey try to save the key in the key value store
 func StoreKey(key, value string, d time.Duration) error {
-	s := redis.Client.Set(prefix+key, value, d)
-	return s.Err()
+	conn := aredis.Connection()
+	defer func() {
+		_ = conn.Close()
+	}()
+
+	_, err := redis.String(conn.Do("PSETEX", prefix+key, d.Nanoseconds()/1000, value))
+	return errors.Wrap(err, "set failed")
 }
 
 // MustStoreKey try to save the key value panic on error
@@ -24,18 +31,27 @@ func MustStoreKey(key, value string, d time.Duration) {
 
 // FetchKey return the key if its already there
 func FetchKey(key string) (string, error) {
-	a := redis.Client.Get(prefix + key)
-	if err := a.Err(); err != nil {
-		return "", err
-	}
+	conn := aredis.Connection()
+	defer func() {
+		_ = conn.Close()
+	}()
 
-	return a.Val(), nil
+	s, err := redis.String(conn.Do("GET", prefix+key))
+	if err != nil {
+		return "", errors.Wrap(err, "get failed")
+	}
+	return s, nil
 }
 
 // DeleteKey try to delete a key
 func DeleteKey(key string) error {
-	a := redis.Client.Del(prefix + key)
-	return a.Err()
+	conn := aredis.Connection()
+	defer func() {
+		_ = conn.Close()
+	}()
+
+	_, err := conn.Do("DEL", prefix+key)
+	return errors.Wrap(err, "can not delete the key")
 }
 
 // MustDeleteKey try to delete a key panic on error

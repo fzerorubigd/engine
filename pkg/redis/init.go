@@ -2,19 +2,20 @@ package redis
 
 import (
 	"context"
+	"errors"
 	"fmt"
-	"net"
 	"sync"
+	"time"
 
 	"github.com/fzerorubigd/balloon/pkg/assert"
 	"github.com/fzerorubigd/balloon/pkg/initializer"
 	"github.com/fzerorubigd/balloon/pkg/log"
-	"github.com/go-redis/redis"
+	"github.com/gomodule/redigo/redis"
 )
 
 var (
 	// Client the actual pool to use with redis
-	Client ClientInterface
+	client *redis.Pool
 	all    []initializer.Simple
 	lock   sync.RWMutex
 )
@@ -24,46 +25,46 @@ type initRedis struct {
 
 // Initialize try to create a redis pool
 func (i *initRedis) Initialize(ctx context.Context) {
-	if cluster.Bool() {
-		endpoints, err := lookup(address.String())
-		assert.Nil(err)
-		for i := range endpoints {
-			endpoints[i] = fmt.Sprintf("%s:%d", endpoints[i], port.Int())
-		}
-		Client = redis.NewClusterClient(
-			&redis.ClusterOptions{
-				Addrs:    endpoints,
-				Password: password.String(),
-				PoolSize: poolsize.Int(),
-			},
-		)
-	} else {
-		Client = redis.NewClient(
-			&redis.Options{
-				Network:  "tcp",
-				Addr:     fmt.Sprintf("%s:%d", address.String(), port.Int()),
-				Password: password.String(),
-				PoolSize: poolsize.Int(),
-				DB:       db.Int(),
-			},
-		)
-	}
-	// PING the server to make sure every thing is fine
-	if err := Client.Ping().Err(); err != nil {
-		log.Fatal("Can not connect to redis", log.Err(err))
+	client = &redis.Pool{
+		Dial: func() (redis.Conn, error) {
+			return redis.Dial(
+				network.String(),
+				fmt.Sprintf("%s:%d", address.String(), port.Int()),
+				redis.DialDatabase(db.Int()),
+				redis.DialPassword(password.String()),
+			)
+		},
+		IdleTimeout:     time.Minute,
+		MaxActive:       poolsize.Int(),
+		MaxIdle:         5,
+		Wait:            true,
+		MaxConnLifetime: 10 * time.Minute,
+		TestOnBorrow: func(c redis.Conn, t time.Time) error {
+			if time.Since(t) > 10*time.Minute {
+				return errors.New("old connection, refreshing")
+			}
+			_, err := c.Do("PING")
+			return err
+		},
 	}
 
 	for i := range all {
 		all[i].Initialize()
 	}
 	log.Debug("redis is ready.")
+
 	go func() {
 		c := ctx.Done()
 		assert.NotNil(c, "[BUG] context has no mean to cancel/deadline/timeout")
 		<-c
-		assert.Nil(Client.Close())
+		assert.Nil(client.Close())
 		log.Debug("redis finalized.")
 	}()
+}
+
+// Connection return a new connection from the pool
+func Connection() redis.Conn {
+	return client.Get()
 }
 
 // Register a new object to inform it after redis is loaded
@@ -72,21 +73,6 @@ func Register(in initializer.Simple) {
 	defer lock.Unlock()
 
 	all = append(all, in)
-}
-
-func lookup(svcName string) ([]string, error) {
-	var endpoints []string
-	_, srvRecords, err := net.LookupSRV("", "", svcName)
-	if err != nil {
-		return endpoints, err
-	}
-	for _, srvRecord := range srvRecords {
-		// The SRV records ends in a "." for the root domain
-		ep := fmt.Sprintf("%v", srvRecord.Target[:len(srvRecord.Target)-1])
-		endpoints = append(endpoints, ep)
-	}
-	fmt.Print(endpoints)
-	return endpoints, nil
 }
 
 func init() {
