@@ -47,10 +47,10 @@ vendor:
 # Include modules make file
 include $(wildcard $(ROOT)/modules/*/module.mk)
 
-need_root :
+need_root:
 	@[ "$(shell id -u)" -eq "0" ] || exit 1
 
-not_root :
+not_root:
 	@[ "$(shell id -u)" != "0" ] || exit 1
 
 database-setup: need_root
@@ -62,7 +62,7 @@ database-setup: need_root
 	sudo -u postgres psql -U postgres -c "GRANT ALL ON DATABASE $(DB_NAME)_test TO $(DB_USER)_test;"
 
 $(BIN)/prototool:
-	$(CURL) -sSL https://github.com/uber/prototool/releases/download/v1.3.0/prototool-$(shell uname -s)-$(shell uname -m) -o $(BIN)/prototool
+	$(CURL) -sSL https://github.com/uber/prototool/releases/download/v1.6.0/prototool-$(shell uname -s)-$(shell uname -m) -o $(BIN)/prototool
 	$(CHMOD) +x $(BIN)/prototool
 
 $(BIN)/protoc-gen-go:
