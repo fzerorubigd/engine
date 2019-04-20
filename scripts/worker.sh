@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Postgres
 export BAL_SERVICES_POSTGRES_USER=$(echo ${DATABASE_URL} | grep -o "://[^:]*" | sed 's/^.\{3\}//')
@@ -12,6 +12,4 @@ export BAL_SERVICES_REDIS_ADDRESS=$(echo ${REDIS_URL} | grep -o "@[^:]*" | sed '
 export BAL_SERVICES_REDIS_PORT=$(echo ${REDIS_URL} | grep -o "[0-9]\+$")
 export BAL_SERVICES_REDIS_PASSWORD=$(echo ${REDIS_URL} | grep -o ":[^:@]*@" | sed 's/^.\{1\}//' | sed 's/.\{1\}$//')
 
-export PORT=80
-/bin/migration --action=up
-/bin/server
+/bin/worker

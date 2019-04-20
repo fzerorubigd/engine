@@ -139,6 +139,10 @@ run-server: code-gen build-server
 	@echo "Running..."
 	$(BIN)/server 2>&1
 
+run-worker: code-gen build-server
+	@echo "Running..."
+	$(BIN)/worker 2>&1
+
 all: build-server tools-migration
 
 watch: $(BIN)/reflex

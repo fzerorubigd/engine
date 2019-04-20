@@ -7,6 +7,7 @@ import (
 	"github.com/fzerorubigd/balloon/pkg/cli"
 	"github.com/fzerorubigd/balloon/pkg/initializer"
 	"github.com/fzerorubigd/balloon/pkg/job"
+	_ "github.com/fzerorubigd/balloon/pkg/mail"
 	"github.com/fzerorubigd/chapar/workers"
 )
 

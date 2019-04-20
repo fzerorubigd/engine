@@ -13,9 +13,13 @@ RUN apk add --no-cache --virtual .build-deps git gcc g++ libc-dev make \
 FROM alpine:3.6
 
 COPY --from=0 /go/src/github.com/fzerorubigd/balloon/bin/server /bin/
+COPY --from=0 /go/src/github.com/fzerorubigd/balloon/bin/worker /bin/
 COPY --from=0 /go/src/github.com/fzerorubigd/balloon/bin/migration /bin/
-ADD scripts/dokku-run.sh /bin/run.sh
+ADD scripts/server.sh /bin/server.sh
+ADD scripts/worker.sh /bin/worker.sh
+
+RUN chmod a+x /bin/server.sh /bin/worker.sh
 
 EXPOSE 80
 
-CMD ["/bin/sh", "/bin/run.sh"]
+CMD ["/bin/server.sh"]
