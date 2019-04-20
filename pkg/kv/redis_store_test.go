@@ -38,3 +38,19 @@ func TestFetchKey(t *testing.T) {
 	assert.Error(t, err)
 	assert.Empty(t, s)
 }
+
+func TestTTLKey(t *testing.T) {
+	ctx := context.Background()
+	defer mockery.Start(ctx, t)()
+
+	k, v := <-random.ID, <-random.ID
+	d, err := TTLKey(k)
+	assert.Error(t, err)
+	assert.Zero(t, d)
+
+	assert.NoError(t, StoreKey(k, v, time.Minute))
+	d, err = TTLKey(k)
+
+	assert.NoError(t, err)
+	assert.True(t, d <= time.Minute)
+}

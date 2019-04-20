@@ -58,3 +58,19 @@ func DeleteKey(key string) error {
 func MustDeleteKey(key string) {
 	assert.Nil(DeleteKey(key))
 }
+
+// TTLKey return the ttl of a key
+func TTLKey(key string) (time.Duration, error) {
+	conn := aredis.Connection()
+	defer func() {
+		_ = conn.Close()
+	}()
+
+	ttl, err := redis.Int64(conn.Do("TTL", prefix+key))
+	assert.Nil(err)
+	if ttl < 0 {
+		return 0, errors.New("key not found or had no ttl")
+	}
+
+	return time.Duration(1000 * ttl), nil
+}
