@@ -49,8 +49,6 @@ func TestTTLKey(t *testing.T) {
 	assert.Zero(t, d)
 
 	assert.NoError(t, StoreKey(k, v, time.Minute))
-	d, err = TTLKey(k)
-
-	assert.NoError(t, err)
+	assert.NotPanics(t, func() { d = MustTTLKey(k) })
 	assert.True(t, d <= time.Minute)
 }

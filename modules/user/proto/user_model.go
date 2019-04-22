@@ -9,6 +9,7 @@ import (
 
 	"github.com/fzerorubigd/balloon/pkg/assert"
 	"github.com/fzerorubigd/balloon/pkg/kv"
+	"github.com/fzerorubigd/balloon/pkg/log"
 	"github.com/fzerorubigd/balloon/pkg/random"
 	"github.com/gogo/protobuf/proto"
 	"github.com/pkg/errors"
@@ -133,4 +134,37 @@ func (m *Manager) DeleteToken(_ context.Context, token string) {
 func (m *Manager) ChangePassword(ctx context.Context, u *User, newPassword string) error {
 	u.Password = newPassword
 	return m.UpdateUser(ctx, u)
+}
+
+// CreateForgottenToken return a forgotten token, also return the age of already generated token
+// TODO: rate limit
+func (m *Manager) CreateForgottenToken(ctx context.Context, u *User) (string, time.Duration, error) {
+	key := fmt.Sprintf("forgotten_%d", u.Id)
+	v, err := kv.FetchKey(key)
+	if err != nil {
+		v = <-random.ID
+		assert.Nil(kv.StoreKey(key, v, 24*time.Hour))
+	}
+
+	ttl := kv.MustTTLKey(key)
+	return v, ttl, nil
+}
+
+// VerifyForgottenToken try to verify token and remove it after successful verify
+func (m *Manager) VerifyForgottenToken(ctx context.Context, u *User, token string) error {
+	key := fmt.Sprintf("forgotten_%d", u.Id)
+	v, err := kv.FetchKey(key)
+	if err != nil {
+		return errors.Wrap(err, "not found")
+	}
+
+	if v != token {
+		return errors.New("invalid token")
+	}
+
+	if err := kv.DeleteKey(key); err != nil {
+		log.Error("Could not delete the key", log.Err(err))
+	}
+
+	return nil
 }

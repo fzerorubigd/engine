@@ -104,3 +104,25 @@ func TestManager_FindUserByIndirectToken(t *testing.T) {
 	require.Error(t, err)
 	assert.Nil(t, u1)
 }
+
+func TestManager_ForgottenToken(t *testing.T) {
+	ctx := context.Background()
+	defer mockery.Start(ctx, t)()
+
+	m := NewManager()
+	u, err := m.RegisterUser(ctx, "valid@gmail.com", "name", "bita123")
+	require.NoError(t, err)
+
+	require.Error(t, m.VerifyForgottenToken(ctx, u, "RANDOOOOM"))
+
+	token, tm, err := m.CreateForgottenToken(ctx, u)
+	require.NoError(t, err)
+
+	token2, tm2, err := m.CreateForgottenToken(ctx, u)
+	require.NoError(t, err)
+	assert.Equal(t, token, token2)
+	assert.True(t, tm >= tm2)
+
+	require.Error(t, m.VerifyForgottenToken(ctx, u, "RANDOOOOM"))
+	require.NoError(t, m.VerifyForgottenToken(ctx, u, token))
+}

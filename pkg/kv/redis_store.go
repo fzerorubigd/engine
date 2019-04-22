@@ -74,3 +74,10 @@ func TTLKey(key string) (time.Duration, error) {
 
 	return time.Duration(1000 * ttl), nil
 }
+
+// MustTTLKey is the must version of the ttl key func
+func MustTTLKey(key string) time.Duration {
+	ttl, err := TTLKey(key)
+	assert.Nil(err)
+	return ttl
+}

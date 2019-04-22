@@ -9,6 +9,7 @@ import (
 	"github.com/fzerorubigd/balloon/pkg/assert"
 	"github.com/fzerorubigd/balloon/pkg/config"
 	"github.com/fzerorubigd/balloon/pkg/grpcgw"
+	"github.com/fzerorubigd/balloon/pkg/log"
 )
 
 var (
@@ -19,17 +20,20 @@ type userController struct {
 }
 
 func (uc *userController) ForgotPassword(ctx context.Context, fp *userpb.ForgotPasswordRequest) (*userpb.ForgotPasswordResponse, error) {
-	// m := userpb.NewManager()
+	m := userpb.NewManager()
 
-	// // TODO : rate limit
-	// u, err := m.FindUserByEmail(ctx, fp.Email)
-	// // This is a little tricky here, even on error we return an ok, the message on the client
-	// // should be complete
-	// if err != nil {
-	// 	return &userpb.ForgotPasswordResponse{}, nil
-	// }
-	//
-	//
+	// TODO : rate limit
+	u, err := m.FindUserByEmail(ctx, fp.Email)
+	// This is a little tricky here, even on error we return an ok, the message on the client
+	// should be complete
+	if err != nil {
+		return &userpb.ForgotPasswordResponse{}, nil
+	}
+
+	token, _, err := m.CreateForgottenToken(ctx, u)
+	assert.Nil(err)
+
+	log.Info("TODO", log.String("token", token))
 
 	return &userpb.ForgotPasswordResponse{}, nil
 }
