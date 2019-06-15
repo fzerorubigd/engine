@@ -30,6 +30,7 @@ type EmailAddress struct {
 	Name  string `json:"name"`
 }
 
+// Payload is the email payload for chapar
 type Payload struct {
 	Subject string         `json:"subject"`
 	Message string         `json:"message"`
