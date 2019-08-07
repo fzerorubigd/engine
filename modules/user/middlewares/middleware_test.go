@@ -6,10 +6,11 @@ import (
 	"time"
 
 	"github.com/fullstorydev/grpchan/inprocgrpc"
-	"github.com/fzerorubigd/balloon/modules/user/proto"
-	"github.com/fzerorubigd/balloon/pkg/grpcgw"
-	"github.com/fzerorubigd/balloon/pkg/mockery"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/fzerorubigd/engine/modules/user/proto"
+	"github.com/fzerorubigd/engine/pkg/grpcgw"
+	"github.com/fzerorubigd/engine/pkg/mockery"
 )
 
 type userMock struct {

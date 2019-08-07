@@ -1,16 +1,16 @@
 package cmd
 
 import (
-	// enable accounting module
-	_ "github.com/fzerorubigd/balloon/modules/accounting"
-	// enable misc module
-	_ "github.com/fzerorubigd/balloon/modules/misc"
-	// enable the user module
-	_ "github.com/fzerorubigd/balloon/modules/user"
-	"github.com/fzerorubigd/balloon/pkg/config"
+	"context"
+
+	"github.com/fzerorubigd/engine/pkg/config"
+	// misc module
+	_ "github.com/fzerorubigd/engine/modules/misc"
+	// user module
+	_ "github.com/fzerorubigd/engine/modules/user"
 )
 
-// InitializeConfig for this application
-func InitializeConfig() {
-	config.Initialize("balloon", "BAL")
+// InitializeConfig to initializ config and import packages
+func InitializeConfig(ctx context.Context) {
+	config.Initialize(ctx, "engine", "E")
 }

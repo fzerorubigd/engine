@@ -90,8 +90,8 @@ func (p *plugin) Generate(file *generator.FileDescriptor) {
 		vanity.TurnOffGogoImport(file.FileDescriptorProto)
 	}
 	p.PluginImports = generator.NewPluginImports(p.Generator)
-	p.modelImport = p.NewImport("github.com/fzerorubigd/balloon/pkg/postgres/model")
-	p.initImport = p.NewImport("github.com/fzerorubigd/balloon/pkg/initializer")
+	p.modelImport = p.NewImport("github.com/fzerorubigd/engine/pkg/postgres/model")
+	p.initImport = p.NewImport("github.com/fzerorubigd/engine/pkg/initializer")
 	p.timeImport = p.NewImport("time")
 	p.uuidImport = p.NewImport("github.com/google/uuid")
 	p.protoTimeImport = p.NewImport("github.com/fzerorubigd/protobuf/types")

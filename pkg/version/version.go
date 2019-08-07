@@ -5,9 +5,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/fzerorubigd/balloon/pkg/initializer"
-	"github.com/fzerorubigd/balloon/pkg/log"
 	"go.uber.org/zap/zapcore"
+
+	"github.com/fzerorubigd/engine/pkg/initializer"
+	"github.com/fzerorubigd/engine/pkg/log"
 )
 
 // Data is the application version in detail

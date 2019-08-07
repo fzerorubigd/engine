@@ -2,7 +2,9 @@ export ROOT:=$(realpath $(dir $(firstword $(MAKEFILE_LIST))))
 export BIN:=$(ROOT)/bin
 export GOBIN:=$(BIN)
 export PATH:=$(BIN):$(PATH)
-APP_NAME:=balloon
+export PROJECT=engine
+export PROTOTOOL_VERSION=1.8.0
+APP_NAME:=$(PROJECT)
 DEFAULT_PASS=bita123
 GO=$(shell which go)
 GIT=$(shell which git)
@@ -17,7 +19,7 @@ SHORT_HASH?=$(shell git log -n1 --pretty="format:%h"| cat)
 COMMIT_DATE?=$(shell git log -n1 --date="format:%D-%H-%I-%S" --pretty="format:%cd"| sed -e "s/\//-/g")
 COMMIT_COUNT?=$(shell git rev-list HEAD --count| cat)
 BUILD_DATE=$(shell date "+%D/%H/%I/%S"| sed -e "s/\//-/g")
-VERSION="github.com/fzerorubigd/balloon/pkg/version"
+VERSION="github.com/fzerorubigd/$(PROJECT)/pkg/version"
 FLAGS="-X $(VERSION).hash=$(LONG_HASH) -X $(VERSION).short=$(SHORT_HASH) -X $(VERSION).date=$(COMMIT_DATE) -X $(VERSION).count=$(COMMIT_COUNT) -X $(VERSION).build=$(BUILD_DATE)"
 LD_ARGS=-ldflags $(FLAGS)
 GET=cd $(ROOT) && $(GO) get -u -v $(LD_ARGS)
@@ -27,14 +29,12 @@ CG_SERVICES_POSTGRES_USER=$(DB_USER)
 CG_SERVICES_POSTGRES_PASSWORD=$(DB_PASS)
 CG_SERVICES_POSTGRES_DB=$(DB_NAME)
 where-am-i = $(CURDIR)/$(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
-export GO111MODULE=off
 
 # Default target is lint
 lint: $(BIN)/golint $(BIN)/flint $(BIN)/errcheck
-#	TODO Add errcheck when it fixed
 	$(GO) vet ./cmd/... ./pkg/... ./modules/...
 	$(BIN)/golint ./cmd/... ./pkg/... ./modules/...
-	$(BIN)/flint ./cmd/... ./pkg/... ./modules/...
+	#$(BIN)/flint ./cmd/... ./pkg/... ./modules/...
 	$(BIN)/errcheck ./cmd/... ./pkg/... ./modules/...
 
 clean:
@@ -62,7 +62,7 @@ database-setup: need_root
 	sudo -u postgres psql -U postgres -c "GRANT ALL ON DATABASE $(DB_NAME)_test TO $(DB_USER)_test;"
 
 $(BIN)/prototool:
-	$(CURL) -sSL https://github.com/uber/prototool/releases/download/v1.6.0/prototool-$(shell uname -s)-$(shell uname -m) -o $(BIN)/prototool
+	$(CURL) -sSL https://github.com/uber/prototool/releases/download/v$(PROTOTOOL_VERSION)/prototool-$(shell uname -s)-$(shell uname -m) -o $(BIN)/prototool
 	$(CHMOD) +x $(BIN)/prototool
 
 $(BIN)/protoc-gen-go:
@@ -112,8 +112,8 @@ mig-down: tools-migration
 	$(BIN)/migration -action=down
 
 test: tools-migration
-	BAL_SERVICES_POSTGRES_USER="$(DB_USER)_test" BAL_SERVICES_POSTGRES_DB="$(DB_NAME)_test" $(BIN)/migration -action=down-all
-	BAL_SERVICES_POSTGRES_USER="$(DB_USER)_test" BAL_SERVICES_POSTGRES_DB="$(DB_NAME)_test" $(BIN)/migration -action=up
+	E_SERVICES_POSTGRES_USER="$(DB_USER)_test" E_SERVICES_POSTGRES_DB="$(DB_NAME)_test" $(BIN)/migration -action=down-all
+	E_SERVICES_POSTGRES_USER="$(DB_USER)_test" E_SERVICES_POSTGRES_DB="$(DB_NAME)_test" $(BIN)/migration -action=up
 	$(GO) test ./... -coverprofile cover.cp
 
 proto: $(BIN)/prototool $(BIN)/protoc-gen-go $(BIN)/protoc-gen-grpc-gateway $(BIN)/protoc-gen-swagger $(BIN)/protoc-gen-grpchan $(BIN)/protoc-gen-gogo generators

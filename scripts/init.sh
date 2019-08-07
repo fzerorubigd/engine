@@ -1,4 +1,6 @@
 #!/bin/bash
+SCRIPT_DIR=$(readlink -f $(dirname ${BASH_SOURCE[0]}))
+source ${SCRIPT_DIR}/project.sh
 
 cat >>/etc/my_init.d/services <<-EOGO
 #!/bin/bash

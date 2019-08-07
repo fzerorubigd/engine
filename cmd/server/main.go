@@ -1,15 +1,15 @@
 package main
 
 import (
-	"github.com/fzerorubigd/balloon/cmd"
-	"github.com/fzerorubigd/balloon/pkg/cli"
-	"github.com/fzerorubigd/balloon/pkg/grpcgw"
-	"github.com/fzerorubigd/balloon/pkg/initializer"
+	"github.com/fzerorubigd/engine/cmd"
+	"github.com/fzerorubigd/engine/pkg/cli"
+	"github.com/fzerorubigd/engine/pkg/grpcgw"
+	"github.com/fzerorubigd/engine/pkg/initializer"
 )
 
 func main() {
 	ctx := cli.Context()
-	cmd.InitializeConfig()
+	cmd.InitializeConfig(ctx)
 
 	defer initializer.Initialize(ctx)()
 

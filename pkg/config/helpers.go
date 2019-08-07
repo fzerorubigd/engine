@@ -4,13 +4,6 @@ import (
 	"time"
 )
 
-// GetStruct fill an structure base on the config nested set, this function use reflection, and its not
-// good (in my opinion) for frequent call.
-// but its best if you need the config to loaded in structure and use that structure after that.
-func GetStruct(k string, m interface{}) {
-	o.GetStruct(k, m)
-}
-
 // GetIntDefault return an int value from Onion, if the value is not exists or its not an
 // integer , default is returned
 func GetIntDefault(key string, def int) int {

@@ -6,11 +6,12 @@ import (
 	"testing"
 
 	"github.com/DATA-DOG/go-txdb"
-	"github.com/fzerorubigd/balloon/pkg/config"
-	"github.com/fzerorubigd/balloon/pkg/initializer"
-	"github.com/fzerorubigd/balloon/pkg/log"
-	"github.com/fzerorubigd/balloon/pkg/postgres"
 	"go.uber.org/zap/zaptest"
+
+	"github.com/fzerorubigd/engine/pkg/config"
+	"github.com/fzerorubigd/engine/pkg/initializer"
+	"github.com/fzerorubigd/engine/pkg/log"
+	"github.com/fzerorubigd/engine/pkg/postgres"
 )
 
 var (
@@ -21,7 +22,7 @@ var (
 func Start(ctx context.Context, t *testing.T) func() {
 	if !alreadyRegistered {
 		alreadyRegistered = true
-		config.Initialize("testing", "T")
+		config.Initialize(ctx, "testing", "T")
 		log.SwappLogger(zaptest.NewLogger(t))
 
 		dsn := fmt.Sprintf(

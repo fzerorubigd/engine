@@ -68,7 +68,7 @@ generate:
   go_options:
     # The base import path. This should be the go path of the prototool.yaml file.
     # This is required if you have any go plugins.
-    import_path: github.com/fzerorubigd/balloon
+    import_path: github.com/fzerorubigd/engine
 
     # Extra modifiers to include with Mfile=package.
 #    extra_modifiers:
@@ -109,22 +109,22 @@ generate:
 #      type: gogo
 #      output: ../../.gen/proto/go
 
-    - name: grpc-gateway
-      type: gogo
-      output: .
-
-    - name: swagger
-      type: gogo
-      output: .
-
-    - name: grpchan
-      type: gogo
-      output: .
-
-    - name: wrapper
-      type: gogo
-      output: .
-
-    - name: model
-      type: gogo
-      output: .
+#    - name: grpc-gateway
+#      type: gogo
+#      output: .
+#
+#    - name: swagger
+#      type: gogo
+#      output: .
+#
+#    - name: grpchan
+#      type: gogo
+#      output: .
+#
+#    - name: wrapper
+#      type: gogo
+#      output: .
+#
+#    - name: model
+#      type: gogo
+#      output: .

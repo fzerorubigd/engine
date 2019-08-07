@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
+SCRIPT_DIR=$(readlink -f $(dirname ${BASH_SOURCE[0]}))
+source ${SCRIPT_DIR}/project.sh
+
+cd ${SCRIPT_DIR}/..
 
 if [[ "$#" -ne 1 ]]; then
     echo "Name for this migration : "
@@ -8,8 +12,6 @@ else
     NAME=${1}
 fi
 
-SCRIPT_DIR=$(readlink -f $(dirname ${BASH_SOURCE[0]}))
-cd ${SCRIPT_DIR}/..
 
 DATE=`date +%Y%m%d%H%M%S`
 FILE="${DATE}_${NAME}.sql"

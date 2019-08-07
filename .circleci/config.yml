@@ -9,12 +9,12 @@ jobs:
       - image: circleci/golang:1.12
       - image: circleci/postgres:11-alpine
         environment:
-          POSTGRES_USER: balloon_test
+          POSTGRES_USER: engine_test
           POSTGRES_PASSWORD: bita123
-          POSTGRES_DB: balloon_test
+          POSTGRES_DB: engine_test
       - image:  circleci/redis:latest
 
-    working_directory: /go/src/github.com/fzerorubigd/balloon
+    working_directory: /go/src/github.com/fzerorubigd/engine
     steps:
       - checkout
       # specify any bash command here prefixed with `run: `

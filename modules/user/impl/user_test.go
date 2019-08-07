@@ -6,11 +6,12 @@ import (
 	"testing"
 
 	"github.com/fullstorydev/grpchan/inprocgrpc"
-	"github.com/fzerorubigd/balloon/modules/user/proto"
-	"github.com/fzerorubigd/balloon/pkg/grpcgw"
-	"github.com/fzerorubigd/balloon/pkg/mockery"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/fzerorubigd/engine/modules/user/proto"
+	"github.com/fzerorubigd/engine/pkg/grpcgw"
+	"github.com/fzerorubigd/engine/pkg/mockery"
 )
 
 var ch *inprocgrpc.Channel
@@ -93,7 +94,7 @@ func TestUserController_Register(t *testing.T) {
 		Password:    "123456",
 	})
 
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, "display", r.DisplayName)
 	assert.Equal(t, userpb.UserStatus_USER_STATUS_REGISTERED, r.Status)
 	assert.NotZerof(t, r.Id, "User Id is not valid")
@@ -125,13 +126,13 @@ func TestUserController_Logout(t *testing.T) {
 		DisplayName: "display",
 		Password:    "bita123",
 	})
-	assert.NoError(t, err)
+	require.NoError(t, err)
 
 	_, err = u.Logout(mockery.AuthorizeToken(ctx, r1.Token), &userpb.LogoutRequest{})
-	assert.NoError(t, err)
+	require.NoError(t, err)
 
 	_, err = u.Logout(mockery.AuthorizeToken(ctx, r1.Token), &userpb.LogoutRequest{})
-	assert.Error(t, err)
+	require.Error(t, err)
 	require.IsType(t, grpcgw.NewNotFound(nil), err)
 	gErr = err.(grpcgw.GWError)
 	assert.Equal(t, http.StatusUnauthorized, gErr.Status())
@@ -153,7 +154,7 @@ func TestUserController_Ping(t *testing.T) {
 		DisplayName: "display",
 		Password:    "bita123",
 	})
-	assert.NoError(t, err)
+	require.NoError(t, err)
 
 	r2, err := u.Ping(mockery.AuthorizeToken(ctx, r1.Token), &userpb.PingRequest{})
 	require.NoError(t, err)
@@ -170,7 +171,7 @@ func TestUserController_ChangePassword(t *testing.T) {
 		DisplayName: "display",
 		Password:    "bita123",
 	})
-	assert.NoError(t, err)
+	require.NoError(t, err)
 
 	ctx = mockery.AuthorizeToken(ctx, r1.Token)
 
@@ -198,7 +199,7 @@ func TestUserController_ChangePassword(t *testing.T) {
 		Email:    "valid@gmail.com",
 	})
 
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, r3.Id, r1.Id)
 	assert.Equal(t, r3.DisplayName, r1.DisplayName)
 	assert.Equal(t, r3.Status, r1.Status)
@@ -214,7 +215,7 @@ func TestUserController_ChangeDisplayName(t *testing.T) {
 		DisplayName: "display",
 		Password:    "bita123",
 	})
-	assert.NoError(t, err)
+	require.NoError(t, err)
 
 	ctx = mockery.AuthorizeToken(ctx, r1.Token)
 

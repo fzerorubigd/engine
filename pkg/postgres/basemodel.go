@@ -8,11 +8,12 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/fzerorubigd/balloon/pkg/assert"
-	"github.com/fzerorubigd/balloon/pkg/initializer"
-	"github.com/fzerorubigd/balloon/pkg/log"
-	"github.com/fzerorubigd/balloon/pkg/postgres/model"
 	_ "github.com/lib/pq" // Make sure the pg is available
+
+	"github.com/fzerorubigd/engine/pkg/assert"
+	"github.com/fzerorubigd/engine/pkg/initializer"
+	"github.com/fzerorubigd/engine/pkg/log"
+	"github.com/fzerorubigd/engine/pkg/postgres/model"
 )
 
 var (
@@ -32,6 +33,11 @@ func realInstance(ctx context.Context) (*sql.DB, error) {
 		pass.String(),
 		dbname.String(),
 		sslmode.String(),
+	)
+	log.Info("Connecting to database",
+		log.String("host", host.String()),
+		log.String("user", user.String()),
+		log.String("db", dbname.String()),
 	)
 	pgDB, err := sql.Open("postgres", dsn)
 	if err != nil {

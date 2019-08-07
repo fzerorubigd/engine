@@ -9,8 +9,7 @@ import (
 	"time"
 
 	"github.com/fullstorydev/grpchan/inprocgrpc"
-	"github.com/fzerorubigd/balloon/pkg/config"
-	"github.com/fzerorubigd/balloon/pkg/log"
+	"github.com/goraz/onion/configwatch"
 	"github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
 	"github.com/grpc-ecosystem/go-grpc-middleware/recovery"
@@ -18,7 +17,9 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/rs/cors"
 	"google.golang.org/grpc"
-	"gopkg.in/fzerorubigd/onion.v3"
+
+	"github.com/fzerorubigd/engine/pkg/config"
+	"github.com/fzerorubigd/engine/pkg/log"
 )
 
 // Controller is the simple controller interface
@@ -38,7 +39,7 @@ var (
 	interceptors []Interceptor
 	lock         sync.RWMutex
 
-	addr onion.String
+	addr configwatch.String
 )
 
 // Register new controller into system

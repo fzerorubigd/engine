@@ -3,7 +3,7 @@
 
 package userpb
 
-import github_com_fzerorubigd_balloon_pkg_postgres_model "github.com/fzerorubigd/balloon/pkg/postgres/model"
+import github_com_fzerorubigd_engine_pkg_postgres_model "github.com/fzerorubigd/engine/pkg/postgres/model"
 import time "time"
 import github_com_fzerorubigd_protobuf_types "github.com/fzerorubigd/protobuf/types"
 import context "context"
@@ -28,14 +28,14 @@ const (
 )
 
 type Manager struct {
-	github_com_fzerorubigd_balloon_pkg_postgres_model.Manager
+	github_com_fzerorubigd_engine_pkg_postgres_model.Manager
 }
 
 func NewManager() *Manager {
 	return &Manager{}
 }
 
-func NewManagerFromTransaction(tx github_com_fzerorubigd_balloon_pkg_postgres_model.DBX) (*Manager, error) {
+func NewManagerFromTransaction(tx github_com_fzerorubigd_engine_pkg_postgres_model.DBX) (*Manager, error) {
 	m := &Manager{}
 	err := m.Hijack(tx)
 
@@ -96,7 +96,7 @@ func (m *Manager) GetUserByPrimary(ctx context.Context, id int64) (*User, error)
 	return m.scanUser(row)
 }
 
-func (m *Manager) scanUser(row github_com_fzerorubigd_balloon_pkg_postgres_model.Scanner, extra ...interface{}) (*User, error) {
+func (m *Manager) scanUser(row github_com_fzerorubigd_engine_pkg_postgres_model.Scanner, extra ...interface{}) (*User, error) {
 	var u User
 	all := append([]interface{}{&u.Id, &u.Email, &u.DisplayName, &u.Password, &u.Status, &u.CreatedAt, &u.UpdatedAt, &u.LastLogin}, extra...)
 	err := row.Scan(all...)

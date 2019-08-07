@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/fzerorubigd/balloon/cmd"
-	"github.com/fzerorubigd/balloon/pkg/cli"
-	"github.com/fzerorubigd/balloon/pkg/initializer"
-	"github.com/fzerorubigd/balloon/pkg/log"
-	"github.com/fzerorubigd/balloon/pkg/migration"
-	"github.com/fzerorubigd/balloon/pkg/postgres/model"
+	"github.com/fzerorubigd/engine/cmd"
+	"github.com/fzerorubigd/engine/pkg/cli"
+	"github.com/fzerorubigd/engine/pkg/initializer"
+	"github.com/fzerorubigd/engine/pkg/log"
+	"github.com/fzerorubigd/engine/pkg/migration"
+	"github.com/fzerorubigd/engine/pkg/postgres/model"
 )
 
 var (
@@ -20,7 +20,7 @@ var (
 
 func main() {
 	ctx := cli.Context()
-	cmd.InitializeConfig()
+	cmd.InitializeConfig(ctx)
 
 	defer initializer.Initialize(ctx)()
 

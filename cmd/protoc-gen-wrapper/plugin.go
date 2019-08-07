@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/fzerorubigd/balloon/pkg/assert"
+	"github.com/fzerorubigd/engine/pkg/assert"
 	"github.com/fzerorubigd/protobuf/extra"
 	"github.com/gogo/protobuf/proto"
 	"github.com/gogo/protobuf/protoc-gen-gogo/generator"
@@ -57,14 +57,14 @@ func (p *plugin) Generate(file *generator.FileDescriptor) {
 		vanity.TurnOffGogoImport(file.FileDescriptorProto)
 	}
 	p.PluginImports = generator.NewPluginImports(p.Generator)
-	p.grpcgwImport = p.NewImport("github.com/fzerorubigd/balloon/pkg/grpcgw")
+	p.grpcgwImport = p.NewImport("github.com/fzerorubigd/engine/pkg/grpcgw")
 	p.validatorImport = p.NewImport("gopkg.in/go-playground/validator.v9")
 	p.contextImport = p.NewImport("golang.org/x/net/context")
 	p.inprocgrpcImport = p.NewImport("github.com/fullstorydev/grpchan/inprocgrpc")
 	p.runtimeImport = p.NewImport("github.com/grpc-ecosystem/grpc-gateway/runtime")
-	p.assertImport = p.NewImport("github.com/fzerorubigd/balloon/pkg/assert")
-	p.logImport = p.NewImport("github.com/fzerorubigd/balloon/pkg/log")
-	p.resourcesImport = p.NewImport("github.com/fzerorubigd/balloon/pkg/resources")
+	p.assertImport = p.NewImport("github.com/fzerorubigd/engine/pkg/assert")
+	p.logImport = p.NewImport("github.com/fzerorubigd/engine/pkg/log")
+	p.resourcesImport = p.NewImport("github.com/fzerorubigd/engine/pkg/resources")
 	p.errorsImport = p.NewImport("github.com/pkg/errors")
 
 	resMap := make(map[string]string)

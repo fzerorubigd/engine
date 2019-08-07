@@ -1,7 +1,7 @@
 #!/bin/bash -x
 set -euo pipefail
+SCRIPT_DIR=$(readlink -f $(dirname ${BASH_SOURCE[0]}))
+source ${SCRIPT_DIR}/project.sh
 
 echo -e "\nexport ENV=development\n" >> /home/develop/.zshrc
-echo -e "\nexport PATH=\${PATH}:/home/develop/go/src/github.com/fzerorubigd/balloon/scripts:/home/develop/go/src/github.com/fzerorubigd/balloon/bin" >> /home/develop/.zshrc
-
-#make all
+echo -e "\nexport PATH=\${PATH}:/home/develop/${PROJECT}/scripts:/home/develop/${PROJECT}/bin" >> /home/develop/.zshrc

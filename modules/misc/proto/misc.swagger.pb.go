@@ -4,8 +4,8 @@ package miscpb
 import (
 	"encoding/json"
 
-	"github.com/fzerorubigd/balloon/pkg/assert"
-	"github.com/fzerorubigd/balloon/pkg/grpcgw"
+	"github.com/fzerorubigd/engine/pkg/assert"
+	"github.com/fzerorubigd/engine/pkg/grpcgw"
 )
 
 const paths = "{\"/v1/misc/version\":{\"get\":{\"operationId\":\"Version\",\"responses\":{\"200\":{\"description\":\"A successful response.\",\"schema\":{\"$ref\":\"#/definitions/miscVersionResponse\"}}},\"tags\":[\"MiscSystem\"]}}}"

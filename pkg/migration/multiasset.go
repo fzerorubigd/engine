@@ -7,9 +7,10 @@ import (
 	"sort"
 	"text/tabwriter"
 
-	// Make sure postgres is already initialized
-	_ "github.com/fzerorubigd/balloon/pkg/postgres"
 	"github.com/rubenv/sql-migrate"
+
+	// Make sure postgres is already initialized
+	_ "github.com/fzerorubigd/engine/pkg/postgres"
 )
 
 var (

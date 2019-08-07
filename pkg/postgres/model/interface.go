@@ -7,7 +7,7 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-//DBX is the sqlx executer interfacefor both transaction and DB
+// DBX is the sqlx executer interfacefor both transaction and DB
 type DBX interface {
 	sqlx.Ext
 	sqlx.ExecerContext
@@ -18,7 +18,7 @@ type DBX interface {
 	NamedExec(query string, arg interface{}) (sql.Result, error)
 	NamedExecContext(ctx context.Context, query string, arg interface{}) (sql.Result, error)
 	NamedQuery(query string, arg interface{}) (*sqlx.Rows, error)
-	//NamedQueryContext(ctx context.Context, query string, arg interface{}) (*sqlx.Rows, error)
+	// NamedQueryContext(ctx context.Context, query string, arg interface{}) (*sqlx.Rows, error)
 	PrepareNamed(query string) (*sqlx.NamedStmt, error)
 	PrepareNamedContext(ctx context.Context, query string) (*sqlx.NamedStmt, error)
 	Preparex(query string) (*sqlx.Stmt, error)

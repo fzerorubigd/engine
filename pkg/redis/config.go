@@ -1,7 +1,7 @@
 package redis
 
 import (
-	"github.com/fzerorubigd/balloon/pkg/config"
+	"github.com/fzerorubigd/engine/pkg/config"
 )
 
 var (
