@@ -62,7 +62,7 @@ var (
 		Info: struct {
 			Title   string `json:"title"`
 			Version string `json:"version"`
-		}{Title: "Balloon Swagger", Version: "1.0"},
+		}{Title: "Engine Swagger", Version: "1.0"},
 		Schemes:     []string{"https", "http"},
 		Consumes:    []string{"application/json"},
 		Produces:    []string{"application/json"},
@@ -89,6 +89,10 @@ func swaggerHandler(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 		return
+	}
+
+	if fl == "" {
+		fl = "index.html"
 	}
 
 	d, err := Asset(fl)
