@@ -4,12 +4,15 @@ export GOBIN:=$(BIN)
 export PATH:=$(BIN):$(PATH)
 export PROJECT=engine
 export PROTOTOOL_VERSION=1.8.0
+export DOKKU_HOST=qollenge.ir
 APP_NAME:=$(PROJECT)
 DEFAULT_PASS=bita123
 GO=$(shell which go)
 GIT=$(shell which git)
 CURL:=$(shell which curl)
 CHMOD=$(shell which chmod)
+DOCKER=$(shell which docker)
+SSH=$(shell which ssh)
 DB_PASS?=$(DEFAULT_PASS)
 DB_USER?=$(APP_NAME)
 DB_NAME?=$(APP_NAME)
@@ -147,5 +150,10 @@ all: build-server tools-migration
 
 watch: $(BIN)/reflex
 	$(BIN)/reflex -r '\.proto$$' make code-gen
+
+deploy:
+	$(DOCKER) build . -t dokku/$(PROJECT):$(COMMIT_COUNT)
+	$(DOCKER) save dokku/$(PROJECT):$(COMMIT_COUNT) | $(SSH) root@$(DOKKU_HOST) "docker load"
+	$(SSH) root@$(DOKKU_HOST) "dokku tags:deploy $(PROJECT) $(COMMIT_COUNT)"
 
 .PHONY: swagger-to-go proto swagger build-server run-server generate vendor

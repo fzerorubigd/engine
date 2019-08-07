@@ -17,6 +17,12 @@ jobs:
     working_directory: /go/src/github.com/fzerorubigd/engine
     steps:
       - checkout
-      # specify any bash command here prefixed with `run: `
+      - add_ssh_keys:
+          fingerprints:
+            - "92:61:dd:ad:f1:ea:2b:18:ea:d7:cd:a6:2c:e7:88:f0"
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run: make lint
       - run: make test
+      - run: ssh-keyscan qollenge.ir >> ~/.ssh/known_hosts
+      - run: make deploy
