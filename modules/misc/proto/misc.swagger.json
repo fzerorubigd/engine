@@ -15,6 +15,22 @@
     "application/json"
   ],
   "paths": {
+    "/v1/misc/health": {
+      "get": {
+        "operationId": "Health",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/miscHealthResponse"
+            }
+          }
+        },
+        "tags": [
+          "MiscSystem"
+        ]
+      }
+    },
     "/v1/misc/version": {
       "get": {
         "operationId": "Version",
@@ -33,6 +49,9 @@
     }
   },
   "definitions": {
+    "miscHealthResponse": {
+      "type": "object"
+    },
     "miscVersionResponse": {
       "type": "object",
       "properties": {

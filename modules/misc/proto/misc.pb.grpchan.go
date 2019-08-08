@@ -27,3 +27,12 @@ func (c *miscSystemChannelClient) Version(ctx context.Context, in *VersionReques
 	}
 	return out, nil
 }
+
+func (c *miscSystemChannelClient) Health(ctx context.Context, in *HealthRequest, opts ...grpc.CallOption) (*HealthResponse, error) {
+	out := new(HealthResponse)
+	err := c.ch.Invoke(ctx, "/misc.MiscSystem/Health", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}

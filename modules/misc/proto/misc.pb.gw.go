@@ -37,6 +37,15 @@ func request_MiscSystem_Version_0(ctx context.Context, marshaler runtime.Marshal
 
 }
 
+func request_MiscSystem_Health_0(ctx context.Context, marshaler runtime.Marshaler, client MiscSystemClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq HealthRequest
+	var metadata runtime.ServerMetadata
+
+	msg, err := client.Health(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
 // RegisterMiscSystemHandlerFromEndpoint is same as RegisterMiscSystemHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
 func RegisterMiscSystemHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
@@ -95,13 +104,37 @@ func RegisterMiscSystemHandlerClient(ctx context.Context, mux *runtime.ServeMux,
 
 	})
 
+	mux.Handle("GET", pattern_MiscSystem_Health_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_MiscSystem_Health_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_MiscSystem_Health_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	return nil
 }
 
 var (
-	pattern_MiscSystem_Version_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "misc", "version"}, ""))
+	pattern_MiscSystem_Version_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "misc", "version"}, "", runtime.AssumeColonVerbOpt(true)))
+
+	pattern_MiscSystem_Health_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "misc", "health"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
 	forward_MiscSystem_Version_0 = runtime.ForwardResponseMessage
+
+	forward_MiscSystem_Health_0 = runtime.ForwardResponseMessage
 )

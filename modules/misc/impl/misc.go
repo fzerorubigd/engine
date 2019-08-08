@@ -3,13 +3,24 @@ package impl
 import (
 	"context"
 
+	"github.com/gogo/protobuf/types"
+
 	"github.com/fzerorubigd/engine/modules/misc/proto"
 	"github.com/fzerorubigd/engine/pkg/grpcgw"
+	"github.com/fzerorubigd/engine/pkg/health"
 	"github.com/fzerorubigd/engine/pkg/version"
-	"github.com/gogo/protobuf/types"
 )
 
 type miscController struct {
+}
+
+func (mc miscController) Health(ctx context.Context, _ *miscpb.HealthRequest) (*miscpb.HealthResponse, error) {
+	err := health.Healthy(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &miscpb.HealthResponse{}, nil
 }
 
 func (mc miscController) Version(context.Context, *miscpb.VersionRequest) (*miscpb.VersionResponse, error) {

@@ -21,10 +21,19 @@ message VersionResponse {
 
 message VersionRequest {}
 
+message HealthResponse {}
+
+message HealthRequest {}
+
 service MiscSystem {
   rpc Version(VersionRequest) returns (VersionResponse) {
     option (google.api.http) = {
       get: "/v1/misc/version"
+    };
+  }
+  rpc Health(HealthRequest) returns (HealthResponse) {
+    option (google.api.http) = {
+      get: "/v1/misc/health"
     };
   }
 }

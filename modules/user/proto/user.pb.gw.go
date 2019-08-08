@@ -313,19 +313,19 @@ func RegisterUserSystemHandlerClient(ctx context.Context, mux *runtime.ServeMux,
 }
 
 var (
-	pattern_UserSystem_Login_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "user", "login"}, ""))
+	pattern_UserSystem_Login_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "user", "login"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_UserSystem_Logout_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "user", "logout"}, ""))
+	pattern_UserSystem_Logout_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "user", "logout"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_UserSystem_Register_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "user", "register"}, ""))
+	pattern_UserSystem_Register_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "user", "register"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_UserSystem_Ping_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "user", "ping"}, ""))
+	pattern_UserSystem_Ping_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "user", "ping"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_UserSystem_ChangePassword_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "user", "change", "password"}, ""))
+	pattern_UserSystem_ChangePassword_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "user", "change", "password"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_UserSystem_ChangeDisplayName_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "user", "change", "displayname"}, ""))
+	pattern_UserSystem_ChangeDisplayName_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "user", "change", "displayname"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_UserSystem_ForgotPassword_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "user", "forgot"}, ""))
+	pattern_UserSystem_ForgotPassword_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "user", "forgot"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

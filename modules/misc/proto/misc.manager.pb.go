@@ -3,12 +3,14 @@
 
 package miscpb
 
-import proto "github.com/golang/protobuf/proto"
-import fmt "fmt"
-import math "math"
-import _ "github.com/gogo/protobuf/gogoproto"
-import _ "github.com/gogo/protobuf/types"
-import _ "google.golang.org/genproto/googleapis/api/annotations"
+import (
+	fmt "fmt"
+	math "math"
+	proto "github.com/golang/protobuf/proto"
+	_ "github.com/gogo/protobuf/gogoproto"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
+	_ "github.com/gogo/protobuf/types"
+)
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal

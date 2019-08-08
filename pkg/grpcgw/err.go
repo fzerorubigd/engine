@@ -104,9 +104,19 @@ func defaultHTTPError(ctx context.Context, _ *runtime.ServeMux, marshaler runtim
 	w.Header().Del("Trailer")
 	w.Header().Set("Content-Type", marshaler.ContentType())
 
-	body, ok := err.(GWError)
+	g, ok := err.(GWError)
 	if !ok {
-		body = tryGRPCError(err)
+		g = tryGRPCError(err)
+	}
+
+	body, ok := g.(*gwError)
+	if !ok {
+		body = &gwError{
+			error: err,
+			Msg:   g.Message(),
+			S:     g.Status(),
+			F:     g.Fields(),
+		}
 	}
 
 	buf, merr := marshaler.Marshal(body)

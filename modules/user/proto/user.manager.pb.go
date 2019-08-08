@@ -3,18 +3,20 @@
 
 package userpb
 
-import github_com_fzerorubigd_engine_pkg_postgres_model "github.com/fzerorubigd/engine/pkg/postgres/model"
-import time "time"
-import github_com_fzerorubigd_protobuf_types "github.com/fzerorubigd/protobuf/types"
-import context "context"
-import proto "github.com/golang/protobuf/proto"
-import fmt "fmt"
-import math "math"
-import _ "github.com/fzerorubigd/protobuf/extra"
-import _ "github.com/fzerorubigd/protobuf/types"
-import _ "github.com/gogo/protobuf/gogoproto"
-import _ "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options"
-import _ "google.golang.org/genproto/googleapis/api/annotations"
+import (
+	fmt "fmt"
+	math "math"
+	proto "github.com/golang/protobuf/proto"
+	_ "github.com/fzerorubigd/protobuf/extra"
+	_ "github.com/fzerorubigd/protobuf/types"
+	_ "github.com/gogo/protobuf/gogoproto"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
+	_ "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options"
+	github_com_fzerorubigd_engine_pkg_postgres_model "github.com/fzerorubigd/engine/pkg/postgres/model"
+	time "time"
+	github_com_fzerorubigd_protobuf_types "github.com/fzerorubigd/protobuf/types"
+	context "context"
+)
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal

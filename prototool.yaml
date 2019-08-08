@@ -109,22 +109,22 @@ generate:
 #      type: gogo
 #      output: ../../.gen/proto/go
 
-#    - name: grpc-gateway
-#      type: gogo
-#      output: .
-#
-#    - name: swagger
-#      type: gogo
-#      output: .
-#
-#    - name: grpchan
-#      type: gogo
-#      output: .
-#
-#    - name: wrapper
-#      type: gogo
-#      output: .
-#
-#    - name: model
-#      type: gogo
-#      output: .
+    - name: grpc-gateway
+      type: gogo
+      output: .
+
+    - name: swagger
+      type: gogo
+      output: .
+
+    - name: grpchan
+      type: gogo
+      output: .
+
+    - name: wrapper
+      type: gogo
+      output: .
+
+    - name: model
+      type: gogo
+      output: .
