@@ -13,6 +13,7 @@ COPY --from=0 /go/src/github.com/fzerorubigd/engine/bin/server /bin/
 COPY --from=0 /go/src/github.com/fzerorubigd/engine/bin/migration /bin/
 ADD scripts/server.sh /bin/server.sh
 ADD scripts/Procfile /bin/Procfile
+ADD scripts/CHECKS /bin/CHECKS
 RUN chmod a+x /bin/server.sh
 
 EXPOSE 80
