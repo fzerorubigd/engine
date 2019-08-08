@@ -24,5 +24,4 @@ jobs:
           docker_layer_caching: true
       - run: make lint
       - run: make test
-      - run: ssh-keyscan qollenge.ir >> ~/.ssh/known_hosts
       - run: make deploy

@@ -153,7 +153,7 @@ watch: $(BIN)/reflex
 
 deploy:
 	$(DOCKER) build . -t dokku/$(PROJECT):$(COMMIT_COUNT)
-	$(DOCKER) save dokku/$(PROJECT):$(COMMIT_COUNT) | $(SSH) root@$(DOKKU_HOST) "docker load"
-	$(SSH) root@$(DOKKU_HOST) "dokku tags:deploy $(PROJECT) $(COMMIT_COUNT)"
+	$(DOCKER) save dokku/$(PROJECT):$(COMMIT_COUNT) | $(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "docker load"
+	$(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "dokku tags:deploy $(PROJECT) $(COMMIT_COUNT)"
 
 .PHONY: swagger-to-go proto swagger build-server run-server generate vendor
