@@ -12,13 +12,13 @@ import (
 	_ "github.com/gogo/protobuf/gogoproto"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	_ "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options"
-	github_com_fzerorubigd_engine_pkg_grpcgw "github.com/fzerorubigd/engine/pkg/grpcgw"
+	elbix_dev_engine_pkg_grpcgw "elbix.dev/engine/pkg/grpcgw"
 	gopkg_in_go_playground_validator_v9 "gopkg.in/go-playground/validator.v9"
 	golang_org_x_net_context "golang.org/x/net/context"
 	github_com_fullstorydev_grpchan_inprocgrpc "github.com/fullstorydev/grpchan/inprocgrpc"
 	github_com_grpc_ecosystem_grpc_gateway_runtime "github.com/grpc-ecosystem/grpc-gateway/runtime"
-	github_com_fzerorubigd_engine_pkg_assert "github.com/fzerorubigd/engine/pkg/assert"
-	github_com_fzerorubigd_engine_pkg_resources "github.com/fzerorubigd/engine/pkg/resources"
+	elbix_dev_engine_pkg_assert "elbix.dev/engine/pkg/assert"
+	elbix_dev_engine_pkg_resources "elbix.dev/engine/pkg/resources"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -28,7 +28,7 @@ var _ = math.Inf
 
 type WrappedUserSystemController interface {
 	UserSystemServer
-	github_com_fzerorubigd_engine_pkg_grpcgw.Controller
+	elbix_dev_engine_pkg_grpcgw.Controller
 }
 
 type wrappedUserSystemServer struct {
@@ -40,16 +40,16 @@ func (w *wrappedUserSystemServer) Init(ctx golang_org_x_net_context.Context, ch 
 	RegisterHandlerUserSystem(ch, w)
 	cl := NewUserSystemChannelClient(ch)
 
-	github_com_fzerorubigd_engine_pkg_assert.Nil(RegisterUserSystemHandlerClient(ctx, mux, cl))
+	elbix_dev_engine_pkg_assert.Nil(RegisterUserSystemHandlerClient(ctx, mux, cl))
 }
 
 func (w *wrappedUserSystemServer) Login(ctx golang_org_x_net_context.Context, req *LoginRequest) (res *UserResponse, err error) {
-	ctx, err = github_com_fzerorubigd_engine_pkg_grpcgw.ExecuteMiddleware(ctx, w.original)
+	ctx, err = elbix_dev_engine_pkg_grpcgw.ExecuteMiddleware(ctx, w.original)
 	if err != nil {
 		return nil, err
 	}
 	if err = w.v.Struct(req); err != nil {
-		return nil, github_com_fzerorubigd_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
+		return nil, elbix_dev_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 
 	res, err = w.original.Login(ctx, req)
@@ -57,12 +57,12 @@ func (w *wrappedUserSystemServer) Login(ctx golang_org_x_net_context.Context, re
 }
 
 func (w *wrappedUserSystemServer) Logout(ctx golang_org_x_net_context.Context, req *LogoutRequest) (res *LogoutResponse, err error) {
-	ctx, err = github_com_fzerorubigd_engine_pkg_grpcgw.ExecuteMiddleware(ctx, w.original)
+	ctx, err = elbix_dev_engine_pkg_grpcgw.ExecuteMiddleware(ctx, w.original)
 	if err != nil {
 		return nil, err
 	}
 	if err = w.v.Struct(req); err != nil {
-		return nil, github_com_fzerorubigd_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
+		return nil, elbix_dev_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 
 	res, err = w.original.Logout(ctx, req)
@@ -70,12 +70,12 @@ func (w *wrappedUserSystemServer) Logout(ctx golang_org_x_net_context.Context, r
 }
 
 func (w *wrappedUserSystemServer) Register(ctx golang_org_x_net_context.Context, req *RegisterRequest) (res *UserResponse, err error) {
-	ctx, err = github_com_fzerorubigd_engine_pkg_grpcgw.ExecuteMiddleware(ctx, w.original)
+	ctx, err = elbix_dev_engine_pkg_grpcgw.ExecuteMiddleware(ctx, w.original)
 	if err != nil {
 		return nil, err
 	}
 	if err = w.v.Struct(req); err != nil {
-		return nil, github_com_fzerorubigd_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
+		return nil, elbix_dev_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 
 	res, err = w.original.Register(ctx, req)
@@ -83,12 +83,12 @@ func (w *wrappedUserSystemServer) Register(ctx golang_org_x_net_context.Context,
 }
 
 func (w *wrappedUserSystemServer) Ping(ctx golang_org_x_net_context.Context, req *PingRequest) (res *UserResponse, err error) {
-	ctx, err = github_com_fzerorubigd_engine_pkg_grpcgw.ExecuteMiddleware(ctx, w.original)
+	ctx, err = elbix_dev_engine_pkg_grpcgw.ExecuteMiddleware(ctx, w.original)
 	if err != nil {
 		return nil, err
 	}
 	if err = w.v.Struct(req); err != nil {
-		return nil, github_com_fzerorubigd_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
+		return nil, elbix_dev_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 
 	res, err = w.original.Ping(ctx, req)
@@ -96,12 +96,12 @@ func (w *wrappedUserSystemServer) Ping(ctx golang_org_x_net_context.Context, req
 }
 
 func (w *wrappedUserSystemServer) ChangePassword(ctx golang_org_x_net_context.Context, req *ChangePasswordRequest) (res *ChangePasswordResponse, err error) {
-	ctx, err = github_com_fzerorubigd_engine_pkg_grpcgw.ExecuteMiddleware(ctx, w.original)
+	ctx, err = elbix_dev_engine_pkg_grpcgw.ExecuteMiddleware(ctx, w.original)
 	if err != nil {
 		return nil, err
 	}
 	if err = w.v.Struct(req); err != nil {
-		return nil, github_com_fzerorubigd_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
+		return nil, elbix_dev_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 
 	res, err = w.original.ChangePassword(ctx, req)
@@ -109,12 +109,12 @@ func (w *wrappedUserSystemServer) ChangePassword(ctx golang_org_x_net_context.Co
 }
 
 func (w *wrappedUserSystemServer) ChangeDisplayName(ctx golang_org_x_net_context.Context, req *ChangeDisplayNameRequest) (res *ChangeDisplayNameResponse, err error) {
-	ctx, err = github_com_fzerorubigd_engine_pkg_grpcgw.ExecuteMiddleware(ctx, w.original)
+	ctx, err = elbix_dev_engine_pkg_grpcgw.ExecuteMiddleware(ctx, w.original)
 	if err != nil {
 		return nil, err
 	}
 	if err = w.v.Struct(req); err != nil {
-		return nil, github_com_fzerorubigd_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
+		return nil, elbix_dev_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 
 	res, err = w.original.ChangeDisplayName(ctx, req)
@@ -122,12 +122,12 @@ func (w *wrappedUserSystemServer) ChangeDisplayName(ctx golang_org_x_net_context
 }
 
 func (w *wrappedUserSystemServer) ForgotPassword(ctx golang_org_x_net_context.Context, req *ForgotPasswordRequest) (res *ForgotPasswordResponse, err error) {
-	ctx, err = github_com_fzerorubigd_engine_pkg_grpcgw.ExecuteMiddleware(ctx, w.original)
+	ctx, err = elbix_dev_engine_pkg_grpcgw.ExecuteMiddleware(ctx, w.original)
 	if err != nil {
 		return nil, err
 	}
 	if err = w.v.Struct(req); err != nil {
-		return nil, github_com_fzerorubigd_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
+		return nil, elbix_dev_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 
 	res, err = w.original.ForgotPassword(ctx, req)
@@ -141,8 +141,8 @@ func NewWrappedUserSystemServer(server UserSystemServer) WrappedUserSystemContro
 	}
 }
 func init() {
-	github_com_fzerorubigd_engine_pkg_resources.RegisterResource("/user.UserSystem/Logout", "")
-	github_com_fzerorubigd_engine_pkg_resources.RegisterResource("/user.UserSystem/Ping", "")
-	github_com_fzerorubigd_engine_pkg_resources.RegisterResource("/user.UserSystem/ChangePassword", "")
-	github_com_fzerorubigd_engine_pkg_resources.RegisterResource("/user.UserSystem/ChangeDisplayName", "")
+	elbix_dev_engine_pkg_resources.RegisterResource("/user.UserSystem/Logout", "")
+	elbix_dev_engine_pkg_resources.RegisterResource("/user.UserSystem/Ping", "")
+	elbix_dev_engine_pkg_resources.RegisterResource("/user.UserSystem/ChangePassword", "")
+	elbix_dev_engine_pkg_resources.RegisterResource("/user.UserSystem/ChangeDisplayName", "")
 }

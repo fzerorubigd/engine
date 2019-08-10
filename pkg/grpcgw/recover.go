@@ -3,7 +3,7 @@ package grpcgw
 import (
 	"net/http"
 
-	"github.com/fzerorubigd/engine/pkg/log"
+	"elbix.dev/engine/pkg/log"
 )
 
 type recoverHandler struct {

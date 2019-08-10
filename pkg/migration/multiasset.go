@@ -10,7 +10,7 @@ import (
 	"github.com/rubenv/sql-migrate"
 
 	// Make sure postgres is already initialized
-	_ "github.com/fzerorubigd/engine/pkg/postgres"
+	_ "elbix.dev/engine/pkg/postgres"
 )
 
 var (

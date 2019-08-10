@@ -6,8 +6,8 @@ import (
 	"github.com/gomodule/redigo/redis"
 	"github.com/pkg/errors"
 
-	"github.com/fzerorubigd/engine/pkg/assert"
-	aredis "github.com/fzerorubigd/engine/pkg/redis"
+	"elbix.dev/engine/pkg/assert"
+	aredis "elbix.dev/engine/pkg/redis"
 )
 
 const prefix string = "_REDIS_PREFIX_"

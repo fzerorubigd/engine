@@ -11,10 +11,10 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/fzerorubigd/engine/pkg/assert"
-	"github.com/fzerorubigd/engine/pkg/kv"
-	"github.com/fzerorubigd/engine/pkg/log"
-	"github.com/fzerorubigd/engine/pkg/random"
+	"elbix.dev/engine/pkg/assert"
+	"elbix.dev/engine/pkg/kv"
+	"elbix.dev/engine/pkg/log"
+	"elbix.dev/engine/pkg/random"
 )
 
 // From the bcrypt package

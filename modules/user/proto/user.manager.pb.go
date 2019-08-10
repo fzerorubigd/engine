@@ -7,12 +7,12 @@ import (
 	fmt "fmt"
 	math "math"
 	proto "github.com/golang/protobuf/proto"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
+	_ "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options"
 	_ "github.com/fzerorubigd/protobuf/extra"
 	_ "github.com/fzerorubigd/protobuf/types"
 	_ "github.com/gogo/protobuf/gogoproto"
-	_ "google.golang.org/genproto/googleapis/api/annotations"
-	_ "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options"
-	github_com_fzerorubigd_engine_pkg_postgres_model "github.com/fzerorubigd/engine/pkg/postgres/model"
+	elbix_dev_engine_pkg_postgres_model "elbix.dev/engine/pkg/postgres/model"
 	time "time"
 	github_com_fzerorubigd_protobuf_types "github.com/fzerorubigd/protobuf/types"
 	context "context"
@@ -30,14 +30,14 @@ const (
 )
 
 type Manager struct {
-	github_com_fzerorubigd_engine_pkg_postgres_model.Manager
+	elbix_dev_engine_pkg_postgres_model.Manager
 }
 
 func NewManager() *Manager {
 	return &Manager{}
 }
 
-func NewManagerFromTransaction(tx github_com_fzerorubigd_engine_pkg_postgres_model.DBX) (*Manager, error) {
+func NewManagerFromTransaction(tx elbix_dev_engine_pkg_postgres_model.DBX) (*Manager, error) {
 	m := &Manager{}
 	err := m.Hijack(tx)
 
@@ -98,7 +98,7 @@ func (m *Manager) GetUserByPrimary(ctx context.Context, id int64) (*User, error)
 	return m.scanUser(row)
 }
 
-func (m *Manager) scanUser(row github_com_fzerorubigd_engine_pkg_postgres_model.Scanner, extra ...interface{}) (*User, error) {
+func (m *Manager) scanUser(row elbix_dev_engine_pkg_postgres_model.Scanner, extra ...interface{}) (*User, error) {
 	var u User
 	all := append([]interface{}{&u.Id, &u.Email, &u.DisplayName, &u.Password, &u.Status, &u.CreatedAt, &u.UpdatedAt, &u.LastLogin}, extra...)
 	err := row.Scan(all...)

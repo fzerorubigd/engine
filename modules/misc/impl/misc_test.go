@@ -9,10 +9,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	miscpb "github.com/fzerorubigd/engine/modules/misc/proto"
-	"github.com/fzerorubigd/engine/pkg/grpcgw"
-	"github.com/fzerorubigd/engine/pkg/health"
-	"github.com/fzerorubigd/engine/pkg/version"
+	miscpb "elbix.dev/engine/modules/misc/proto"
+	"elbix.dev/engine/pkg/grpcgw"
+	"elbix.dev/engine/pkg/health"
+	"elbix.dev/engine/pkg/version"
 )
 
 var ch *inprocgrpc.Channel

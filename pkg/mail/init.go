@@ -7,10 +7,10 @@ import (
 	"github.com/pkg/errors"
 	"gopkg.in/gomail.v2"
 
-	"github.com/fzerorubigd/engine/pkg/assert"
-	"github.com/fzerorubigd/engine/pkg/config"
-	"github.com/fzerorubigd/engine/pkg/initializer"
-	"github.com/fzerorubigd/engine/pkg/job"
+	"elbix.dev/engine/pkg/assert"
+	"elbix.dev/engine/pkg/config"
+	"elbix.dev/engine/pkg/initializer"
+	"elbix.dev/engine/pkg/job"
 )
 
 const mailerTopic = "mailer"

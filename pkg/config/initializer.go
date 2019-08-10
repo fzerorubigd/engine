@@ -8,7 +8,7 @@ import (
 	"github.com/goraz/onion"
 	"github.com/goraz/onion/configwatch"
 
-	"github.com/fzerorubigd/engine/pkg/log"
+	"elbix.dev/engine/pkg/log"
 )
 
 // Initialize try to initialize config

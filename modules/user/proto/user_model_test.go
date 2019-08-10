@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/fzerorubigd/engine/pkg/mockery"
+	"elbix.dev/engine/pkg/mockery"
 )
 
 func compareUser(t *testing.T, u1, u2 *User) {

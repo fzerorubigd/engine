@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/fzerorubigd/engine/pkg/grpcgw"
+	"elbix.dev/engine/pkg/grpcgw"
 )
 
 type healthy struct {

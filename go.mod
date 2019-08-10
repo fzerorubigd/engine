@@ -1,4 +1,4 @@
-module github.com/fzerorubigd/engine
+module elbix.dev/engine
 
 go 1.13
 
@@ -35,6 +35,7 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware v1.0.0
 	github.com/grpc-ecosystem/grpc-gateway v1.9.5
 	github.com/hashicorp/golang-lru v0.5.3 // indirect
+	github.com/jhump/goprotoc v0.2.0 // indirect
 	github.com/jinzhu/inflection v1.0.0
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/kisielk/errcheck v1.2.0 // indirect

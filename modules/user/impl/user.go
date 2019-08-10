@@ -4,12 +4,12 @@ import (
 	"context"
 	"time"
 
-	"github.com/fzerorubigd/engine/modules/user/middlewares"
-	"github.com/fzerorubigd/engine/modules/user/proto"
-	"github.com/fzerorubigd/engine/pkg/assert"
-	"github.com/fzerorubigd/engine/pkg/config"
-	"github.com/fzerorubigd/engine/pkg/grpcgw"
-	"github.com/fzerorubigd/engine/pkg/log"
+	"elbix.dev/engine/modules/user/middlewares"
+	"elbix.dev/engine/modules/user/proto"
+	"elbix.dev/engine/pkg/assert"
+	"elbix.dev/engine/pkg/config"
+	"elbix.dev/engine/pkg/grpcgw"
+	"elbix.dev/engine/pkg/log"
 )
 
 var (

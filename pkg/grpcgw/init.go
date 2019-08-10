@@ -18,9 +18,9 @@ import (
 	"github.com/rs/cors"
 	"google.golang.org/grpc"
 
-	"github.com/fzerorubigd/engine/pkg/config"
-	"github.com/fzerorubigd/engine/pkg/log"
-	"github.com/fzerorubigd/engine/pkg/sentry"
+	"elbix.dev/engine/pkg/config"
+	"elbix.dev/engine/pkg/log"
+	"elbix.dev/engine/pkg/sentry"
 )
 
 // Controller is the simple controller interface

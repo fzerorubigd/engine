@@ -4,8 +4,8 @@ package miscpb
 import (
 	"encoding/json"
 
-	"github.com/fzerorubigd/engine/pkg/assert"
-	"github.com/fzerorubigd/engine/pkg/grpcgw"
+	"elbix.dev/engine/pkg/assert"
+	"elbix.dev/engine/pkg/grpcgw"
 )
 
 const paths = "{\"/v1/misc/health\":{\"get\":{\"operationId\":\"Health\",\"responses\":{\"200\":{\"description\":\"A successful response.\",\"schema\":{\"$ref\":\"#/definitions/miscHealthResponse\"}}},\"tags\":[\"MiscSystem\"]}},\"/v1/misc/version\":{\"get\":{\"operationId\":\"Version\",\"responses\":{\"200\":{\"description\":\"A successful response.\",\"schema\":{\"$ref\":\"#/definitions/miscVersionResponse\"}}},\"tags\":[\"MiscSystem\"]}}}"

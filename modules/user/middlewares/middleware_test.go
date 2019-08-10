@@ -8,9 +8,9 @@ import (
 	"github.com/fullstorydev/grpchan/inprocgrpc"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/fzerorubigd/engine/modules/user/proto"
-	"github.com/fzerorubigd/engine/pkg/grpcgw"
-	"github.com/fzerorubigd/engine/pkg/mockery"
+	"elbix.dev/engine/modules/user/proto"
+	"elbix.dev/engine/pkg/grpcgw"
+	"elbix.dev/engine/pkg/mockery"
 )
 
 type userMock struct {

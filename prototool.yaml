@@ -68,7 +68,7 @@ generate:
   go_options:
     # The base import path. This should be the go path of the prototool.yaml file.
     # This is required if you have any go plugins.
-    import_path: github.com/fzerorubigd/engine
+    import_path: elbix.dev/engine
 
     # Extra modifiers to include with Mfile=package.
 #    extra_modifiers:
@@ -118,7 +118,7 @@ generate:
       output: .
 
     - name: grpchan
-      type: gogo
+      type: go
       output: .
 
     - name: wrapper

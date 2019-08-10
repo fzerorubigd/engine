@@ -8,10 +8,10 @@ import (
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
 
-	"github.com/fzerorubigd/engine/modules/user/proto"
-	"github.com/fzerorubigd/engine/pkg/assert"
-	"github.com/fzerorubigd/engine/pkg/grpcgw"
-	"github.com/fzerorubigd/engine/pkg/resources"
+	"elbix.dev/engine/modules/user/proto"
+	"elbix.dev/engine/pkg/assert"
+	"elbix.dev/engine/pkg/grpcgw"
+	"elbix.dev/engine/pkg/resources"
 )
 
 type contextKey int

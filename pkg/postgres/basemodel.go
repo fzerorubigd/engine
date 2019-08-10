@@ -10,10 +10,10 @@ import (
 
 	_ "github.com/lib/pq" // Make sure the pg is available
 
-	"github.com/fzerorubigd/engine/pkg/assert"
-	"github.com/fzerorubigd/engine/pkg/initializer"
-	"github.com/fzerorubigd/engine/pkg/log"
-	"github.com/fzerorubigd/engine/pkg/postgres/model"
+	"elbix.dev/engine/pkg/assert"
+	"elbix.dev/engine/pkg/initializer"
+	"elbix.dev/engine/pkg/log"
+	"elbix.dev/engine/pkg/postgres/model"
 )
 
 var (

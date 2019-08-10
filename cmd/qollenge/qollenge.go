@@ -3,11 +3,11 @@ package qollenge
 import (
 	"context"
 
-	"github.com/fzerorubigd/engine/pkg/config"
+	"elbix.dev/engine/pkg/config"
 	// misc module
-	_ "github.com/fzerorubigd/engine/modules/misc"
+	_ "elbix.dev/engine/modules/misc"
 	// user module
-	_ "github.com/fzerorubigd/engine/modules/user"
+	_ "elbix.dev/engine/modules/user"
 )
 
 // InitializeConfig to initializ config and import packages

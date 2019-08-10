@@ -4,7 +4,7 @@ export GOBIN:=$(BIN)
 export PATH:=$(BIN):$(PATH)
 export PROJECT=engine
 export PROTOTOOL_VERSION=1.8.0
-export DOKKU_HOST=qollenge.ir
+export DOKKU_HOST=elbix.dev
 APP_NAME:=$(PROJECT)
 DEFAULT_PASS=bita123
 GO=$(shell which go)
@@ -169,9 +169,9 @@ watch: $(BIN)/reflex
 	$(BIN)/reflex -r '\.proto$$' make code-gen
 
 deploy-qollenge:
-	$(DOCKER) build --build-arg APP_NAME=qollenge --build-arg APP_PREFIX=q -t dokku/$(PROJECT):$(COMMIT_COUNT) .
-	$(DOCKER) save dokku/$(PROJECT):$(COMMIT_COUNT) | $(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "docker load"
-	$(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "dokku tags:deploy $(PROJECT) $(COMMIT_COUNT)"
+	$(DOCKER) build --build-arg APP_NAME=qollenge --build-arg APP_PREFIX=q -t dokku/qollenge:$(COMMIT_COUNT) .
+	$(DOCKER) save dokku/qollenge:$(COMMIT_COUNT) | $(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "docker load"
+	$(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "dokku tags:deploy qollenge $(COMMIT_COUNT)"
 
 deploy-cerulean:
 	$(DOCKER) build --build-arg APP_NAME=cerulean --build-arg APP_PREFIX=c -t dokku/$(PROJECT):$(COMMIT_COUNT) .

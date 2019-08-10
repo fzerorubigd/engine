@@ -14,7 +14,7 @@ jobs:
           POSTGRES_DB: engine_test
       - image:  circleci/redis:latest
 
-    working_directory: /go/src/github.com/fzerorubigd/engine
+    working_directory: /go/src/elbix.dev/engine
     steps:
       - checkout
       - add_ssh_keys:

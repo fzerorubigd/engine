@@ -7,8 +7,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/fzerorubigd/engine/pkg/mockery"
-	"github.com/fzerorubigd/engine/pkg/random"
+	"elbix.dev/engine/pkg/mockery"
+	"elbix.dev/engine/pkg/random"
 )
 
 func TestStoreKey(t *testing.T) {

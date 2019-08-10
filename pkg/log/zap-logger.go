@@ -5,7 +5,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/fzerorubigd/engine/pkg/initializer"
+	"elbix.dev/engine/pkg/initializer"
 )
 
 var (

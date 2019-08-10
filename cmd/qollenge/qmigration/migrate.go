@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/fzerorubigd/engine/cmd/qollenge"
-	"github.com/fzerorubigd/engine/pkg/cli"
-	"github.com/fzerorubigd/engine/pkg/initializer"
-	"github.com/fzerorubigd/engine/pkg/log"
-	"github.com/fzerorubigd/engine/pkg/migration"
-	"github.com/fzerorubigd/engine/pkg/postgres/model"
+	"elbix.dev/engine/cmd/qollenge"
+	"elbix.dev/engine/pkg/cli"
+	"elbix.dev/engine/pkg/initializer"
+	"elbix.dev/engine/pkg/log"
+	"elbix.dev/engine/pkg/migration"
+	"elbix.dev/engine/pkg/postgres/model"
 )
 
 var (

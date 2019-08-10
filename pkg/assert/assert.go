@@ -6,7 +6,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
-	"github.com/fzerorubigd/engine/pkg/log"
+	"elbix.dev/engine/pkg/log"
 )
 
 func doPanic(msg string, tag string, params ...interface{}) {

@@ -4,9 +4,9 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/fzerorubigd/engine/pkg/assert"
-	"github.com/fzerorubigd/engine/pkg/config"
-	"github.com/fzerorubigd/engine/pkg/random"
+	"elbix.dev/engine/pkg/assert"
+	"elbix.dev/engine/pkg/config"
+	"elbix.dev/engine/pkg/random"
 )
 
 var (

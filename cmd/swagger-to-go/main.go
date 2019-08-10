@@ -8,8 +8,8 @@ import (
 	"io"
 	"os"
 
-	"github.com/fzerorubigd/engine/pkg/assert"
-	"github.com/fzerorubigd/engine/pkg/log"
+	"elbix.dev/engine/pkg/assert"
+	"elbix.dev/engine/pkg/log"
 	"go.uber.org/zap/buffer"
 )
 
@@ -51,8 +51,8 @@ func main() {
 import (
 	"encoding/json"
 
-	"github.com/fzerorubigd/engine/pkg/assert"
-	"github.com/fzerorubigd/engine/pkg/grpcgw"
+	"elbix.dev/engine/pkg/assert"
+	"elbix.dev/engine/pkg/grpcgw"
 )
 
 `)

@@ -1,1 +1,1 @@
-web: /bin/server.sh
+web: /bin/sh /bin/server.sh

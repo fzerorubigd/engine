@@ -11,10 +11,10 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/fzerorubigd/engine/pkg/config"
-	"github.com/fzerorubigd/engine/pkg/initializer"
-	"github.com/fzerorubigd/engine/pkg/log"
-	"github.com/fzerorubigd/engine/pkg/version"
+	"elbix.dev/engine/pkg/config"
+	"elbix.dev/engine/pkg/initializer"
+	"elbix.dev/engine/pkg/log"
+	"elbix.dev/engine/pkg/version"
 )
 
 var (

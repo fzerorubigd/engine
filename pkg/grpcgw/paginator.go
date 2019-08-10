@@ -1,7 +1,7 @@
 package grpcgw
 
 import (
-	"github.com/fzerorubigd/engine/pkg/config"
+	"elbix.dev/engine/pkg/config"
 )
 
 var (

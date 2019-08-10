@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/fzerorubigd/engine/cmd/qollenge"
-	"github.com/fzerorubigd/engine/pkg/cli"
-	"github.com/fzerorubigd/engine/pkg/grpcgw"
-	"github.com/fzerorubigd/engine/pkg/initializer"
+	"elbix.dev/engine/cmd/qollenge"
+	"elbix.dev/engine/pkg/cli"
+	"elbix.dev/engine/pkg/grpcgw"
+	"elbix.dev/engine/pkg/initializer"
 )
 
 func main() {

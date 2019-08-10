@@ -7,8 +7,8 @@ import (
 
 	"go.uber.org/zap/zapcore"
 
-	"github.com/fzerorubigd/engine/pkg/initializer"
-	"github.com/fzerorubigd/engine/pkg/log"
+	"elbix.dev/engine/pkg/initializer"
+	"elbix.dev/engine/pkg/log"
 )
 
 // Data is the application version in detail
