@@ -108,16 +108,33 @@ generators:
 tools-migration-qollenge: $(BIN)/go-bindata $(addsuffix -migration,$(dir $(wildcard $(ROOT)/modules/*/)))
 	$(INSTALL) ./cmd/qollenge/qmigration
 
+tools-migration-cerulean: $(BIN)/go-bindata $(addsuffix -migration,$(dir $(wildcard $(ROOT)/modules/*/)))
+	$(INSTALL) ./cmd/cerulean/cmigration
+
 mig-up-qollenge: tools-migration-qollenge
 	$(BIN)/qmigration -action=up
 
 mig-down-qollenge: tools-migration-qollenge
 	$(BIN)/qmigration -action=down
 
+mig-up-cerulean: tools-migration-cerulean
+	$(BIN)/cmigration -action=up
+
+mig-down-cerulean: tools-migration-cerulean
+	$(BIN)/cmigration -action=down
+
 test-qollenge: tools-migration-qollenge
 	E_SERVICES_POSTGRES_USER="$(DB_USER)_test" E_SERVICES_POSTGRES_DB="$(DB_NAME)_test" $(BIN)/qmigration -action=down-all
 	E_SERVICES_POSTGRES_USER="$(DB_USER)_test" E_SERVICES_POSTGRES_DB="$(DB_NAME)_test" $(BIN)/qmigration -action=up
-	$(GO) test ./... -coverprofile cover.cp
+	$(GO) test ./pkg/... ./modules/misc/... ./modules/user/... -coverprofile cover.cp
+	E_SERVICES_POSTGRES_USER="$(DB_USER)_test" E_SERVICES_POSTGRES_DB="$(DB_NAME)_test" $(BIN)/qmigration -action=down-all
+
+test-cerulean: tools-migration-cerulean
+	E_SERVICES_POSTGRES_USER="$(DB_USER)_test" E_SERVICES_POSTGRES_DB="$(DB_NAME)_test" $(BIN)/cmigration -action=down-all
+	E_SERVICES_POSTGRES_USER="$(DB_USER)_test" E_SERVICES_POSTGRES_DB="$(DB_NAME)_test" $(BIN)/cmigration -action=up
+	$(GO) test ./pkg/... ./modules/misc/... ./modules/user/... ./modules/accounting/... -coverprofile cover.cp
+	E_SERVICES_POSTGRES_USER="$(DB_USER)_test" E_SERVICES_POSTGRES_DB="$(DB_NAME)_test" $(BIN)/cmigration -action=down-all
+
 
 proto: $(BIN)/prototool $(BIN)/protoc-gen-go $(BIN)/protoc-gen-grpc-gateway $(BIN)/protoc-gen-swagger $(BIN)/protoc-gen-grpchan $(BIN)/protoc-gen-gogo generators
 	$(BIN)/prototool generate
@@ -134,25 +151,30 @@ swagger: swagger-to-go proto $(addsuffix -swagger,$(dir $(wildcard $(ROOT)/modul
 
 code-gen: swagger
 
-build-server:
-	@echo "Building server"
+build-all:
+	@echo "Building all binaries"
 	$(INSTALL) ./cmd/...
 
-run-server-qollenge: code-gen build-server
+run-server-qollenge: code-gen build-all
 	@echo "Running..."
 	$(BIN)/qserver 2>&1
 
-tools-migration: tools-migration-qollenge
+tools-migration: tools-migration-qollenge tools-migration-cerulean
 
-all: build-server tools-migration
+all: build-all tools-migration
 
-test: test-qollenge
+test: test-qollenge test-cerulean
 
 watch: $(BIN)/reflex
 	$(BIN)/reflex -r '\.proto$$' make code-gen
 
 deploy-qollenge:
-	$(DOCKER) build --build-arg APP_NAME=qollenge -t dokku/$(PROJECT):$(COMMIT_COUNT) .
+	$(DOCKER) build --build-arg APP_NAME=qollenge --build-arg APP_PREFIX=q -t dokku/$(PROJECT):$(COMMIT_COUNT) .
+	$(DOCKER) save dokku/$(PROJECT):$(COMMIT_COUNT) | $(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "docker load"
+	$(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "dokku tags:deploy $(PROJECT) $(COMMIT_COUNT)"
+
+deploy-cerulean:
+	$(DOCKER) build --build-arg APP_NAME=cerulean --build-arg APP_PREFIX=c -t dokku/$(PROJECT):$(COMMIT_COUNT) .
 	$(DOCKER) save dokku/$(PROJECT):$(COMMIT_COUNT) | $(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "docker load"
 	$(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "dokku tags:deploy $(PROJECT) $(COMMIT_COUNT)"
 

@@ -3,6 +3,7 @@ module github.com/fzerorubigd/engine
 go 1.13
 
 require (
+	cloud.google.com/go v0.44.0 // indirect
 	github.com/DATA-DOG/go-txdb v0.1.2
 	github.com/fraugster/flint v0.1.0 // indirect
 	github.com/fullstorydev/grpchan v1.0.1
@@ -18,19 +19,24 @@ require (
 	github.com/gogo/protobuf v1.2.1
 	github.com/golang/protobuf v1.3.2
 	github.com/gomodule/redigo v2.0.0+incompatible
+	github.com/google/go-cmp v0.3.1 // indirect
+	github.com/google/pprof v0.0.0-20190723021845-34ac40c74b70 // indirect
 	github.com/google/uuid v1.1.1 // indirect
 	github.com/goraz/onion v0.1.2
 	github.com/grpc-ecosystem/go-grpc-middleware v1.0.0
 	github.com/grpc-ecosystem/grpc-gateway v1.9.5
+	github.com/hashicorp/golang-lru v0.5.3 // indirect
 	github.com/jinzhu/inflection v1.0.0
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/kisielk/errcheck v1.2.0 // indirect
 	github.com/kr/pretty v0.1.0
+	github.com/kr/pty v1.1.8 // indirect
 	github.com/leodido/go-urn v1.1.0 // indirect
 	github.com/lib/pq v1.2.0
 	github.com/onsi/ginkgo v1.8.0 // indirect
 	github.com/onsi/gomega v1.5.0 // indirect
 	github.com/pkg/errors v0.8.1
+	github.com/rogpeppe/fastuuid v1.2.0 // indirect
 	github.com/rs/cors v1.7.0
 	github.com/rubenv/sql-migrate v0.0.0-20190717103323-87ce952f7079
 	github.com/shuLhan/go-bindata v3.4.0+incompatible // indirect
@@ -40,11 +46,9 @@ require (
 	go.uber.org/multierr v1.1.0 // indirect
 	go.uber.org/zap v1.10.0
 	golang.org/x/crypto v0.0.0-20190701094942-4def268fd1a4
-	golang.org/x/lint v0.0.0-20190409202823-959b441ac422 // indirect
+	golang.org/x/mobile v0.0.0-20190806162312-597adff16ade // indirect
 	golang.org/x/net v0.0.0-20190724013045-ca1201d0de80
-	golang.org/x/text v0.3.2 // indirect
 	golang.org/x/tools v0.0.0-20190809145639-6d4652c779c4 // indirect
-	google.golang.org/appengine v1.4.0 // indirect
 	google.golang.org/genproto v0.0.0-20190801165951-fa694d86fc64
 	google.golang.org/grpc v1.22.1
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
@@ -52,4 +56,7 @@ require (
 	gopkg.in/go-playground/validator.v9 v9.29.1
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gopkg.in/gorp.v1 v1.7.2 // indirect
+	honnef.co/go/tools v0.0.1-2019.2.2 // indirect
 )
+
+replace github.com/fullstorydev/grpchan => github.com/fzerorubigd/grpchan v1.0.2

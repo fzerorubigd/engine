@@ -10,9 +10,10 @@ RUN apk add --no-cache --virtual .build-deps git gcc g++ libc-dev make \
 FROM alpine:3.6
 
 ARG APP_NAME
+ARG APP_PREFIX
 
-COPY --from=0 /go/src/github.com/fzerorubigd/engine/bin/qserver /bin/server
-COPY --from=0 /go/src/github.com/fzerorubigd/engine/bin/qmigration /bin/migration
+COPY --from=0 /go/src/github.com/fzerorubigd/engine/bin/${APP_PREFIX}server /bin/server
+COPY --from=0 /go/src/github.com/fzerorubigd/engine/bin/${APP_PREFIX}migration /bin/migration
 ADD scripts/server.sh /bin/server.sh
 ADD scripts/$APP_NAME/Procfile /bin/Procfile
 ADD scripts/$APP_NAME/CHECKS /bin/CHECKS
