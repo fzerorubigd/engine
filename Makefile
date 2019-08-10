@@ -105,18 +105,18 @@ generators:
 	$(INSTALL) ./cmd/protoc-gen-wrapper
 	$(INSTALL) ./cmd/protoc-gen-model
 
-tools-migration: $(BIN)/go-bindata $(addsuffix -migration,$(dir $(wildcard $(ROOT)/modules/*/)))
-	$(INSTALL) ./cmd/migration
+tools-migration-qollenge: $(BIN)/go-bindata $(addsuffix -migration,$(dir $(wildcard $(ROOT)/modules/*/)))
+	$(INSTALL) ./cmd/qollenge/qmigration
 
-mig-up: tools-migration
-	$(BIN)/migration -action=up
+mig-up-qollenge: tools-migration-qollenge
+	$(BIN)/qmigration -action=up
 
-mig-down: tools-migration
-	$(BIN)/migration -action=down
+mig-down-qollenge: tools-migration-qollenge
+	$(BIN)/qmigration -action=down
 
-test: tools-migration
-	E_SERVICES_POSTGRES_USER="$(DB_USER)_test" E_SERVICES_POSTGRES_DB="$(DB_NAME)_test" $(BIN)/migration -action=down-all
-	E_SERVICES_POSTGRES_USER="$(DB_USER)_test" E_SERVICES_POSTGRES_DB="$(DB_NAME)_test" $(BIN)/migration -action=up
+test-qollenge: tools-migration-qollenge
+	E_SERVICES_POSTGRES_USER="$(DB_USER)_test" E_SERVICES_POSTGRES_DB="$(DB_NAME)_test" $(BIN)/qmigration -action=down-all
+	E_SERVICES_POSTGRES_USER="$(DB_USER)_test" E_SERVICES_POSTGRES_DB="$(DB_NAME)_test" $(BIN)/qmigration -action=up
 	$(GO) test ./... -coverprofile cover.cp
 
 proto: $(BIN)/prototool $(BIN)/protoc-gen-go $(BIN)/protoc-gen-grpc-gateway $(BIN)/protoc-gen-swagger $(BIN)/protoc-gen-grpchan $(BIN)/protoc-gen-gogo generators
@@ -138,21 +138,21 @@ build-server:
 	@echo "Building server"
 	$(INSTALL) ./cmd/...
 
-run-server: code-gen build-server
+run-server-qollenge: code-gen build-server
 	@echo "Running..."
-	$(BIN)/server 2>&1
+	$(BIN)/qserver 2>&1
 
-run-worker: code-gen build-server
-	@echo "Running..."
-	$(BIN)/worker 2>&1
+tools-migration: tools-migration-qollenge
 
 all: build-server tools-migration
+
+test: test-qollenge
 
 watch: $(BIN)/reflex
 	$(BIN)/reflex -r '\.proto$$' make code-gen
 
-deploy:
-	$(DOCKER) build . -t dokku/$(PROJECT):$(COMMIT_COUNT)
+deploy-qollenge:
+	$(DOCKER) build --build-arg APP_NAME=qollenge -t dokku/$(PROJECT):$(COMMIT_COUNT) .
 	$(DOCKER) save dokku/$(PROJECT):$(COMMIT_COUNT) | $(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "docker load"
 	$(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "dokku tags:deploy $(PROJECT) $(COMMIT_COUNT)"
 
