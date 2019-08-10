@@ -5,13 +5,12 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/DATA-DOG/go-txdb"
-	"go.uber.org/zap/zaptest"
-
 	"elbix.dev/engine/pkg/config"
 	"elbix.dev/engine/pkg/initializer"
 	"elbix.dev/engine/pkg/log"
 	"elbix.dev/engine/pkg/postgres"
+	"github.com/DATA-DOG/go-txdb"
+	"go.uber.org/zap/zaptest"
 )
 
 var (
@@ -22,7 +21,7 @@ var (
 func Start(ctx context.Context, t *testing.T) func() {
 	if !alreadyRegistered {
 		alreadyRegistered = true
-		config.Initialize(ctx, "testing", "T")
+		config.Initialize(ctx, "testing", "E")
 		log.SwapLogger(zaptest.NewLogger(t))
 
 		dsn := fmt.Sprintf(

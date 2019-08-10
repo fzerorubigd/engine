@@ -1,0 +1,46 @@
+image: ${DOCKER_USER}/gitlab-ci:latest
+stages:
+  - test
+  - deploy
+
+services:
+  - docker:dind
+  - postgres:latest
+  - redis:latest
+
+variables:
+  POSTGRES_DB: engine_test
+  POSTGRES_USER: engine_test
+  POSTGRES_PASSWORD: bita123
+  E_MOCKERY_POSTGRES_HOST: postgres
+  E_SERVICES_POSTGRES_HOST: postgres
+  E_MOCKERY_REDIS_ADDRESS: redis
+  E_SERVICES_REDIS_ADDRESS: redis
+  GOPATH: "$CI_PROJECT_DIR/go"
+  REPO_DIR: "$CI_PROJECT_DIR/go/src/elbix.dev/engine"
+
+before_script:
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - eval $(ssh-agent -s)
+  - echo "$DEPLOY_SERVER_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  - mkdir -p ${REPO_DIR}
+  - shopt -s extglob dotglob
+  - mv !(go|cache) "${REPO_DIR}"
+  - cd ${REPO_DIR}
+
+lint:
+  stage: test
+  script:
+    - make lint
+
+test:
+  stage: test
+  script:
+    - make test
+
+deploy-qollenge:
+  stage: deploy
+  when: manual
+  script:
+    - make deploy-qollenge
