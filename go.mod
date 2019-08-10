@@ -4,11 +4,12 @@ go 1.13
 
 require (
 	github.com/DATA-DOG/go-txdb v0.1.2
-	github.com/fullstorydev/grpchan v1.0.0
+	github.com/fullstorydev/grpchan v1.0.1
 	github.com/fzerorubigd/chapar v0.0.0-20190210094209-31bedf3ca11b
 	github.com/fzerorubigd/expand v0.0.0-20150817182922-fd359294116f
 	github.com/fzerorubigd/protobuf v0.0.0-20181231220536-9808cb7a8089
 	github.com/fzerorubigd/redimock v0.0.0-20190203221554-6d493724ce3b // indirect
+	github.com/getsentry/sentry-go v0.2.1
 	github.com/go-playground/locales v0.12.1 // indirect
 	github.com/go-playground/universal-translator v0.16.0 // indirect
 	github.com/go-redis/redis v6.15.2+incompatible // indirect
@@ -20,7 +21,6 @@ require (
 	github.com/goraz/onion v0.1.2
 	github.com/grpc-ecosystem/go-grpc-middleware v1.0.0
 	github.com/grpc-ecosystem/grpc-gateway v1.9.5
-	github.com/jhump/protoreflect v1.4.4 // indirect
 	github.com/jinzhu/inflection v1.0.0
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/kr/pretty v0.1.0
@@ -29,7 +29,7 @@ require (
 	github.com/onsi/ginkgo v1.8.0 // indirect
 	github.com/onsi/gomega v1.5.0 // indirect
 	github.com/pkg/errors v0.8.1
-	github.com/rs/cors v1.6.0
+	github.com/rs/cors v1.7.0
 	github.com/rubenv/sql-migrate v0.0.0-20190717103323-87ce952f7079
 	github.com/stretchr/testify v1.3.0
 	github.com/ziutek/mymysql v1.5.4 // indirect

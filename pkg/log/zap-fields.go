@@ -9,6 +9,9 @@ import (
 
 // Err is the error field
 func Err(err error) zapcore.Field {
+	if err == nil {
+		return zap.Skip()
+	}
 	return zap.String("error", err.Error())
 }
 

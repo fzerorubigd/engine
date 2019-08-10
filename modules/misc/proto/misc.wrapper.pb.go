@@ -16,8 +16,6 @@ import (
 	github_com_fullstorydev_grpchan_inprocgrpc "github.com/fullstorydev/grpchan/inprocgrpc"
 	github_com_grpc_ecosystem_grpc_gateway_runtime "github.com/grpc-ecosystem/grpc-gateway/runtime"
 	github_com_fzerorubigd_engine_pkg_assert "github.com/fzerorubigd/engine/pkg/assert"
-	github_com_fzerorubigd_engine_pkg_log "github.com/fzerorubigd/engine/pkg/log"
-	github_com_pkg_errors "github.com/pkg/errors"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -43,15 +41,6 @@ func (w *wrappedMiscSystemServer) Init(ctx golang_org_x_net_context.Context, ch 
 }
 
 func (w *wrappedMiscSystemServer) Version(ctx golang_org_x_net_context.Context, req *VersionRequest) (res *VersionResponse, err error) {
-	github_com_fzerorubigd_engine_pkg_log.Info("MiscSystem.Version request")
-	defer func() {
-		e := recover()
-		if e == nil {
-			return
-		}
-		github_com_fzerorubigd_engine_pkg_log.Error("Recovering from panic", github_com_fzerorubigd_engine_pkg_log.Any("panic", e))
-		res, err = nil, github_com_pkg_errors.New("internal server error")
-	}()
 	ctx, err = github_com_fzerorubigd_engine_pkg_grpcgw.ExecuteMiddleware(ctx, w.original)
 	if err != nil {
 		return nil, err
@@ -65,15 +54,6 @@ func (w *wrappedMiscSystemServer) Version(ctx golang_org_x_net_context.Context, 
 }
 
 func (w *wrappedMiscSystemServer) Health(ctx golang_org_x_net_context.Context, req *HealthRequest) (res *HealthResponse, err error) {
-	github_com_fzerorubigd_engine_pkg_log.Info("MiscSystem.Health request")
-	defer func() {
-		e := recover()
-		if e == nil {
-			return
-		}
-		github_com_fzerorubigd_engine_pkg_log.Error("Recovering from panic", github_com_fzerorubigd_engine_pkg_log.Any("panic", e))
-		res, err = nil, github_com_pkg_errors.New("internal server error")
-	}()
 	ctx, err = github_com_fzerorubigd_engine_pkg_grpcgw.ExecuteMiddleware(ctx, w.original)
 	if err != nil {
 		return nil, err

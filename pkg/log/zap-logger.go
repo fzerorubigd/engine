@@ -62,8 +62,8 @@ func Logger() *zap.Logger {
 	return logger
 }
 
-// SwappLogger used just for testing, do not use it in any other place
-func SwappLogger(l *zap.Logger) {
+// SwapLogger used just for testing, do not use it in any other place
+func SwapLogger(l *zap.Logger) {
 	logger = l
 }
 

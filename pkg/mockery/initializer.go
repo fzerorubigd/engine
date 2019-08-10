@@ -23,7 +23,7 @@ func Start(ctx context.Context, t *testing.T) func() {
 	if !alreadyRegistered {
 		alreadyRegistered = true
 		config.Initialize(ctx, "testing", "T")
-		log.SwappLogger(zaptest.NewLogger(t))
+		log.SwapLogger(zaptest.NewLogger(t))
 
 		dsn := fmt.Sprintf(
 			"host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",

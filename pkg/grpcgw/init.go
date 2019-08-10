@@ -20,6 +20,7 @@ import (
 
 	"github.com/fzerorubigd/engine/pkg/config"
 	"github.com/fzerorubigd/engine/pkg/log"
+	"github.com/fzerorubigd/engine/pkg/sentry"
 )
 
 // Controller is the simple controller interface
@@ -58,13 +59,13 @@ func RegisterInterceptors(i Interceptor) {
 // GRPCChannel is a helper function, it is exported for tests only, do not use it!
 func GRPCChannel() *inprocgrpc.Channel {
 	unaryMiddle := []grpc.UnaryServerInterceptor{
-		grpc_recovery.UnaryServerInterceptor(),
+		grpc_recovery.UnaryServerInterceptor(grpc_recovery.WithRecoveryHandler(sentry.Recover)),
 		grpc_ctxtags.UnaryServerInterceptor(),
 		grpc_zap.UnaryServerInterceptor(log.Logger()),
 	}
 
 	streamMiddle := []grpc.StreamServerInterceptor{
-		grpc_recovery.StreamServerInterceptor(),
+		grpc_recovery.StreamServerInterceptor(grpc_recovery.WithRecoveryHandler(sentry.Recover)),
 		grpc_ctxtags.StreamServerInterceptor(),
 		grpc_zap.StreamServerInterceptor(log.Logger()),
 	}
@@ -108,8 +109,9 @@ func Serve(ctx context.Context) {
 	}
 
 	go func() {
-		if err := srv.ListenAndServe(); err != nil {
-			log.Error("Http listen and serve failed", log.Err(err))
+		err := srv.ListenAndServe()
+		if err != nil && err != http.ErrServerClosed {
+			panic(err)
 		}
 	}()
 

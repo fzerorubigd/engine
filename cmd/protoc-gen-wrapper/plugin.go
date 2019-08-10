@@ -5,11 +5,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/fzerorubigd/engine/pkg/assert"
 	"github.com/fzerorubigd/protobuf/extra"
 	"github.com/gogo/protobuf/proto"
 	"github.com/gogo/protobuf/protoc-gen-gogo/generator"
 	"github.com/gogo/protobuf/vanity"
+
+	"github.com/fzerorubigd/engine/pkg/assert"
 )
 
 type plugin struct {
@@ -75,7 +76,7 @@ func (p *plugin) Generate(file *generator.FileDescriptor) {
 		p.createWrappedStruct(svc.GetName())
 		p.P()
 		p.createInitFunction(svc.GetName())
-		//p.P("/*")
+		// p.P("/*")
 		for _, m := range svc.GetMethod() {
 			p.P()
 			p.createMethod(svc.GetName(), m.GetName(), m.GetInputType(), m.GetOutputType())
@@ -88,7 +89,7 @@ func (p *plugin) Generate(file *generator.FileDescriptor) {
 		}
 		p.P()
 		p.createNewFunction(svc.GetName())
-		//p.P("*/")
+		// p.P("*/")
 	}
 
 	p.P("func init() {")
@@ -148,19 +149,19 @@ func (p *plugin) createMethod(class, method, in, out string) {
 
 	p.P("func (w *wrapped", class, "Server) ", method, "(ctx ", p.contextImport.Use(), ".Context, req *", inp[2], ") (res *", oup[2], ", err error) {")
 	p.In()
-	p.P(p.logImport.Use(), `.Info("`, class, ".", method, ` request")`)
-	p.P("defer func() {")
-	p.In()
-	p.P("e := recover()")
-	p.P("if e == nil {")
-	p.In()
-	p.P("return")
-	p.Out()
-	p.P("}")
-	p.P(p.logImport.Use(), `.Error("Recovering from panic", `, p.logImport.Use(), `.Any("panic", e))`)
-	p.P("res, err = nil, ", p.errorsImport.Use(), `.New("internal server error")`)
-	p.Out()
-	p.P("}()")
+	// p.P(p.logImport.Use(), `.Info("`, class, ".", method, ` request")`)
+	// p.P("defer func() {")
+	// p.In()
+	// p.P("e := recover()")
+	// p.P("if e == nil {")
+	// p.In()
+	// p.P("return")
+	// p.Out()
+	// p.P("}")
+	// p.P(p.logImport.Use(), `.Error("Recovering from panic", `, p.logImport.Use(), `.Any("panic", e))`)
+	// p.P("res, err = nil, ", p.errorsImport.Use(), `.New("internal server error")`)
+	// p.Out()
+	// p.P("}()")
 	p.P("ctx, err = ", p.grpcgwImport.Use(), ".ExecuteMiddleware(ctx, w.original)")
 	p.P("if err != nil {")
 	p.In()
