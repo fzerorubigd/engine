@@ -118,7 +118,6 @@ generate:
       output: .
 
     - name: grpchan
-      type: go
       output: .
 
     - name: wrapper

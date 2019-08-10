@@ -79,5 +79,3 @@ require (
 	gopkg.in/gorp.v1 v1.7.2 // indirect
 	honnef.co/go/tools v0.0.1-2019.2.2 // indirect
 )
-
-replace github.com/fullstorydev/grpchan => github.com/fzerorubigd/grpchan v1.0.2
