@@ -3,7 +3,6 @@
 dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git || dokku plugin:update letsencrypt
 dokku plugin:install https://github.com/dokku/dokku-redis.git redis || dokku plugin:update redis
 dokku plugin:install https://github.com/dokku/dokku-postgres.git postgres || dokku plugin:update postgres
-dokku plugin:install https://github.com/dokku/dokku-memcached.git memcached || dokku plugin:update memcached
 
 dokku apps:create qollenge
 dokku redis:create qollenge_redis
@@ -19,4 +18,4 @@ dokku config:set --no-restart qollenge E_SERVICES_SENTRY_SECRET=${SENTRY_KEY}
 
 // PUSH
 
-dokku letsencrypt engine
+dokku letsencrypt cerulean

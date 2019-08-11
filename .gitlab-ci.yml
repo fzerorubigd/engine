@@ -29,18 +29,20 @@ before_script:
   - mv !(go|cache) "${REPO_DIR}"
   - cd ${REPO_DIR}
 
-lint:
+Lint and Test:
   stage: test
   script:
     - make lint
-
-test:
-  stage: test
-  script:
     - make test
 
-deploy-qollenge:
+Deploy Qollenge:
   stage: deploy
   when: manual
   script:
     - make deploy-qollenge
+
+Deploy Cerulean:
+  stage: deploy
+  when: manual
+  script:
+    - make deploy-cerulean

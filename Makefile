@@ -174,8 +174,8 @@ deploy-qollenge:
 	$(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "dokku tags:deploy qollenge $(COMMIT_COUNT)"
 
 deploy-cerulean:
-	$(DOCKER) build --build-arg APP_NAME=cerulean --build-arg APP_PREFIX=c -t dokku/$(PROJECT):$(COMMIT_COUNT) .
-	$(DOCKER) save dokku/$(PROJECT):$(COMMIT_COUNT) | $(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "docker load"
-	$(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "dokku tags:deploy $(PROJECT) $(COMMIT_COUNT)"
+	$(DOCKER) build --build-arg APP_NAME=cerulean --build-arg APP_PREFIX=c -t dokku/cerulean:$(COMMIT_COUNT) .
+	$(DOCKER) save dokku/cerulean:$(COMMIT_COUNT) | $(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "docker load"
+	$(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "dokku tags:deploy cerulean $(COMMIT_COUNT)"
 
 .PHONY: swagger-to-go proto swagger build-server run-server generate vendor
