@@ -34,17 +34,18 @@ CG_SERVICES_POSTGRES_DB=$(DB_NAME)
 where-am-i = $(CURDIR)/$(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
 
 # Default target is lint
-lint: $(BIN)/golint $(BIN)/flint $(BIN)/errcheck
-	$(GO) vet ./cmd/... ./pkg/... ./modules/...
-	$(BIN)/golint ./cmd/... ./pkg/... ./modules/...
-	#$(BIN)/flint ./cmd/... ./pkg/... ./modules/...
-	$(BIN)/errcheck ./cmd/... ./pkg/... ./modules/...
+lint: $(BIN)/golangci-lint
+	$(BIN)/golangci-lint run
+
+$(BIN)/golangci-lint:
+	$(CURL) -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(BIN) v1.17.1
 
 clean:
 	$(GIT) clean -fX ./
 
 vendor:
 	GO111MODULE=on $(GO) get ./cmd/... ./pkg/... ./modules/...
+	GO111MODULE=on $(GO) mod tidy
 	GO111MODULE=on $(GO) mod vendor
 
 # Include modules make file
@@ -86,17 +87,8 @@ $(BIN)/protoc-gen-grpchan:
 $(BIN)/go-bindata:
 	$(GET) github.com/shuLhan/go-bindata/cmd/go-bindata
 
-$(BIN)/flint:
-	$(GET) github.com/fraugster/flint
-
-$(BIN)/golint:
-	$(GET) golang.org/x/lint/golint
-
 $(BIN)/reflex:
 	$(GET) github.com/cespare/reflex
-
-$(BIN)/errcheck:
-	$(GET) github.com/kisielk/errcheck
 
 swagger-to-go:
 	$(INSTALL) ./cmd/swagger-to-go

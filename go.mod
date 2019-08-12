@@ -6,7 +6,6 @@ require (
 	cloud.google.com/go v0.44.0 // indirect
 	github.com/DATA-DOG/go-txdb v0.1.2
 	github.com/coreos/bbolt v1.3.3 // indirect
-	github.com/coreos/go-etcd v2.0.0+incompatible // indirect
 	github.com/coreos/go-systemd v0.0.0-20190719114852-fd7a80b32e1f // indirect
 	github.com/fraugster/flint v0.1.0 // indirect
 	github.com/fullstorydev/grpchan v1.0.1
