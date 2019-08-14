@@ -4,20 +4,8 @@ import (
 	"net/http"
 
 	"elbix.dev/engine/pkg/log"
+	"elbix.dev/engine/pkg/sentry"
 )
-
-type recoverHandler struct {
-	original http.Handler
-}
-
-func (rh *recoverHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	defer Recover(w)
-	rh.original.ServeHTTP(w, r)
-}
-
-func newRecover(handler http.Handler) http.Handler {
-	return &recoverHandler{original: handler}
-}
 
 // Recover is used for recovering from panic in http.ServeHTTP
 func Recover(w http.ResponseWriter) {
@@ -25,6 +13,7 @@ func Recover(w http.ResponseWriter) {
 	if e == nil {
 		return
 	}
+	_ = sentry.Recover(e)
 	log.Error("Recover from panic", log.Any("panic", e))
 
 	w.WriteHeader(http.StatusInternalServerError)

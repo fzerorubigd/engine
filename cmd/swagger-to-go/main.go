@@ -14,11 +14,7 @@ import (
 )
 
 type swaggerFile struct {
-	Swagger string `json:"swagger"`
-	Info    struct {
-		Title   string `json:"title"`
-		Version string `json:"version"`
-	} `json:"info"`
+	Swagger     string                 `json:"swagger"`
 	Schemes     []string               `json:"schemes"`
 	Consumes    []string               `json:"consumes"`
 	Produces    []string               `json:"produces"`
@@ -40,6 +36,7 @@ func main() {
 	}
 
 	var swag swaggerFile
+
 	if err = json.NewDecoder(fl).Decode(&swag); err != nil {
 		log.Fatal("Can not read valid swagger data")
 	}

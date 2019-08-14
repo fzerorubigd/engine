@@ -12,12 +12,12 @@ import (
 )
 
 // Initialize try to initialize config
-func Initialize(ctx context.Context, appName, prefix string, layers ...onion.Layer) {
+func Initialize(ctx context.Context, appName, prefix string) {
 	env := os.Getenv("ENV")
 	if env == "" {
 		env = "dev"
 	}
-	o.AddLayers(layers...)
+	o.AddLayers(initLayer())
 	// Now load external config to overwrite them all.
 	if l, err := onion.NewFileLayer("/etc/"+appName+"/"+env+".yaml", nil); err == nil {
 		log.Info("Loading config", log.String("file", "/etc/"+appName+"/"+env+".yaml"))
@@ -25,7 +25,7 @@ func Initialize(ctx context.Context, appName, prefix string, layers ...onion.Lay
 	}
 	p, err := expand.Path("$HOME/." + appName + "/" + env + ".yaml")
 	if err == nil {
-		if l, err := onion.NewFileLayer(p, nil); err == nil {
+		if l, err2 := onion.NewFileLayer(p, nil); err2 == nil {
 			log.Info("Loading config", log.String("file", p))
 			o.AddLayers(l)
 		}
@@ -33,7 +33,7 @@ func Initialize(ctx context.Context, appName, prefix string, layers ...onion.Lay
 
 	p, err = expand.Path("$PWD/configs/" + appName + "/" + env + ".yaml")
 	if err == nil {
-		if l, err := onion.NewFileLayer(p, nil); err == nil {
+		if l, err2 := onion.NewFileLayer(p, nil); err2 == nil {
 			log.Info("Loading config", log.String("file", p))
 			o.AddLayers(l)
 		}

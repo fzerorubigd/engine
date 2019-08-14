@@ -7,7 +7,7 @@ run:
   concurrency: 4
 
   # timeout for analysis, e.g. 30s, 5m, default is 1m
-  deadline: 1m
+  deadline: 5m
 
   # exit code when at least one issue was found, default is 1
   issues-exit-code: 1
@@ -196,6 +196,7 @@ linters:
     - maligned
     - prealloc
     - typecheck
+    - gosec
   disable-all: false
   presets:
     - bugs
@@ -238,6 +239,18 @@ issues:
         - lll
       source: "^//go:generate "
 
+    - linters:
+        - gosec
+      text: "G201:"
+
+    - linters:
+        - gosec
+      text: "G505:"
+
+    - linters:
+        - gosec
+      text: "G401:"
+
   # Independently from option `exclude` we use default exclude patterns,
   # it can be disabled by this option. To list all
   # excluded by default patterns execute `golangci-lint run --help`.
@@ -259,7 +272,7 @@ issues:
   new: false
 
   # Show only new issues created after git revision `REV`
-  new-from-rev: REV
+  #new-from-rev: REV
 
   # Show only new issues created in git patch with set file path.
-  new-from-patch: path/to/patch/file
+  #new-from-patch: path/to/patch/file

@@ -5,7 +5,6 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/fzerorubigd/protobuf/extra"
 	"github.com/gogo/protobuf/gogoproto"
 	"github.com/gogo/protobuf/proto"
 	"github.com/gogo/protobuf/protoc-gen-gogo/generator"
@@ -346,7 +345,7 @@ func (p *plugin) getDbFields(msg *generator.Descriptor) []string {
 	for _, f := range msg.Field {
 		tag := strings.Trim(getString(f, gogoproto.E_Moretags, `"db:"`+strings.ToLower(f.GetName())), `"`) + `"`
 
-		db = append(db, string(reflect.StructTag(tag).Get("db")))
+		db = append(db, reflect.StructTag(tag).Get("db"))
 	}
 
 	return db

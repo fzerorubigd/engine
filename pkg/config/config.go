@@ -6,7 +6,6 @@ import (
 
 	"github.com/goraz/onion"
 	_ "github.com/goraz/onion/loaders/yaml" // for loading yaml file
-
 )
 
 var (

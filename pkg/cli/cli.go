@@ -14,10 +14,8 @@ func Context() context.Context {
 	ctx, cancel := context.WithCancel(context.Background())
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGABRT)
 	go func() {
-		select {
-		case <-sig:
-			cancel()
-		}
+		<-sig
+		cancel()
 	}()
 
 	return ctx
