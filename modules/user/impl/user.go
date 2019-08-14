@@ -10,10 +10,12 @@ import (
 	"elbix.dev/engine/pkg/config"
 	"elbix.dev/engine/pkg/grpcgw"
 	"elbix.dev/engine/pkg/log"
+	"elbix.dev/engine/pkg/token"
 )
 
 var (
-	expire = config.RegisterDuration("modules.user.token.expire", time.Hour*24*3, "token expiration timeout")
+	expire   = config.RegisterDuration("modules.user.token.expire", time.Hour*24*3, "token expiration timeout")
+	provider token.Provider
 )
 
 type userController struct {
@@ -116,6 +118,11 @@ func (uc *userController) Register(ctx context.Context, ru *userpb.RegisterReque
 }
 
 func (uc *userController) Initialize(ctx context.Context) {
+}
+
+// SetProvider for setting the token provider
+func SetProvider(p token.Provider) {
+	provider = p
 }
 
 func init() {

@@ -20,7 +20,7 @@ var (
 
 func main() {
 	ctx := cli.Context()
-	qollenge.InitializeConfig(ctx)
+	_ = qollenge.InitializeConfig(ctx, false)
 
 	defer initializer.Initialize(ctx)()
 

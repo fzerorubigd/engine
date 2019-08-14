@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 
+	token2 "elbix.dev/engine/pkg/token"
 	"github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
@@ -21,6 +22,10 @@ const (
 	resource contextKey = 0
 	user     contextKey = 1
 	token    contextKey = 2
+)
+
+var (
+	provider token2.Provider
 )
 
 func requirement(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
@@ -80,6 +85,11 @@ func MustExtractToken(ctx context.Context) string {
 	tok, err := ExtractToken(ctx)
 	assert.Nil(err)
 	return tok
+}
+
+// SetProvider for setting the token provider
+func SetProvider(p token2.Provider) {
+	provider = p
 }
 
 func init() {
