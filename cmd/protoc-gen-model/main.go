@@ -18,7 +18,7 @@ func main() {
 		gen.Error(err, "reading input")
 	}
 
-	if err := proto.Unmarshal(data, gen.Request); err != nil {
+	if err = proto.Unmarshal(data, gen.Request); err != nil {
 		gen.Error(err, "parsing input proto")
 	}
 

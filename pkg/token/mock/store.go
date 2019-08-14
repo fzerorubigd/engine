@@ -19,7 +19,7 @@ func (p provider) Store(data map[string]interface{}, exp time.Duration) (string,
 	key := <-random.ID
 	cp := make(map[string]interface{}, len(data)+1)
 	for i := range data {
-		cp[i] = data [i]
+		cp[i] = data[i]
 	}
 	cp["exp"] = time.Now().Add(exp).Unix()
 	p[key] = cp

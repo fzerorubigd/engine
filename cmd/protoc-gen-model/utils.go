@@ -115,13 +115,3 @@ var commonInitialisms = map[string]bool{
 		"XML":   true,
 	*/
 }
-
-func stringInArray(in string, arr ...string) bool {
-	for i := range arr {
-		if arr[i] == in {
-			return true
-		}
-	}
-
-	return false
-}

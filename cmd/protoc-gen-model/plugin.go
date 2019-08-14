@@ -215,7 +215,7 @@ func (p *plugin) createFunction(msg modelData) {
 		if v == "Timestamp" {
 			p.P(msg.goFields[j], ",err := ", p.protoTimeImport.Use(), ".TimestampFromProto(", msg.receiver, ".", msg.goFields[j], ")")
 			p.ifErr()
-			values[i] = fmt.Sprintf("%s", msg.goFields[j])
+			values[i] = msg.goFields[j]
 		} else {
 			values[i] = fmt.Sprintf("%s.%s", msg.receiver, msg.goFields[j])
 		}
@@ -258,7 +258,7 @@ func (p *plugin) updateFunction(msg modelData) {
 		if v == "Timestamp" {
 			p.P(msg.goFields[j], ",err := ", p.protoTimeImport.Use(), ".TimestampFromProto(", msg.receiver, ".", msg.goFields[j], ")")
 			p.ifErr()
-			values[i] = fmt.Sprintf("%s", msg.goFields[j])
+			values[i] = msg.goFields[j]
 		} else {
 			values[i] = fmt.Sprintf("%s.%s", msg.receiver, msg.goFields[j])
 		}

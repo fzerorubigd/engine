@@ -47,7 +47,7 @@ func (jw *jwtProvider) Store(data map[string]interface{}, exp time.Duration) (st
 	// you would like it to contain.
 	claim := make(jwt.MapClaims, len(data)+1)
 	for i := range data {
-		claim[i] = data [i]
+		claim[i] = data[i]
 	}
 	claim["exp"] = time.Now().Add(exp).Unix()
 
