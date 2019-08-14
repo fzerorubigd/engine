@@ -66,6 +66,11 @@ need_root:
 not_root:
 	@[ "$(shell id -u)" != "0" ] || exit 1
 
+database-clean: need_root
+	sudo -u postgres psql -U postgres -c "DROP DATABASE IF EXISTS $(DB_NAME);"
+	sudo -u postgres psql -U postgres -c "DROP DATABASE IF EXISTS $(DB_NAME)_test;"
+
+
 database-setup: need_root
 	sudo -u postgres psql -U postgres -d postgres -c "CREATE USER $(DB_USER) WITH PASSWORD '$(DB_PASS)';" || sudo -u postgres psql -U postgres -d postgres -c "ALTER USER $(DB_USER) WITH PASSWORD '$(DB_PASS)';"
 	sudo -u postgres psql -U postgres -d postgres -c "CREATE USER $(DB_USER)_test WITH PASSWORD '$(DB_PASS)';" || sudo -u postgres psql -U postgres -d postgres -c "ALTER USER $(DB_USER)_test WITH PASSWORD '$(DB_PASS)';"

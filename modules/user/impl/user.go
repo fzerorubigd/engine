@@ -10,12 +10,10 @@ import (
 	"elbix.dev/engine/pkg/config"
 	"elbix.dev/engine/pkg/grpcgw"
 	"elbix.dev/engine/pkg/log"
-	"elbix.dev/engine/pkg/token"
 )
 
 var (
-	expire   = config.RegisterDuration("modules.user.token.expire", time.Hour*24*3, "token expiration timeout")
-	provider token.Provider
+	expire = config.RegisterDuration("modules.user.token.expire", time.Hour*24*3, "token expiration timeout")
 )
 
 type userController struct {
@@ -47,7 +45,7 @@ func (uc *userController) ChangeDisplayName(ctx context.Context, cd *userpb.Chan
 	assert.Nil(err)
 	u.DisplayName = cd.DisplayName
 	assert.Nil(m.UpdateUser(ctx, u))
-	m.UpdateToken(ctx, u, expire.Duration(), middlewares.MustExtractToken(ctx))
+
 	return &userpb.ChangeDisplayNameResponse{}, nil
 }
 
@@ -66,9 +64,11 @@ func (uc *userController) ChangePassword(ctx context.Context, cpr *userpb.Change
 }
 
 func (uc *userController) Ping(ctx context.Context, _ *userpb.PingRequest) (*userpb.UserResponse, error) {
-	u := middlewares.MustExtractUser(ctx)
+	u1 := middlewares.MustExtractUser(ctx)
 	tok := middlewares.MustExtractToken(ctx)
-
+	m := userpb.NewManager()
+	u, err := m.GetUserByPrimary(ctx, u1.GetId())
+	assert.Nil(err)
 	return &userpb.UserResponse{
 		Id:          u.GetId(),
 		Token:       tok,
@@ -118,11 +118,6 @@ func (uc *userController) Register(ctx context.Context, ru *userpb.RegisterReque
 }
 
 func (uc *userController) Initialize(ctx context.Context) {
-}
-
-// SetProvider for setting the token provider
-func SetProvider(p token.Provider) {
-	provider = p
 }
 
 func init() {

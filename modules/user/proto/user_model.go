@@ -4,10 +4,11 @@ import (
 	"context"
 	"fmt"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
-	"github.com/gogo/protobuf/proto"
+	"elbix.dev/engine/pkg/token"
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 
@@ -26,6 +27,7 @@ const (
 //  TODO: NEEDS COMMENT INFO
 var (
 	isBcrypt = regexp.MustCompile(`^\$[^$]+\$[0-9]+\$`)
+	provider token.Provider
 )
 
 func (m *User) cryptPassword() {
@@ -101,34 +103,47 @@ func (m *Manager) RegisterUser(ctx context.Context, email, name, pass string) (*
 
 // CreateToken TODO: NEEDS COMMENT INFO
 func (m *Manager) CreateToken(ctx context.Context, u *User, d time.Duration) string {
-	t := <-random.ID
-	m.UpdateToken(ctx, u, d, t)
-	return t
-}
+	data := map[string]interface{}{
+		"uid": fmt.Sprint(u.GetId()),
+		"eml": u.GetEmail(),
+		// "ust": fmt.Sprint(int(u.GetStatus())),
+		// "dsp": u.GetDisplayName(),
+	}
 
-// UpdateToken try to update/create token
-func (m *Manager) UpdateToken(_ context.Context, u *User, d time.Duration, token string) {
-	v, err := proto.Marshal(u)
+	s, err := provider.Store(data, d)
 	assert.Nil(err)
-	kv.MustStoreKey(token, string(v), d)
+
+	return s
 }
 
 // FindUserByIndirectToken TODO: NEEDS COMMENT INFO
 func (m *Manager) FindUserByIndirectToken(ctx context.Context, token string) (*User, error) {
-	t, err := kv.FetchKey(token)
+	t, err := provider.Fetch(token)
 	if err != nil {
 		return nil, err
 	}
-	var u User
-	// Invalid data is a bug
-	assert.Nil(proto.Unmarshal([]byte(t), &u))
+	email := t["eml"].(string)
+	uidS := t["uid"].(string)
+	uid, err := strconv.ParseInt(uidS, 10, 0)
+	if err != nil {
+		return nil, errors.Wrap(err, "invalid uid")
+	}
 
-	return &u, nil
+	u := &User{
+		Id: uid,
+	}
+
+	if err := m.ReloadUser(ctx, u); err != nil {
+		return nil, err
+	}
+
+	assert.True(u.GetEmail() == email, u.GetEmail(), email)
+	return u, nil
 }
 
 // DeleteToken TODO: NEEDS COMMENT INFO
 func (m *Manager) DeleteToken(_ context.Context, token string) {
-	kv.MustDeleteKey(token)
+	provider.Delete(token)
 }
 
 // ChangePassword TODO: NEEDS COMMENT INFO
@@ -168,4 +183,20 @@ func (m *Manager) VerifyForgottenToken(ctx context.Context, u *User, token strin
 	}
 
 	return nil
+}
+
+// ReloadUser tries to reload user
+func (m *Manager) ReloadUser(ctx context.Context, u *User) error {
+	us, err := m.GetUserByPrimary(ctx, u.Id)
+	if err != nil {
+		return err
+	}
+
+	*u = *us
+	return nil
+}
+
+// SetProvider for setting the token provider
+func SetProvider(p token.Provider) {
+	provider = p
 }

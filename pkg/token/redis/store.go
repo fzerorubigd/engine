@@ -13,6 +13,10 @@ import (
 type redisStore struct {
 }
 
+func (store redisStore) Delete(token string) {
+	_ = kv.DeleteKey(token)
+}
+
 func (redisStore) Store(data map[string]interface{}, exp time.Duration) (string, error) {
 	str, err := json.Marshal(data)
 	if err != nil {

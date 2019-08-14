@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"testing"
 
+	"elbix.dev/engine/pkg/token/mock"
 	"github.com/fullstorydev/grpchan/inprocgrpc"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -117,8 +118,8 @@ func TestUserController_Logout(t *testing.T) {
 	u := newClient()
 	r, err := u.Logout(ctx, &userpb.LogoutRequest{})
 	assert.Nil(t, r)
-	require.IsType(t, grpcgw.NewNotFound(nil), err)
-	gErr := err.(grpcgw.GWError)
+	gErr, ok := err.(grpcgw.GWError)
+	require.True(t, ok)
 	assert.Equal(t, http.StatusUnauthorized, gErr.Status())
 
 	r1, err := u.Register(ctx, &userpb.RegisterRequest{
@@ -133,8 +134,8 @@ func TestUserController_Logout(t *testing.T) {
 
 	_, err = u.Logout(mockery.AuthorizeToken(ctx, r1.Token), &userpb.LogoutRequest{})
 	require.Error(t, err)
-	require.IsType(t, grpcgw.NewNotFound(nil), err)
-	gErr = err.(grpcgw.GWError)
+	gErr, ok = err.(grpcgw.GWError)
+	require.True(t, ok, err.Error())
 	assert.Equal(t, http.StatusUnauthorized, gErr.Status())
 }
 
@@ -233,4 +234,8 @@ func TestUserController_ChangeDisplayName(t *testing.T) {
 	r3, err = u.Ping(ctx, &userpb.PingRequest{})
 	require.NoError(t, err)
 	assert.Equal(t, "rename", r3.DisplayName)
+}
+
+func init() {
+	userpb.SetProvider(mock.NewMockStorage())
 }

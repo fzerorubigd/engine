@@ -5,8 +5,10 @@ import (
 	"testing"
 	"time"
 
+	"elbix.dev/engine/pkg/token/mock"
 	"github.com/fullstorydev/grpchan/inprocgrpc"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"elbix.dev/engine/modules/user/proto"
 	"elbix.dev/engine/pkg/grpcgw"
@@ -82,11 +84,12 @@ func TestMiddlewareSystem(t *testing.T) {
 	ctx := context.Background()
 	defer mockery.Start(ctx, t)()
 
+	m := userpb.NewManager()
 	user := &userpb.User{
 		Email:       "valid@email.com",
 		DisplayName: "display",
-		Id:          1,
 	}
+	require.NoError(t, m.CreateUser(ctx, user))
 
 	mock := &userMock{
 		token: userpb.NewManager().CreateToken(ctx, user, time.Hour),
@@ -98,7 +101,7 @@ func TestMiddlewareSystem(t *testing.T) {
 	nctx := mockery.AuthorizeToken(ctx, mock.token)
 
 	r, err := cl.Ping(nctx, &userpb.PingRequest{})
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, r.Id, user.Id)
 	assert.Equal(t, r.DisplayName, user.DisplayName)
 	assert.Equal(t, r.Token, mock.token)
@@ -121,4 +124,8 @@ func TestMiddlewareSystem(t *testing.T) {
 	assert.Nil(t, r)
 	assert.Error(t, err)
 
+}
+
+func init() {
+	userpb.SetProvider(mock.NewMockStorage())
 }

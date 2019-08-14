@@ -1,8 +1,7 @@
 package user
 
 import (
-	"elbix.dev/engine/modules/user/impl"
-	"elbix.dev/engine/modules/user/middlewares"
+	userpb "elbix.dev/engine/modules/user/proto"
 	"elbix.dev/engine/pkg/token"
 
 	// Migrations
@@ -15,6 +14,5 @@ import (
 
 // SetProvider for setting the token provider
 func SetProvider(p token.Provider) {
-	impl.SetProvider(p)
-	middlewares.SetProvider(p)
+	userpb.SetProvider(p)
 }

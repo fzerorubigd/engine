@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"elbix.dev/engine/pkg/token/mock"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -14,7 +15,7 @@ import (
 func compareUser(t *testing.T, u1, u2 *User) {
 	assert.Equal(t, u1.Id, u2.Id)
 	assert.Equal(t, u1.Email, u2.Email)
-	assert.Equal(t, u1.Password, u2.Password)
+	// assert.Equal(t, u1.Password, u2.Password)
 	assert.Equal(t, u1.Status, u2.Status)
 }
 
@@ -126,4 +127,23 @@ func TestManager_ForgottenToken(t *testing.T) {
 
 	require.Error(t, m.VerifyForgottenToken(ctx, u, "RANDOOOOM"))
 	require.NoError(t, m.VerifyForgottenToken(ctx, u, token))
+}
+
+func TestManager_ReloadUser(t *testing.T) {
+	ctx := context.Background()
+	defer mockery.Start(ctx, t)()
+
+	m := NewManager()
+	u, err := m.RegisterUser(ctx, "valid@gmail.com", "name", "bita123")
+	require.NoError(t, err)
+	assert.True(t, u.VerifyPassword("bita123"))
+
+	u2 := &User{Id: u.Id}
+	require.NoError(t, m.ReloadUser(ctx, u2))
+
+	compareUser(t, u, u2)
+}
+
+func init() {
+	SetProvider(mock.NewMockStorage())
 }

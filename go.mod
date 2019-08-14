@@ -37,6 +37,7 @@ require (
 	github.com/pkg/errors v0.8.1
 	github.com/rs/cors v1.7.0
 	github.com/rubenv/sql-migrate v0.0.0-20190717103323-87ce952f7079
+	github.com/shuLhan/go-bindata v3.4.0+incompatible // indirect
 	github.com/smartystreets/assertions v1.0.1 // indirect
 	github.com/stretchr/testify v1.3.0
 	github.com/ziutek/mymysql v1.5.4 // indirect

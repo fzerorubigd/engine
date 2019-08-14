@@ -14,6 +14,10 @@ type jwtProvider struct {
 	publicKey  interface{}
 }
 
+func (jw *jwtProvider) Delete(token string) {
+	// NO OP on jwt // TODO: HOW?
+}
+
 func loadKeyFile(data string, pub bool) (interface{}, error) {
 	keyFile, err := base64.StdEncoding.DecodeString(data)
 	if err != nil {
