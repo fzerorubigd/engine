@@ -32,6 +32,8 @@ before_script:
 
 Lint and Test:
   stage: test
+  tags:
+    - elbix
   script:
     - make lint
     - make test
