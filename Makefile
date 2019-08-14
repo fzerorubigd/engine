@@ -37,6 +37,15 @@ where-am-i = $(CURDIR)/$(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
 lint: $(BIN)/golangci-lint
 	LINT_GOGC=5 GOGC=5 $(BIN)/golangci-lint run
 
+
+$(BIN)/jwtRS256.key:
+	ssh-keygen -t rsa -b 4096 -m PEM -f $(BIN)/jwtRS256.key -N ''
+
+$(BIN)/jwtRS256.key.bup: $(BIN)/jwtRS256.key
+	openssl rsa -in $(BIN)/jwtRS256.key -pubout -outform PEM -out $(BIN)/jwtRS256.key.pub
+
+rsa_file: $(BIN)/jwtRS256.key.bup $(BIN)/jwtRS256.key
+
 $(BIN)/golangci-lint:
 	$(CURL) -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(BIN) v1.17.1
 
@@ -147,9 +156,9 @@ build-all:
 	@echo "Building all binaries"
 	$(INSTALL) ./cmd/...
 
-run-server-qollenge: code-gen build-all
+run-server-qollenge: code-gen build-all rsa_file
 	@echo "Running..."
-	$(BIN)/qserver 2>&1
+	E_MODULES_TOKEN_JWT_PRIVATE=$(shell cat $(BIN)/jwtRS256.key | base64 -w 0) E_MODULES_TOKEN_JWT_PUBLIC=$(shell cat $(BIN)/jwtRS256.key.pub | base64 -w 0) $(BIN)/qserver 2>&1
 
 tools-migration: tools-migration-qollenge tools-migration-cerulean
 

@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"strings"
 
+	extrapb "github.com/fzerorubigd/protobuf/extra"
 	"github.com/gogo/protobuf/gogoproto"
 	"github.com/gogo/protobuf/proto"
 	"github.com/gogo/protobuf/protoc-gen-gogo/generator"
@@ -184,7 +185,7 @@ func (p *plugin) createFunction(msg modelData) {
 	p.P()
 	p.P("func (m *Manager) Create", msg.model, "(ctx ", p.contextImport.Use(), ".Context, ", msg.receiver, " *", msg.model, ") error {")
 	p.In()
-	//p.P("var err error")
+	// p.P("var err error")
 	if msg.updatedAt || msg.createdAt {
 		p.P("now := ", p.timeImport.Use(), ".Now()")
 		if msg.createdAt {

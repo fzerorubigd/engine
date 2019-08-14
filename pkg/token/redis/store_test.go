@@ -33,7 +33,7 @@ func TestNewRedisTokenProvider(t *testing.T) {
 	require.NoError(t, err)
 	ret, err := s.Fetch(tok)
 	require.NoError(t, err)
-	//It's tricky. int translated as float64
+	// It's tricky. int translated as float64
 	require.Equal(t, data["str"].(string), ret["str"].(string))
 	require.Equal(t, data["int"], int(ret["int"].(float64)))
 
@@ -53,4 +53,5 @@ func TestNewRedisTokenProvider(t *testing.T) {
 
 	d["w"] = wrongJSON(10)
 	_, err = s.Store(d, time.Hour)
+	require.Error(t, err)
 }
