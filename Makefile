@@ -35,7 +35,7 @@ where-am-i = $(CURDIR)/$(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
 
 # Default target is lint
 lint: $(BIN)/golangci-lint
-	$(BIN)/golangci-lint run
+	LINT_GOGC=5 GOGC=5 $(BIN)/golangci-lint run
 
 $(BIN)/golangci-lint:
 	$(CURL) -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(BIN) v1.17.1
