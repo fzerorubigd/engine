@@ -18,6 +18,7 @@ variables:
   E_SERVICES_REDIS_ADDRESS: redis
   GOPATH: "$CI_PROJECT_DIR/go"
   REPO_DIR: "$CI_PROJECT_DIR/go/src/elbix.dev/engine"
+  GO111MODULE: "on"
 
 before_script:
   - mkdir -p ~/.ssh
