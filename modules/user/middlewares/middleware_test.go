@@ -21,6 +21,10 @@ type userMock struct {
 	u     *userpb.User
 }
 
+func (um userMock) VerifyToken(context.Context, *userpb.VerifyTokenRequest) (*userpb.UserResponse, error) {
+	panic("implement me")
+}
+
 func (um userMock) ForgotPassword(context.Context, *userpb.ForgotPasswordRequest) (*userpb.ForgotPasswordResponse, error) {
 	panic("implement me")
 }
