@@ -20,8 +20,9 @@ import (
 
 // From the bcrypt package
 const (
-	minHashSize  = 59
-	noPassString = "NO" // Size must be less than 6 character
+	minHashSize = 59
+	// NoPassString is for users without password (OAuth users)
+	NoPassString = "NO" // Size must be less than 6 character
 )
 
 //  TODO: NEEDS COMMENT INFO
@@ -32,7 +33,7 @@ var (
 
 func (m *User) cryptPassword() {
 	// TODO : Watch it if this creepy code is dangerous :)
-	if (len(m.Password) < minHashSize || !isBcrypt.MatchString(m.Password)) && m.Password != noPassString {
+	if (len(m.Password) < minHashSize || !isBcrypt.MatchString(m.Password)) && m.Password != NoPassString {
 		p, err := bcrypt.GenerateFromPassword([]byte(m.Password), bcrypt.DefaultCost)
 		assert.Nil(err)
 		m.Password = string(p)
@@ -56,6 +57,7 @@ func (m *User) VerifyPassword(password string) bool {
 
 // FindUserByEmailPassword try to login user with username and password
 func (m *Manager) FindUserByEmailPassword(ctx context.Context, email, password string) (*User, error) {
+	email = strings.ToLower(email)
 	u, err := m.FindUserByEmail(ctx, email)
 	if err != nil {
 		return nil, err
@@ -74,6 +76,7 @@ func (m *Manager) FindUserByEmailPassword(ctx context.Context, email, password s
 
 // FindUserByEmail is a function to find user based on app
 func (m *Manager) FindUserByEmail(ctx context.Context, e string) (*User, error) {
+	e = strings.ToLower(e)
 	q := fmt.Sprintf(
 		"SELECT %s FROM %s WHERE email = $1 ",
 		strings.Join(m.getUserFields(), ","),
@@ -87,6 +90,7 @@ func (m *Manager) FindUserByEmail(ctx context.Context, e string) (*User, error) 
 
 // RegisterUser is to register new user
 func (m *Manager) RegisterUser(ctx context.Context, email, name, pass string) (*User, error) {
+	email = strings.ToLower(email)
 	u := User{
 		Email:       email,
 		DisplayName: name,
@@ -137,7 +141,7 @@ func (m *Manager) FindUserByIndirectToken(ctx context.Context, token string) (*U
 		return nil, err
 	}
 
-	assert.True(u.GetEmail() == email, u.GetEmail(), email)
+	assert.True(u.GetEmail() == email)
 	return u, nil
 }
 

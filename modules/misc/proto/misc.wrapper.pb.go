@@ -45,7 +45,7 @@ func (w *wrappedMiscSystemServer) Version(ctx golang_org_x_net_context.Context, 
 	if err != nil {
 		return nil, err
 	}
-	if err = w.v.Struct(req); err != nil {
+	if err = w.v.StructCtx(ctx, req); err != nil {
 		return nil, elbix_dev_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 
@@ -58,7 +58,7 @@ func (w *wrappedMiscSystemServer) Health(ctx golang_org_x_net_context.Context, r
 	if err != nil {
 		return nil, err
 	}
-	if err = w.v.Struct(req); err != nil {
+	if err = w.v.StructCtx(ctx, req); err != nil {
 		return nil, elbix_dev_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 

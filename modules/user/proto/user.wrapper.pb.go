@@ -7,11 +7,11 @@ import (
 	fmt "fmt"
 	math "math"
 	proto "github.com/golang/protobuf/proto"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
+	_ "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options"
 	_ "github.com/fzerorubigd/protobuf/extra"
 	_ "github.com/fzerorubigd/protobuf/types"
 	_ "github.com/gogo/protobuf/gogoproto"
-	_ "google.golang.org/genproto/googleapis/api/annotations"
-	_ "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options"
 	elbix_dev_engine_pkg_grpcgw "elbix.dev/engine/pkg/grpcgw"
 	gopkg_in_go_playground_validator_v9 "gopkg.in/go-playground/validator.v9"
 	golang_org_x_net_context "golang.org/x/net/context"
@@ -48,7 +48,7 @@ func (w *wrappedUserSystemServer) Login(ctx golang_org_x_net_context.Context, re
 	if err != nil {
 		return nil, err
 	}
-	if err = w.v.Struct(req); err != nil {
+	if err = w.v.StructCtx(ctx, req); err != nil {
 		return nil, elbix_dev_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 
@@ -61,7 +61,7 @@ func (w *wrappedUserSystemServer) Logout(ctx golang_org_x_net_context.Context, r
 	if err != nil {
 		return nil, err
 	}
-	if err = w.v.Struct(req); err != nil {
+	if err = w.v.StructCtx(ctx, req); err != nil {
 		return nil, elbix_dev_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 
@@ -74,7 +74,7 @@ func (w *wrappedUserSystemServer) Register(ctx golang_org_x_net_context.Context,
 	if err != nil {
 		return nil, err
 	}
-	if err = w.v.Struct(req); err != nil {
+	if err = w.v.StructCtx(ctx, req); err != nil {
 		return nil, elbix_dev_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 
@@ -87,11 +87,24 @@ func (w *wrappedUserSystemServer) Ping(ctx golang_org_x_net_context.Context, req
 	if err != nil {
 		return nil, err
 	}
-	if err = w.v.Struct(req); err != nil {
+	if err = w.v.StructCtx(ctx, req); err != nil {
 		return nil, elbix_dev_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 
 	res, err = w.original.Ping(ctx, req)
+	return
+}
+
+func (w *wrappedUserSystemServer) VerifyToken(ctx golang_org_x_net_context.Context, req *VerifyTokenRequest) (res *UserResponse, err error) {
+	ctx, err = elbix_dev_engine_pkg_grpcgw.ExecuteMiddleware(ctx, w.original)
+	if err != nil {
+		return nil, err
+	}
+	if err = w.v.StructCtx(ctx, req); err != nil {
+		return nil, elbix_dev_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
+	}
+
+	res, err = w.original.VerifyToken(ctx, req)
 	return
 }
 
@@ -100,7 +113,7 @@ func (w *wrappedUserSystemServer) ChangePassword(ctx golang_org_x_net_context.Co
 	if err != nil {
 		return nil, err
 	}
-	if err = w.v.Struct(req); err != nil {
+	if err = w.v.StructCtx(ctx, req); err != nil {
 		return nil, elbix_dev_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 
@@ -113,7 +126,7 @@ func (w *wrappedUserSystemServer) ChangeDisplayName(ctx golang_org_x_net_context
 	if err != nil {
 		return nil, err
 	}
-	if err = w.v.Struct(req); err != nil {
+	if err = w.v.StructCtx(ctx, req); err != nil {
 		return nil, elbix_dev_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 
@@ -126,7 +139,7 @@ func (w *wrappedUserSystemServer) ForgotPassword(ctx golang_org_x_net_context.Co
 	if err != nil {
 		return nil, err
 	}
-	if err = w.v.Struct(req); err != nil {
+	if err = w.v.StructCtx(ctx, req); err != nil {
 		return nil, elbix_dev_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
 	}
 

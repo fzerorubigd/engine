@@ -196,6 +196,32 @@
           "UserSystem"
         ]
       }
+    },
+    "/v1/user/verify": {
+      "post": {
+        "operationId": "VerifyToken",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/userUserResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userVerifyTokenRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserSystem"
+        ]
+      }
     }
   },
   "definitions": {
@@ -290,6 +316,14 @@
         "USER_STATUS_BANNED"
       ],
       "default": "USER_STATUS_INVALID"
+    },
+    "userVerifyTokenRequest": {
+      "type": "object",
+      "properties": {
+        "token_id": {
+          "type": "string"
+        }
+      }
     }
   }
 }

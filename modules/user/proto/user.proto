@@ -78,6 +78,10 @@ message ForgotPasswordRequest {
 
 message ForgotPasswordResponse {}
 
+message VerifyTokenRequest {
+  string token_id = 1 [(gogoproto.moretags) = "validate:\"required\" "];
+}
+
 service UserSystem {
   rpc Login(LoginRequest) returns (UserResponse) {
     option (google.api.http) = {
@@ -123,7 +127,15 @@ service UserSystem {
     };
   }
 
-  rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse) {
+  rpc VerifyToken(VerifyTokenRequest) returns (UserResponse) {
+    option (google.api.http) = {
+      post: "/v1/user/verify"
+      body: "*"
+    };
+}
+
+
+rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse) {
     option (google.api.http) = {
       post: "/v1/user/change/password"
       body: "*"

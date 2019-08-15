@@ -10,13 +10,48 @@ import (
 	"elbix.dev/engine/pkg/config"
 	"elbix.dev/engine/pkg/grpcgw"
 	"elbix.dev/engine/pkg/log"
+	"google.golang.org/api/oauth2/v2"
+	"gopkg.in/go-playground/validator.v9"
 )
 
 var (
 	expire = config.RegisterDuration("modules.user.token.expire", time.Hour*24*3, "token expiration timeout")
+
+	validate = validator.New()
 )
 
 type userController struct {
+}
+
+func (uc *userController) VerifyToken(ctx context.Context, vt *userpb.VerifyTokenRequest) (*userpb.UserResponse, error) {
+	oauth2Service, err := oauth2.NewService(ctx)
+	if err != nil {
+		return nil, err
+	}
+	tokenInfoCall := oauth2Service.Tokeninfo()
+	tokenInfoCall.IdToken(vt.TokenId)
+	tok, err := tokenInfoCall.Do()
+	if err != nil {
+		return nil, err
+	}
+	assert.Nil(validate.VarCtx(ctx, tok.Email, "required,email"))
+
+	m := userpb.NewManager()
+
+	u, err := m.FindUserByEmail(ctx, tok.Email)
+	if err != nil {
+		u, err = m.RegisterUser(ctx, tok.Email, "New User", userpb.NoPassString)
+		if err != nil {
+			return nil, grpcgw.NewBadRequest(err, "something is wrong")
+		}
+	}
+
+	return &userpb.UserResponse{
+		Id:          u.GetId(),
+		Status:      u.GetStatus(),
+		DisplayName: u.GetDisplayName(),
+		Token:       m.CreateToken(ctx, u, expire.Duration()),
+	}, nil
 }
 
 func (uc *userController) ForgotPassword(ctx context.Context, fp *userpb.ForgotPasswordRequest) (*userpb.ForgotPasswordResponse, error) {
