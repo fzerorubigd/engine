@@ -60,7 +60,7 @@ message RegisterRequest {
 message PingRequest {}
 
 message ChangePasswordRequest {
-  string old_password = 1 [(gogoproto.moretags) = "validate:\"gte=6,required\" "];
+  string old_password = 1;
   string new_password = 2 [(gogoproto.moretags) = "validate:\"gte=6,required\" "];
 }
 

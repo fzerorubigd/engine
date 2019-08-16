@@ -2,16 +2,17 @@ package impl
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"elbix.dev/engine/modules/user/middlewares"
-	"elbix.dev/engine/modules/user/proto"
+	userpb "elbix.dev/engine/modules/user/proto"
 	"elbix.dev/engine/pkg/assert"
 	"elbix.dev/engine/pkg/config"
 	"elbix.dev/engine/pkg/grpcgw"
 	"elbix.dev/engine/pkg/log"
 	"google.golang.org/api/oauth2/v2"
-	"gopkg.in/go-playground/validator.v9"
+	validator "gopkg.in/go-playground/validator.v9"
 )
 
 var (
@@ -85,14 +86,14 @@ func (uc *userController) ChangeDisplayName(ctx context.Context, cd *userpb.Chan
 }
 
 func (uc *userController) ChangePassword(ctx context.Context, cpr *userpb.ChangePasswordRequest) (*userpb.ChangePasswordResponse, error) {
-	old := middlewares.MustExtractUser(ctx)
+	u := middlewares.MustExtractUser(ctx)
 	// ok reload the user from db
 	m := userpb.NewManager()
-	u, err := m.FindUserByEmailPassword(ctx, old.GetEmail(), cpr.GetOldPassword())
-	if err != nil {
-		return nil, grpcgw.NewBadRequest(err, "old password is wrong")
+	if u.GetPassword() != userpb.NoPassString {
+		if !u.VerifyPassword(cpr.GetOldPassword()) {
+			return nil, grpcgw.NewBadRequest(errors.New("old pass is wrong"), "old password is wrong")
+		}
 	}
-
 	assert.Nil(m.ChangePassword(ctx, u, cpr.GetNewPassword()))
 
 	return &userpb.ChangePasswordResponse{}, nil
