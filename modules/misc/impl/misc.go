@@ -3,7 +3,6 @@ package impl
 import (
 	"context"
 	"crypto"
-	"crypto/rsa"
 	"crypto/x509"
 	"encoding/pem"
 
@@ -13,7 +12,6 @@ import (
 	"elbix.dev/engine/pkg/health"
 	"elbix.dev/engine/pkg/version"
 	"github.com/gogo/protobuf/types"
-	"github.com/pkg/errors"
 )
 
 type miscController struct {
@@ -53,35 +51,6 @@ func (mc miscController) Version(context.Context, *miscpb.VersionRequest) (*misc
 		ShortHash:  ver.Short,
 		Count:      ver.Count,
 	}, nil
-}
-
-// Parse PEM encoded PKCS1 or PKCS8 public key
-func parseRSAPublicKeyFromPEM(key []byte) (*rsa.PublicKey, error) {
-	var err error
-
-	// Parse PEM block
-	var block *pem.Block
-	if block, _ = pem.Decode(key); block == nil {
-		return nil, errors.New("key must be PEM encoded")
-	}
-
-	// Parse the key
-	var parsedKey interface{}
-	if parsedKey, err = x509.ParsePKIXPublicKey(block.Bytes); err != nil {
-		if cert, err := x509.ParseCertificate(block.Bytes); err == nil {
-			parsedKey = cert.PublicKey
-		} else {
-			return nil, err
-		}
-	}
-
-	var pkey *rsa.PublicKey
-	var ok bool
-	if pkey, ok = parsedKey.(*rsa.PublicKey); !ok {
-		return nil, errors.New("not RSA Public key")
-	}
-
-	return pkey, nil
 }
 
 // NewMiscController return a new misc controller
