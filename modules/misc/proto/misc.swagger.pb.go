@@ -8,8 +8,8 @@ import (
 	"elbix.dev/engine/pkg/grpcgw"
 )
 
-const paths = "{\"/v1/misc/health\":{\"get\":{\"operationId\":\"Health\",\"responses\":{\"200\":{\"description\":\"A successful response.\",\"schema\":{\"$ref\":\"#/definitions/miscHealthResponse\"}}},\"tags\":[\"MiscSystem\"]}},\"/v1/misc/version\":{\"get\":{\"operationId\":\"Version\",\"responses\":{\"200\":{\"description\":\"A successful response.\",\"schema\":{\"$ref\":\"#/definitions/miscVersionResponse\"}}},\"tags\":[\"MiscSystem\"]}}}"
-const definitions = "{\"miscHealthResponse\":{\"type\":\"object\"},\"miscVersionResponse\":{\"properties\":{\"build_date\":{\"format\":\"date-time\",\"type\":\"string\"},\"commit_date\":{\"format\":\"date-time\",\"type\":\"string\"},\"commit_hash\":{\"type\":\"string\"},\"count\":{\"format\":\"int64\",\"type\":\"string\"},\"short_hash\":{\"type\":\"string\"}},\"type\":\"object\"}}"
+const paths = "{\"/v1/misc/health\":{\"get\":{\"operationId\":\"Health\",\"responses\":{\"200\":{\"description\":\"A successful response.\",\"schema\":{\"$ref\":\"#/definitions/miscHealthResponse\"}}},\"tags\":[\"MiscSystem\"]}},\"/v1/misc/pubkey\":{\"get\":{\"operationId\":\"PublicKey\",\"responses\":{\"200\":{\"description\":\"A successful response.\",\"schema\":{\"$ref\":\"#/definitions/miscPubKeyResponse\"}}},\"tags\":[\"MiscSystem\"]}},\"/v1/misc/version\":{\"get\":{\"operationId\":\"Version\",\"responses\":{\"200\":{\"description\":\"A successful response.\",\"schema\":{\"$ref\":\"#/definitions/miscVersionResponse\"}}},\"tags\":[\"MiscSystem\"]}}}"
+const definitions = "{\"miscHealthResponse\":{\"type\":\"object\"},\"miscPubKeyResponse\":{\"properties\":{\"pub\":{\"type\":\"string\"}},\"type\":\"object\"},\"miscVersionResponse\":{\"properties\":{\"build_date\":{\"format\":\"date-time\",\"type\":\"string\"},\"commit_date\":{\"format\":\"date-time\",\"type\":\"string\"},\"commit_hash\":{\"type\":\"string\"},\"count\":{\"format\":\"int64\",\"type\":\"string\"},\"short_hash\":{\"type\":\"string\"}},\"type\":\"object\"}}"
 
 func init() {
 	var (

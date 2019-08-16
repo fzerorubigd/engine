@@ -7,9 +7,9 @@ import (
 	fmt "fmt"
 	math "math"
 	proto "github.com/golang/protobuf/proto"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	_ "github.com/gogo/protobuf/types"
 	_ "github.com/gogo/protobuf/gogoproto"
-	_ "google.golang.org/genproto/googleapis/api/annotations"
 	elbix_dev_engine_pkg_grpcgw "elbix.dev/engine/pkg/grpcgw"
 	gopkg_in_go_playground_validator_v9 "gopkg.in/go-playground/validator.v9"
 	golang_org_x_net_context "golang.org/x/net/context"
@@ -63,6 +63,19 @@ func (w *wrappedMiscSystemServer) Health(ctx golang_org_x_net_context.Context, r
 	}
 
 	res, err = w.original.Health(ctx, req)
+	return
+}
+
+func (w *wrappedMiscSystemServer) PublicKey(ctx golang_org_x_net_context.Context, req *PubKeyRequest) (res *PubKeyResponse, err error) {
+	ctx, err = elbix_dev_engine_pkg_grpcgw.ExecuteMiddleware(ctx, w.original)
+	if err != nil {
+		return nil, err
+	}
+	if err = w.v.StructCtx(ctx, req); err != nil {
+		return nil, elbix_dev_engine_pkg_grpcgw.NewBadRequest(err, "validation failed")
+	}
+
+	res, err = w.original.PublicKey(ctx, req)
 	return
 }
 

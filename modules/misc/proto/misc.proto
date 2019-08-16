@@ -25,6 +25,12 @@ message HealthResponse {}
 
 message HealthRequest {}
 
+message PubKeyRequest {}
+
+message PubKeyResponse {
+  string pub = 1;
+}
+
 service MiscSystem {
   rpc Version(VersionRequest) returns (VersionResponse) {
     option (google.api.http) = {
@@ -34,6 +40,11 @@ service MiscSystem {
   rpc Health(HealthRequest) returns (HealthResponse) {
     option (google.api.http) = {
       get: "/v1/misc/health"
+    };
+  }
+  rpc PublicKey(PubKeyRequest) returns (PubKeyResponse) {
+    option (google.api.http) = {
+      get: "/v1/misc/pubkey"
     };
   }
 }

@@ -24,7 +24,7 @@ require (
 	github.com/gopherjs/gopherjs v0.0.0-20190430165422-3e4dfb77656c // indirect
 	github.com/goraz/onion v0.1.2
 	github.com/grpc-ecosystem/go-grpc-middleware v1.0.0
-	github.com/grpc-ecosystem/grpc-gateway v1.9.5
+	github.com/grpc-ecosystem/grpc-gateway v1.9.6
 	github.com/jinzhu/inflection v1.0.0
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/kr/pretty v0.1.0

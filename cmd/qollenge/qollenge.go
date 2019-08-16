@@ -3,12 +3,10 @@ package qollenge
 import (
 	"context"
 
+	"elbix.dev/engine/modules/misc"
 	"elbix.dev/engine/modules/user"
 	"elbix.dev/engine/pkg/config"
 	"elbix.dev/engine/pkg/token/jwt"
-
-	// misc module
-	_ "elbix.dev/engine/modules/misc"
 )
 
 var (
@@ -25,6 +23,10 @@ func InitializeConfig(ctx context.Context, initModules bool) error {
 	}
 	p, err := jwt.NewJWTTokenProvider(privateKey.String(), publicKey.String())
 	if err != nil {
+		return err
+	}
+
+	if err := misc.SetPublicKey(publicKey.String()); err != nil {
 		return err
 	}
 	// Its time to initialize any module

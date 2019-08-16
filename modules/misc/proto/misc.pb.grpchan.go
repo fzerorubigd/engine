@@ -36,3 +36,12 @@ func (c *miscSystemChannelClient) Health(ctx context.Context, in *HealthRequest,
 	}
 	return out, nil
 }
+
+func (c *miscSystemChannelClient) PublicKey(ctx context.Context, in *PubKeyRequest, opts ...grpc.CallOption) (*PubKeyResponse, error) {
+	out := new(PubKeyResponse)
+	err := c.ch.Invoke(ctx, "/misc.MiscSystem/PublicKey", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}

@@ -51,10 +51,10 @@ func (jw *jwtProvider) Store(data map[string]interface{}, exp time.Duration) (st
 	}
 	claim["exp"] = time.Now().Add(exp).Unix()
 
-	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claim)
+	tk := jwt.NewWithClaims(jwt.SigningMethodRS256, claim)
 
 	// Sign and get the complete encoded token as a string using the secret
-	return token.SignedString(jw.privateKey)
+	return tk.SignedString(jw.privateKey)
 }
 
 // Fetch is used to handle the verification

@@ -31,6 +31,22 @@
         ]
       }
     },
+    "/v1/misc/pubkey": {
+      "get": {
+        "operationId": "PublicKey",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/miscPubKeyResponse"
+            }
+          }
+        },
+        "tags": [
+          "MiscSystem"
+        ]
+      }
+    },
     "/v1/misc/version": {
       "get": {
         "operationId": "Version",
@@ -51,6 +67,14 @@
   "definitions": {
     "miscHealthResponse": {
       "type": "object"
+    },
+    "miscPubKeyResponse": {
+      "type": "object",
+      "properties": {
+        "pub": {
+          "type": "string"
+        }
+      }
     },
     "miscVersionResponse": {
       "type": "object",
