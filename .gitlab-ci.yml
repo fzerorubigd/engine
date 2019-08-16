@@ -40,12 +40,12 @@ Lint and Test:
 
 Deploy Qollenge:
   stage: deploy
-  when: manual
+  only: ["/^master$/"]
   script:
     - make deploy-qollenge
 
 Deploy Cerulean:
   stage: deploy
-  when: manual
+  only: ["/^master$/"]
   script:
     - make deploy-cerulean
