@@ -104,6 +104,9 @@ $(BIN)/go-bindata:
 $(BIN)/reflex:
 	$(GET) github.com/cespare/reflex
 
+$(BIN)/wire:
+	$(GET) github.com/google/wire/cmd/wire
+
 swagger-to-go:
 	$(INSTALL) ./cmd/swagger-to-go
 
@@ -155,7 +158,9 @@ swagger-ui: $(BIN)/go-bindata
 
 swagger: swagger-to-go proto $(addsuffix -swagger,$(dir $(wildcard $(ROOT)/modules/*/)))
 
-code-gen: swagger
+code-gen: swagger $(BIN)/wire
+	cd ./cmd/cerulean && $(BIN)/wire
+	cd ./cmd/qollenge && $(BIN)/wire
 
 build-all:
 	@echo "Building all binaries"

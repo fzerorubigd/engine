@@ -6,34 +6,23 @@ import (
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/pem"
-	"net/http"
 
 	"elbix.dev/engine/pkg/assert"
 
 	miscpb "elbix.dev/engine/modules/misc/proto"
-	"elbix.dev/engine/pkg/grpcgw"
 	"elbix.dev/engine/pkg/health"
 	"elbix.dev/engine/pkg/version"
 	"github.com/gogo/protobuf/types"
 	"github.com/pkg/errors"
 )
 
-var (
-	pubKey crypto.PublicKey
-)
-
 type miscController struct {
+	pub crypto.PublicKey
 }
 
 func (mc miscController) PublicKey(context.Context, *miscpb.PubKeyRequest) (*miscpb.PubKeyResponse, error) {
-	if pubKey == nil {
-		return nil, grpcgw.NewBadRequestStatus(
-			errors.New("not implemented"),
-			"not implemented in this server",
-			http.StatusNotImplemented)
-	}
 	resp := &miscpb.PubKeyResponse{}
-	pubBytes, err := x509.MarshalPKIXPublicKey(pubKey)
+	pubBytes, err := x509.MarshalPKIXPublicKey(mc.pub)
 	assert.Nil(err)
 	resp.Pub = string(pem.EncodeToMemory(
 		&pem.Block{
@@ -95,11 +84,7 @@ func parseRSAPublicKeyFromPEM(key []byte) (*rsa.PublicKey, error) {
 	return pkey, nil
 }
 
-// SetPublicKey set the public key used by the app for jwt and all other stuff
-func SetPublicKey(pub crypto.PublicKey) {
-	pubKey = pub
-}
-
-func init() {
-	grpcgw.Register(miscpb.NewWrappedMiscSystemServer(&miscController{}))
+// NewMiscController return a new misc controller
+func NewMiscController(pub crypto.PublicKey) miscpb.MiscSystemServer {
+	return &miscController{pub: pub}
 }

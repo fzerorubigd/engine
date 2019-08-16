@@ -1,6 +1,7 @@
 package sec
 
 import (
+	"crypto"
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/base64"
@@ -8,6 +9,11 @@ import (
 
 	"github.com/pkg/errors"
 )
+
+// ExtractPublicFromPrivate is a useful function for dependency injection
+func ExtractPublicFromPrivate(in *rsa.PrivateKey) crypto.PublicKey {
+	return in.Public()
+}
 
 // ParseRSAPrivateKeyFromPEM read RSA from PEM encoded data
 func ParseRSAPrivateKeyFromPEM(key []byte) (*rsa.PrivateKey, error) {

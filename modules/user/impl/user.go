@@ -11,8 +11,9 @@ import (
 	"elbix.dev/engine/pkg/config"
 	"elbix.dev/engine/pkg/grpcgw"
 	"elbix.dev/engine/pkg/log"
+	"elbix.dev/engine/pkg/token"
 	"google.golang.org/api/oauth2/v2"
-	validator "gopkg.in/go-playground/validator.v9"
+	"gopkg.in/go-playground/validator.v9"
 )
 
 var (
@@ -22,6 +23,8 @@ var (
 )
 
 type userController struct {
+	v *validator.Validate
+	p token.Provider
 }
 
 func (uc *userController) VerifyToken(ctx context.Context, vt *userpb.VerifyTokenRequest) (*userpb.UserResponse, error) {
@@ -156,6 +159,10 @@ func (uc *userController) Register(ctx context.Context, ru *userpb.RegisterReque
 func (uc *userController) Initialize(ctx context.Context) {
 }
 
-func init() {
-	grpcgw.Register(userpb.NewWrappedUserSystemServer(&userController{}))
+// NewUserController return a grpc user controller
+func NewUserController(p token.Provider) userpb.UserSystemServer {
+	return &userController{
+		v: validator.New(),
+		p: p,
+	}
 }
