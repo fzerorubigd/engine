@@ -1,10 +1,8 @@
-package jwt
+package sec
 
 import (
 	"testing"
-	"time"
 
-	"elbix.dev/engine/pkg/sec"
 	"github.com/stretchr/testify/require"
 )
 
@@ -52,37 +50,35 @@ const privateKeyTest = "LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlKS3dJQkFB
 	"eXpUN041V0NhdApNbVJOUytuQ0xTeEN0eGM3cnBKZ01BQTBSaEZRZ25hcmF4Ukc5Nms2NG9UcmVreGd5VURFM09VMVg5UG55SlE9Ci0tL" +
 	"S0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg=="
 
-func TestNewRedisTokenProvider(t *testing.T) {
-	// ctx := context.Background()
-	// defer mockery.Start(ctx, t)()
+// publicKeyTest is a test public RSA key (base64 encoded)
+const publicKeyTest = "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0Fn" +
+	"RUFtSWxJNksrcGtvV0xraTdzNy9xWApaeHE3dWwwUUlqZVVBTFNPTGxiSUE5cmJQb2FSZEhiZ1Y0cTV5emxqeEhjRjAvRnVITTZZNXRYU" +
+	"lhVQXlYeUlGCmw2bkN0cUdXU0pzRndJNkN6VmNQc2h4ZzVYMzBMMzhEWWlST3NFUDZzTy9XWjEreVJhdE94M096U1JhNXhvR2sKTmp1bW" +
+	"kyd3E4a3JvR1dPb0FkdlFEa1RKNGJPOE8yMEIzUWU2aTlCYmZuRmI5S0xMVUkrQWJCYUEyWnJLRzdKUQp6dmRsT0hrU0tSdDV4NS9Halh" +
+	"yN2Q5QlQxZ1pkMzIzRS9iUTFpZEJBdnM4MG4zK0k2bDAvWFZ2eVFJSHB6VzdkCkdNWnVEc3Z0bllNUlMwQXFhb0h6QnlKZE8xa3FYd25U" +
+	"cFkweFBHMWN4cnM1V2ZVZU5VWkxrSmY0TGZPd3hSMngKckozLzNMdmdCR09XOHdKQ3BLSm9Ha2w4cDVEWlMwSWdYWjJNNGFuMS83NW5Cc" +
+	"lEvWmhNZStWekxJMVgvMXBHRwpESndhVU8rMDA5aHllZnlzQVFUMGxjOUNsZHU1OWUydnJsZkpSa2RJWGNMd2FmRFY2U1NJVU1hQkpWU1" +
+	"NycU1mCnRLUkp4bUgweG5TNVpuRWgxTnNrV29JSzIzYWI5enJoSERKTkxOeFB4ck8xMWVGMnoyZHN4RzdjVml2ei9UNVYKNTB4QUN6RE9" +
+	"oNHdtZ0hOOXJ0UG1CbkxPSjVEc2hTd1VZZ0txN2RITWdkNDlHVGp3QUVpQmt1UVRzOVp2M1ptRwpWZVE3Z1NhaWpjcWllanl0ME9vUUh2" +
+	"ZnYreHlOLys5ZGJwTjdRQ2RLd2V4NGcyRktKK20zS0p4NHp5bktQNlppCk9mL0psUlVQcmZVbUpHWUFUY3AwaTNFQ0F3RUFBUT09Ci0tL" +
+	"S0tRU5EIFBVQkxJQyBLRVktLS0tLQo="
 
-	data := map[string]interface{}{
-		"str": "ABCD",
-		"int": 100,
-	}
+const testInvalid = `dGVzdAo=`
 
-	p, err := sec.ParseRSAPrivateKeyFromBase64PEM(privateKeyTest)
-	require.NoError(t, err)
-	s := NewJWTTokenProvider(p)
-	tok, err := s.Store(data, time.Hour)
-	require.NoError(t, err)
-	ret, err := s.Fetch(tok)
-	require.NoError(t, err)
-	// It's tricky. int translated as float64
-	require.Equal(t, data["str"].(string), ret["str"].(string))
-	require.Equal(t, data["int"], int(ret["int"].(float64)))
-
-	ret, err = s.Fetch("INVALID_TOKEN")
+func TestParseRSAPrivateKeyFromBase64PEM(t *testing.T) {
+	p, err := ParseRSAPrivateKeyFromBase64PEM("INVALID")
 	require.Error(t, err)
-	require.Nil(t, ret)
+	require.Nil(t, p)
 
-	_, err = s.Store(data, -1)
+	p, err = ParseRSAPrivateKeyFromBase64PEM(publicKeyTest)
 	require.Error(t, err)
+	require.Nil(t, p)
 
-	tok, err = s.Store(data, 1)
+	p, err = ParseRSAPrivateKeyFromBase64PEM(testInvalid)
+	require.Error(t, err)
+	require.Nil(t, p)
+
+	p, err = ParseRSAPrivateKeyFromBase64PEM(privateKeyTest)
 	require.NoError(t, err)
-	time.Sleep(time.Second)
-	_, err = s.Fetch(tok)
-	require.Error(t, err)
-
+	require.NotNil(t, p)
 }

@@ -2,9 +2,9 @@ package impl
 
 import (
 	"context"
+	"crypto"
 	"crypto/rsa"
 	"crypto/x509"
-	"encoding/base64"
 	"encoding/pem"
 	"net/http"
 
@@ -19,7 +19,7 @@ import (
 )
 
 var (
-	pubKey *rsa.PublicKey
+	pubKey crypto.PublicKey
 )
 
 type miscController struct {
@@ -96,14 +96,8 @@ func parseRSAPublicKeyFromPEM(key []byte) (*rsa.PublicKey, error) {
 }
 
 // SetPublicKey set the public key used by the app for jwt and all other stuff
-func SetPublicKey(pub string) error {
-	keyFile, err := base64.StdEncoding.DecodeString(pub)
-	if err != nil {
-		return err
-	}
-
-	pubKey, err = parseRSAPublicKeyFromPEM(keyFile)
-	return errors.Wrap(err, "loading public key failed")
+func SetPublicKey(pub crypto.PublicKey) {
+	pubKey = pub
 }
 
 func init() {

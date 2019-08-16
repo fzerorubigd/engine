@@ -1,7 +1,7 @@
 package jwt
 
 import (
-	"encoding/base64"
+	"crypto/rsa"
 	"time"
 
 	"elbix.dev/engine/pkg/token"
@@ -10,32 +10,11 @@ import (
 )
 
 type jwtProvider struct {
-	privateKey interface{}
-	publicKey  interface{}
+	privateKey *rsa.PrivateKey
 }
 
 func (jw *jwtProvider) Delete(token string) {
 	// NO OP on jwt // TODO: HOW?
-}
-
-func loadKeyFile(data string, pub bool) (interface{}, error) {
-	keyFile, err := base64.StdEncoding.DecodeString(data)
-	if err != nil {
-		return nil, err
-	}
-
-	var res interface{}
-	if pub {
-		res, err = jwt.ParseRSAPublicKeyFromPEM(keyFile)
-	} else {
-		res, err = jwt.ParseRSAPrivateKeyFromPEM(keyFile)
-	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return res, nil
 }
 
 // Store return a new JWT token for the user
@@ -60,7 +39,7 @@ func (jw *jwtProvider) Store(data map[string]interface{}, exp time.Duration) (st
 // Fetch is used to handle the verification
 func (jw *jwtProvider) Fetch(token string) (map[string]interface{}, error) {
 	tok, err := jwt.Parse(token, func(token *jwt.Token) (i interface{}, e error) {
-		return jw.publicKey, nil
+		return jw.privateKey.Public(), nil
 	})
 	if err != nil {
 		return nil, err
@@ -71,18 +50,8 @@ func (jw *jwtProvider) Fetch(token string) (map[string]interface{}, error) {
 }
 
 // NewJWTTokenProvider return a new JWT provider
-func NewJWTTokenProvider(private, public string) (token.Provider, error) {
-	privateKey, err := loadKeyFile(private, false)
-	if err != nil {
-		return nil, err
-	}
-	publicKey, err := loadKeyFile(public, true)
-	if err != nil {
-		return nil, err
-	}
-
+func NewJWTTokenProvider(private *rsa.PrivateKey) token.Provider {
 	return &jwtProvider{
-		privateKey: privateKey,
-		publicKey:  publicKey,
-	}, nil
+		privateKey: private,
+	}
 }
