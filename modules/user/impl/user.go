@@ -18,8 +18,6 @@ import (
 
 var (
 	expire = config.RegisterDuration("modules.user.token.expire", time.Hour*24*3, "token expiration timeout")
-
-	validate = validator.New()
 )
 
 type userController struct {
@@ -38,7 +36,7 @@ func (uc *userController) VerifyToken(ctx context.Context, vt *userpb.VerifyToke
 	if err != nil {
 		return nil, err
 	}
-	assert.Nil(validate.VarCtx(ctx, tok.Email, "required,email"))
+	assert.Nil(uc.v.VarCtx(ctx, tok.Email, "required,email"))
 
 	m := userpb.NewManager()
 
@@ -161,6 +159,8 @@ func (uc *userController) Initialize(ctx context.Context) {
 
 // NewUserController return a grpc user controller
 func NewUserController(p token.Provider) userpb.UserSystemServer {
+	// TODO: remove this, and use the same object
+	userpb.SetProvider(p)
 	return &userController{
 		v: validator.New(),
 		p: p,
