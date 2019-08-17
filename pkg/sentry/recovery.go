@@ -114,7 +114,6 @@ func Recover(p interface{}) error {
 		}
 		go sentrygo.CaptureException(w)
 	}
-
 	return status.Errorf(codes.Internal, "%s", p)
 }
 

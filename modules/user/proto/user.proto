@@ -33,6 +33,7 @@ message User {
   types.Timestamp created_at = 6 [(gogoproto.moretags) = "db:\"created_at\" "];
   types.Timestamp updated_at = 7 [(gogoproto.moretags) = "db:\"updated_at\" "];
   types.Timestamp last_login = 8 [(gogoproto.moretags) = "db:\"last_login\" "];
+  types.Timestamp change_pass_at = 9 [(gogoproto.moretags) = "db:\"change_pass_at\" "];
 }
 
 message UserResponse {

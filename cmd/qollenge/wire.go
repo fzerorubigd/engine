@@ -1,6 +1,6 @@
 // +build wireinject
 
-package cerulean
+package qollenge
 
 import (
 	"elbix.dev/engine/modules/misc"

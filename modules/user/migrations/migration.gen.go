@@ -2,6 +2,7 @@
 // sources:
 // postgres/20170727210828_users.sql
 // postgres/20181228200758_display_name.sql
+// postgres/20190817143814_force_change_pass.sql
 
 package migrations
 
@@ -164,6 +165,43 @@ func bindataPostgres20181228200758displaynamesql() (*asset, error) {
 	return a, nil
 }
 
+var _bindataPostgres20190817143814forcechangepasssql = "" +
+	"\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x8c\xce\xb1\x4e\xc3\x40\x10\x04\xd0\x7e\xbf\x62\xba\x14\xc8\xfc\x40\x2a" +
+	"\x83\xd3\x1d\x04\x42\x5c\x47\xcb\x79\x95\x5b\x61\xdf\x9d\xbc\x1b\x19\xf1\xf5\xc8\x20\x10\x05\x42\x94\x33\x9a\x91" +
+	"\x5e\xd3\xe0\x6a\xd2\xf3\xcc\x2e\xe8\x2b\x35\x0d\x9e\x1e\x03\x34\xc3\x24\xba\x96\x8c\x4d\x5f\x37\x50\x83\xbc\x4a" +
+	"\xbc\xb8\x0c\x58\x92\x64\x78\x52\xc3\xe7\x6f\x1d\xa9\x81\x6b\x1d\x55\x06\x22\x6a\xc3\x71\x77\xc0\xb1\xbd\x09\x3b" +
+	"\x30\xf3\xf5\xc5\x64\x36\x02\x80\xb6\xeb\x70\xbb\x0f\xfd\xdd\x3d\x62\xe2\x7c\x96\x53\x65\xb3\x13\x3b\x5c\x27\x31" +
+	"\xe7\xa9\x62\x51\x4f\x1f\x11\x6f\x25\xcb\x96\xe8\xa7\xb0\x2b\x4b\xfe\x32\x7e\x03\xd7\xf2\x5f\xc4\xb9\x8c\xa3\x0c" +
+	"\x78\xe6\xf8\xf2\x97\xb2\x3b\xec\x1f\x7e\x67\x6e\xe9\x3d\x00\x00\xff\xff\xf4\xff\x40\xfd\x2f\x01\x00\x00"
+
+func bindataPostgres20190817143814forcechangepasssqlBytes() ([]byte, error) {
+	return bindataRead(
+		_bindataPostgres20190817143814forcechangepasssql,
+		"postgres/20190817143814_force_change_pass.sql",
+	)
+}
+
+
+
+func bindataPostgres20190817143814forcechangepasssql() (*asset, error) {
+	bytes, err := bindataPostgres20190817143814forcechangepasssqlBytes()
+	if err != nil {
+		return nil, err
+	}
+
+	info := bindataFileInfo{
+		name: "postgres/20190817143814_force_change_pass.sql",
+		size: 0,
+		md5checksum: "",
+		mode: os.FileMode(0),
+		modTime: time.Unix(0, 0),
+	}
+
+	a := &asset{bytes: bytes, info: info}
+
+	return a, nil
+}
+
 
 //
 // Asset loads and returns the asset for the given name.
@@ -228,8 +266,9 @@ func AssetNames() []string {
 // _bindata is a table, holding each asset generator, mapped to its name.
 //
 var _bindata = map[string]func() (*asset, error){
-	"postgres/20170727210828_users.sql":        bindataPostgres20170727210828userssql,
-	"postgres/20181228200758_display_name.sql": bindataPostgres20181228200758displaynamesql,
+	"postgres/20170727210828_users.sql":             bindataPostgres20170727210828userssql,
+	"postgres/20181228200758_display_name.sql":      bindataPostgres20181228200758displaynamesql,
+	"postgres/20190817143814_force_change_pass.sql": bindataPostgres20190817143814forcechangepasssql,
 }
 
 //
@@ -287,6 +326,7 @@ var _bintree = &bintree{Func: nil, Children: map[string]*bintree{
 	"postgres": {Func: nil, Children: map[string]*bintree{
 		"20170727210828_users.sql": {Func: bindataPostgres20170727210828userssql, Children: map[string]*bintree{}},
 		"20181228200758_display_name.sql": {Func: bindataPostgres20181228200758displaynamesql, Children: map[string]*bintree{}},
+		"20190817143814_force_change_pass.sql": {Func: bindataPostgres20190817143814forcechangepasssql, Children: map[string]*bintree{}},
 	}},
 }}
 

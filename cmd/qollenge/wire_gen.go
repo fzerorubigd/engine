@@ -16,6 +16,7 @@ import (
 )
 
 import (
+	_ "elbix.dev/engine/modules/misc"
 	_ "elbix.dev/engine/modules/user"
 )
 
