@@ -8,12 +8,11 @@ import (
 	"fmt"
 	"time"
 
-	_ "github.com/lib/pq" // Make sure the pg is available
-
 	"elbix.dev/engine/pkg/assert"
 	"elbix.dev/engine/pkg/initializer"
 	"elbix.dev/engine/pkg/log"
 	"elbix.dev/engine/pkg/postgres/model"
+	_ "github.com/lib/pq" // Make sure the pg is available
 )
 
 var (

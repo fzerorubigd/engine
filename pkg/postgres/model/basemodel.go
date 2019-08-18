@@ -5,10 +5,9 @@ import (
 	"errors"
 	"strings"
 
+	"elbix.dev/engine/pkg/log"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq" // Make sure postgres is included in any build
-
-	"elbix.dev/engine/pkg/log"
 )
 
 var (

@@ -2,10 +2,12 @@ package grpcgw
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 
+	"elbix.dev/engine/pkg/assert"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc/codes"
@@ -27,10 +29,15 @@ type GWError interface {
 }
 
 type gwError struct {
-	error `json:"-"`
-	Msg   string            `json:"message"`
-	S     int               `json:"status"`
-	F     map[string]string `json:"fields,omitempty"`
+	Err error             `json:"-"`
+	Msg string            `json:"message"`
+	S   int               `json:"status"`
+	F   map[string]string `json:"fields,omitempty"`
+}
+
+func (gw *gwError) Error() string {
+	b, _ := json.Marshal(gw)
+	return string(b)
 }
 
 func (gw *gwError) Status() int {
@@ -58,9 +65,9 @@ func NewBadRequest(err error, message string) error {
 // NewBadRequestStatus is the bad request
 func NewBadRequestStatus(err error, message string, status int) error {
 	ret := &gwError{
-		error: errors.Wrap(err, message),
-		Msg:   message,
-		S:     status,
+		Err: errors.Wrap(err, message),
+		Msg: message,
+		S:   status,
 	}
 	if v, ok := err.(validator.ValidationErrors); ok {
 		ret.F = make(map[string]string)
@@ -91,10 +98,23 @@ func tryGRPCError(err error) GWError {
 		}
 	default:
 		return &gwError{
-			Msg: "please report this: " + g.GRPCStatus().Code().String(),
+			Msg: "internal error with code: " + g.GRPCStatus().Code().String(),
 			S:   http.StatusInternalServerError,
 		}
 	}
+}
+
+func tryJSONError(err error) (GWError, bool) {
+	assert.NotNil(err)
+	ret := &gwError{}
+	txt := err.Error()
+	if g, ok := err.(grpcErr); ok {
+		txt = g.GRPCStatus().Message()
+	}
+	if e := json.Unmarshal([]byte(txt), ret); e != nil {
+		return nil, false
+	}
+	return ret, true
 }
 
 // defaultHTTPError is my first try to overwrite the default
@@ -103,19 +123,18 @@ func defaultHTTPError(ctx context.Context, _ *runtime.ServeMux, marshaler runtim
 
 	w.Header().Del("Trailer")
 	w.Header().Set("Content-Type", marshaler.ContentType())
-
-	g, ok := err.(GWError)
-	if !ok {
+	g, ok := tryJSONError(err)
+	if !ok || g.Status() == 0 {
 		g = tryGRPCError(err)
 	}
 
 	body, ok := g.(*gwError)
 	if !ok {
 		body = &gwError{
-			error: err,
-			Msg:   g.Message(),
-			S:     g.Status(),
-			F:     g.Fields(),
+			Err: err,
+			Msg: g.Message(),
+			S:   g.Status(),
+			F:   g.Fields(),
 		}
 	}
 

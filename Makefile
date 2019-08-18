@@ -166,11 +166,11 @@ build-all:
 	@echo "Building all binaries"
 	$(INSTALL) ./cmd/...
 
-run-server-qollenge: code-gen build-all rsa_file
+run-server-qollenge: build-all rsa_file
 	@echo "Running..."
-	E_SECRET_PRIVATE=$(shell cat $(BIN)/jwtRS256.key | base64 -w 0) E_SECRET_PUBLIC=$(shell cat $(BIN)/jwtRS256.key.pub | base64 -w 0) $(BIN)/qserver 2>&1
+	E_SECRET_PRIVATE=$(shell cat $(BIN)/jwtRS256.key | base64 -w 0) $(BIN)/qserver 2>&1
 
-run-server-cerulean: code-gen build-all rsa_file
+run-server-cerulean: build-all rsa_file
 	@echo "Running..."
 	E_SECRET_PRIVATE=$(shell cat $(BIN)/jwtRS256.key | base64 -w 0) $(BIN)/cserver 2>&1
 

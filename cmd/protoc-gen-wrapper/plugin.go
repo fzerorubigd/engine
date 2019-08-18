@@ -27,6 +27,7 @@ type plugin struct {
 	logImport        generator.Single
 	errorsImport     generator.Single
 	resourcesImport  generator.Single
+	grpcImport       generator.Single
 }
 
 func newPlugin(useGogoImport bool) generator.Plugin {
@@ -67,6 +68,7 @@ func (p *plugin) Generate(file *generator.FileDescriptor) {
 	p.logImport = p.NewImport("elbix.dev/engine/pkg/log")
 	p.resourcesImport = p.NewImport("elbix.dev/engine/pkg/resources")
 	p.errorsImport = p.NewImport("github.com/pkg/errors")
+	p.grpcImport = p.NewImport("google.golang.org/grpc")
 
 	resMap := make(map[string]string)
 	var order []string
@@ -76,6 +78,8 @@ func (p *plugin) Generate(file *generator.FileDescriptor) {
 		p.createWrappedStruct(svc.GetName())
 		p.P()
 		p.createInitFunction(svc.GetName())
+		p.P()
+		p.createInitGRPCFunction(svc.GetName())
 		// p.P("/*")
 		for _, m := range svc.GetMethod() {
 			p.P()
@@ -128,12 +132,19 @@ func (p *plugin) createWrappedStruct(class string) {
 }
 
 func (p *plugin) createInitFunction(class string) {
-	p.P("func (w *wrapped", class, "Server) Init(ctx ", p.contextImport.Use(), ".Context, ch *", p.inprocgrpcImport.Use(), ".Channel, mux *", p.runtimeImport.Use(), ".ServeMux) {")
+	p.P("func (w *wrapped", class, "Server) Init(ctx ", p.contextImport.Use(), ".Context, conn *", p.grpcImport.Use(), ".ClientConn, mux *", p.runtimeImport.Use(), ".ServeMux) {")
 	p.In()
-	p.P("RegisterHandler", class, "(ch, w)")
-	p.P("cl := New", class, "ChannelClient(ch)")
+	p.P("cl := New", class, "Client(conn)")
 	p.P()
 	p.P(p.assertImport.Use(), ".Nil(Register", class, "HandlerClient(ctx, mux, cl))")
+	p.Out()
+	p.P("}")
+}
+
+func (p *plugin) createInitGRPCFunction(class string) {
+	p.P("func (w *wrapped", class, "Server) InitGRPC(ctx ", p.contextImport.Use(), ".Context, s *", p.grpcImport.Use(), ".Server) {")
+	p.In()
+	p.P("Register", class, "Server(s, w)")
 	p.Out()
 	p.P("}")
 }

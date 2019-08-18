@@ -5,6 +5,7 @@ go 1.13
 require (
 	cloud.google.com/go v0.44.0 // indirect
 	github.com/DATA-DOG/go-txdb v0.1.2
+	github.com/davecgh/go-spew v1.1.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fullstorydev/grpchan v1.0.1
 	github.com/fzerorubigd/chapar v0.0.0-20190210094209-31bedf3ca11b

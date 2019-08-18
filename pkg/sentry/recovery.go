@@ -20,7 +20,7 @@ import (
 var (
 	sentryAddress = config.RegisterString(
 		"services.sentry.url",
-		"https://sentry.qollenge.ir",
+		"https://sentry.elbix.dev",
 		"Sentry domain",
 	)
 
@@ -32,7 +32,7 @@ var (
 
 	sentryProjectKey = config.RegisterString(
 		"services.sentry.secret",
-		"NONE",
+		"",
 		"Sentry secret",
 	)
 
@@ -106,6 +106,7 @@ func callers() []uintptr {
 
 // Recover convert the recovered p to an error and also send it to sentry
 func Recover(p interface{}) error {
+	log.Error("Recover from panic", log.Any("panic", p))
 	if enabled {
 		w := &withStack{
 			p:   p,

@@ -117,8 +117,8 @@ generate:
       type: gogo
       output: .
 
-    - name: grpchan
-      output: .
+#    - name: grpchan
+#      output: .
 
     - name: wrapper
       type: gogo
