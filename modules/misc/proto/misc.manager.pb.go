@@ -7,9 +7,9 @@ import (
 	fmt "fmt"
 	math "math"
 	proto "github.com/golang/protobuf/proto"
-	_ "github.com/gogo/protobuf/gogoproto"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	_ "github.com/gogo/protobuf/types"
+	_ "github.com/gogo/protobuf/gogoproto"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.

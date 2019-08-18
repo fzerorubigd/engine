@@ -1,6 +1,6 @@
 // +build wireinject
 
-package qollenge
+package cerulean
 
 import (
 	"elbix.dev/engine/modules/misc"
@@ -16,3 +16,4 @@ func userMod() (grpcgw.Controller, error) {
 func miscMod() (grpcgw.Controller, error) {
 	panic(wire.Build(getPrivateKey, misc.MiscSet))
 }
+

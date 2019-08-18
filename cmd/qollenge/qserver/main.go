@@ -16,6 +16,7 @@ func main() {
 
 	defer initializer.Initialize(ctx)()
 
-	grpcgw.Serve(ctx)
-
+	if err := grpcgw.Serve(ctx); err != nil {
+		log.Error("Serve failed with an error", log.Err(err))
+	}
 }

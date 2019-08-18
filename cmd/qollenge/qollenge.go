@@ -3,7 +3,10 @@ package qollenge
 import (
 	"context"
 
+	// user mod
 	_ "elbix.dev/engine/modules/user"
+	// misc mod
+	_ "elbix.dev/engine/modules/misc"
 	"elbix.dev/engine/pkg/config"
 	"elbix.dev/engine/pkg/grpcgw"
 )
@@ -27,6 +30,7 @@ func InitializeConfig(ctx context.Context, initModules bool) error {
 	if !initModules {
 		return nil
 	}
+
 	for i := range mods {
 		m, err := mods[i]()
 		if err != nil {
@@ -34,6 +38,5 @@ func InitializeConfig(ctx context.Context, initModules bool) error {
 		}
 		grpcgw.Register(m)
 	}
-
 	return nil
 }
