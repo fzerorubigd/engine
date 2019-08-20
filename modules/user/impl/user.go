@@ -49,10 +49,11 @@ func (uc *userController) VerifyToken(ctx context.Context, vt *userpb.VerifyToke
 	}
 
 	return &userpb.UserResponse{
-		Id:          u.GetId(),
-		Status:      u.GetStatus(),
-		DisplayName: u.GetDisplayName(),
-		Token:       m.CreateToken(ctx, u, expire.Duration()),
+		Id:             u.GetId(),
+		Status:         u.GetStatus(),
+		DisplayName:    u.GetDisplayName(),
+		Token:          m.CreateToken(ctx, u, expire.Duration()),
+		ChangePassword: u.ShouldChangePass(),
 	}, nil
 }
 
@@ -107,10 +108,11 @@ func (uc *userController) Ping(ctx context.Context, _ *userpb.PingRequest) (*use
 	u, err := m.GetUserByPrimary(ctx, u1.GetId())
 	assert.Nil(err)
 	return &userpb.UserResponse{
-		Id:          u.GetId(),
-		Token:       tok,
-		Status:      u.GetStatus(),
-		DisplayName: u.DisplayName,
+		Id:             u.GetId(),
+		Token:          tok,
+		Status:         u.GetStatus(),
+		DisplayName:    u.DisplayName,
+		ChangePassword: u.ShouldChangePass(),
 	}, nil
 }
 
@@ -123,10 +125,11 @@ func (uc *userController) Login(ctx context.Context, lr *userpb.LoginRequest) (*
 	}
 
 	resp := userpb.UserResponse{
-		DisplayName: u.GetDisplayName(),
-		Status:      u.GetStatus(),
-		Id:          u.GetId(),
-		Token:       m.CreateToken(ctx, u, expire.Duration()),
+		DisplayName:    u.GetDisplayName(),
+		Status:         u.GetStatus(),
+		Id:             u.GetId(),
+		Token:          m.CreateToken(ctx, u, expire.Duration()),
+		ChangePassword: u.ShouldChangePass(),
 	}
 
 	return &resp, nil
@@ -147,10 +150,11 @@ func (uc *userController) Register(ctx context.Context, ru *userpb.RegisterReque
 	}
 
 	return &userpb.UserResponse{
-		Id:          u.GetId(),
-		Status:      u.GetStatus(),
-		DisplayName: u.GetDisplayName(),
-		Token:       m.CreateToken(ctx, u, expire.Duration()),
+		Id:             u.GetId(),
+		Status:         u.GetStatus(),
+		DisplayName:    u.GetDisplayName(),
+		Token:          m.CreateToken(ctx, u, expire.Duration()),
+		ChangePassword: u.ShouldChangePass(),
 	}, nil
 }
 

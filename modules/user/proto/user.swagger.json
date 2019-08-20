@@ -304,6 +304,10 @@
         },
         "status": {
           "$ref": "#/definitions/userUserStatus"
+        },
+        "change_password": {
+          "type": "boolean",
+          "format": "boolean"
         }
       }
     },

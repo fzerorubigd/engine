@@ -3,6 +3,7 @@ package middlewares
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	"github.com/pkg/errors"
@@ -18,9 +19,10 @@ type contextKey int
 
 //  TODO: NEEDS COMMENT INFO
 const (
-	resource contextKey = 0
-	user     contextKey = 1
-	token    contextKey = 2
+	resource contextKey = iota
+	user
+	token
+	fullMethod
 )
 
 func requirement(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
@@ -28,6 +30,8 @@ func requirement(ctx context.Context, req interface{}, info *grpc.UnaryServerInf
 	if ok {
 		ctx = context.WithValue(ctx, resource, res)
 	}
+
+	ctx = context.WithValue(ctx, fullMethod, info.FullMethod)
 
 	return handler(ctx, req)
 }
@@ -45,6 +49,18 @@ func auth(ctx context.Context) (context.Context, error) {
 	u, err := m.FindUserByIndirectToken(ctx, tok)
 	if err != nil {
 		return ctx, grpcgw.NewBadRequestStatus(err, "invalid token", http.StatusUnauthorized)
+	}
+
+	// do not protect next line, I prefer a panic, if the full method is missing
+	meth := ctx.Value(fullMethod).(string)
+	if !strings.HasPrefix(meth, "/user.UserSystem/") {
+		if u.ShouldChangePass() {
+			return ctx, grpcgw.NewBadRequestStatus(
+				errors.New("change your password"),
+				"change your password",
+				http.StatusLocked,
+			)
+		}
 	}
 
 	return context.WithValue(context.WithValue(ctx, user, u), token, tok), nil

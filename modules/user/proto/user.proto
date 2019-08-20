@@ -41,6 +41,7 @@ message UserResponse {
   string display_name = 2;
   string token = 3;
   UserStatus status = 4;
+  bool change_password = 5;
 }
 
 message LoginRequest {
