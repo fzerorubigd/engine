@@ -5,7 +5,6 @@ go 1.13
 require (
 	cloud.google.com/go v0.50.0 // indirect
 	github.com/DATA-DOG/go-txdb v0.1.3
-	github.com/davecgh/go-spew v1.1.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fullstorydev/grpchan v1.0.1
 	github.com/fzerorubigd/chapar v0.0.0-20190210094209-31bedf3ca11b
@@ -15,7 +14,6 @@ require (
 	github.com/getsentry/sentry-go v0.3.1
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/go-redis/redis v6.15.2+incompatible // indirect
-	github.com/gobuffalo/packr v1.30.1 // indirect
 	github.com/gogo/protobuf v1.3.1
 	github.com/golang/groupcache v0.0.0-20191027212112-611e8accdfc9 // indirect
 	github.com/golang/protobuf v1.3.2
@@ -26,8 +24,6 @@ require (
 	github.com/goraz/onion v0.1.2
 	github.com/grpc-ecosystem/go-grpc-middleware v1.1.0
 	github.com/grpc-ecosystem/grpc-gateway v1.12.1
-	github.com/hashicorp/golang-lru v0.5.3 // indirect
-	github.com/jhump/goprotoc v0.2.0 // indirect
 	github.com/jinzhu/inflection v1.0.0
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/kr/pretty v0.1.0
@@ -53,6 +49,5 @@ require (
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/go-playground/validator.v9 v9.30.2
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
-	gopkg.in/resty.v1 v1.12.0 // indirect
 	gopkg.in/yaml.v2 v2.2.7 // indirect
 )
