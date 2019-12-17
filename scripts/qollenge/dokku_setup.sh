@@ -18,4 +18,4 @@ dokku config:set --no-restart qollenge E_SERVICES_SENTRY_SECRET=${SENTRY_KEY}
 
 // PUSH
 
-dokku letsencrypt cerulean
+dokku letsencrypt qollenge
