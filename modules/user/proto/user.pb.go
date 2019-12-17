@@ -13,6 +13,8 @@ import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -25,7 +27,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type UserStatus int32
 
@@ -878,6 +880,35 @@ type UserSystemServer interface {
 	ChangePassword(context.Context, *ChangePasswordRequest) (*ChangePasswordResponse, error)
 	ChangeDisplayName(context.Context, *ChangeDisplayNameRequest) (*ChangeDisplayNameResponse, error)
 	ForgotPassword(context.Context, *ForgotPasswordRequest) (*ForgotPasswordResponse, error)
+}
+
+// UnimplementedUserSystemServer can be embedded to have forward compatible implementations.
+type UnimplementedUserSystemServer struct {
+}
+
+func (*UnimplementedUserSystemServer) Login(ctx context.Context, req *LoginRequest) (*UserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (*UnimplementedUserSystemServer) Logout(ctx context.Context, req *LogoutRequest) (*LogoutResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
+}
+func (*UnimplementedUserSystemServer) Register(ctx context.Context, req *RegisterRequest) (*UserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
+}
+func (*UnimplementedUserSystemServer) Ping(ctx context.Context, req *PingRequest) (*UserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
+}
+func (*UnimplementedUserSystemServer) VerifyToken(ctx context.Context, req *VerifyTokenRequest) (*UserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyToken not implemented")
+}
+func (*UnimplementedUserSystemServer) ChangePassword(ctx context.Context, req *ChangePasswordRequest) (*ChangePasswordResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangePassword not implemented")
+}
+func (*UnimplementedUserSystemServer) ChangeDisplayName(ctx context.Context, req *ChangeDisplayNameRequest) (*ChangeDisplayNameResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangeDisplayName not implemented")
+}
+func (*UnimplementedUserSystemServer) ForgotPassword(ctx context.Context, req *ForgotPasswordRequest) (*ForgotPasswordResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ForgotPassword not implemented")
 }
 
 func RegisterUserSystemServer(s *grpc.Server, srv UserSystemServer) {

@@ -11,6 +11,8 @@ import (
 	types "github.com/gogo/protobuf/types"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -23,7 +25,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type VersionResponse struct {
 	CommitHash           string           `protobuf:"bytes,1,opt,name=commit_hash,json=commitHash,proto3" json:"commit_hash,omitempty"`
@@ -352,6 +354,20 @@ type MiscSystemServer interface {
 	Version(context.Context, *VersionRequest) (*VersionResponse, error)
 	Health(context.Context, *HealthRequest) (*HealthResponse, error)
 	PublicKey(context.Context, *PubKeyRequest) (*PubKeyResponse, error)
+}
+
+// UnimplementedMiscSystemServer can be embedded to have forward compatible implementations.
+type UnimplementedMiscSystemServer struct {
+}
+
+func (*UnimplementedMiscSystemServer) Version(ctx context.Context, req *VersionRequest) (*VersionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Version not implemented")
+}
+func (*UnimplementedMiscSystemServer) Health(ctx context.Context, req *HealthRequest) (*HealthResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Health not implemented")
+}
+func (*UnimplementedMiscSystemServer) PublicKey(ctx context.Context, req *PubKeyRequest) (*PubKeyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PublicKey not implemented")
 }
 
 func RegisterMiscSystemServer(s *grpc.Server, srv MiscSystemServer) {
