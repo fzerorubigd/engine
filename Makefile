@@ -22,7 +22,7 @@ SHORT_HASH?=$(shell git log -n1 --pretty="format:%h"| cat)
 COMMIT_DATE?=$(shell git log -n1 --date="format:%D-%H-%I-%S" --pretty="format:%cd"| sed -e "s/\//-/g")
 COMMIT_COUNT?=$(shell git rev-list HEAD --count| cat)
 BUILD_DATE=$(shell date "+%D/%H/%I/%S"| sed -e "s/\//-/g")
-VERSION="github.com/fzerorubigd/$(PROJECT)/pkg/version"
+VERSION="elbix.dev/engine/pkg/version"
 FLAGS="-X $(VERSION).hash=$(LONG_HASH) -X $(VERSION).short=$(SHORT_HASH) -X $(VERSION).date=$(COMMIT_DATE) -X $(VERSION).count=$(COMMIT_COUNT) -X $(VERSION).build=$(BUILD_DATE)"
 LD_ARGS=-ldflags $(FLAGS)
 GET=cd $(ROOT) && $(GO) get -u -v $(LD_ARGS)
