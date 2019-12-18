@@ -1,0 +1,21 @@
+# Golang CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-go/ for more details
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version
+      - image: circleci/golang:1.13
+      - image: circleci/postgres:11-alpine
+        environment:
+          POSTGRES_USER: engine_test
+          POSTGRES_PASSWORD: bita123
+          POSTGRES_DB: engine_test
+      - image:  circleci/redis:latest
+
+    working_directory: /go/src/elbix.dev/engine
+    steps:
+      - checkout
+      - run: make lint
+      - run: make test
