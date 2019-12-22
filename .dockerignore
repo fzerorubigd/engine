@@ -1,0 +1,7 @@
+.dockerignore
+.gitignore
+Dockerfile
+bin
+c.out
+vendor
+

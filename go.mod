@@ -5,6 +5,8 @@ go 1.13
 require (
 	cloud.google.com/go v0.50.0 // indirect
 	github.com/DATA-DOG/go-txdb v0.1.3
+	github.com/cespare/reflex v0.2.0 // indirect
+	github.com/creack/pty v1.1.9 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fullstorydev/grpchan v1.0.1
 	github.com/fzerorubigd/chapar v0.0.0-20190210094209-31bedf3ca11b
@@ -26,7 +28,9 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.12.1
 	github.com/jinzhu/inflection v1.0.0
 	github.com/jmoiron/sqlx v1.2.0
+	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
 	github.com/kr/pretty v0.1.0
+	github.com/kr/pty v1.1.8 // indirect
 	github.com/leodido/go-urn v1.2.0 // indirect
 	github.com/lib/pq v1.2.0
 	github.com/pkg/errors v0.8.1
@@ -41,7 +45,7 @@ require (
 	golang.org/x/crypto v0.0.0-20191206172530-e9b2fee46413
 	golang.org/x/net v0.0.0-20191209160850-c0dbc17a3553
 	golang.org/x/oauth2 v0.0.0-20191202225959-858c2ad4c8b6 // indirect
-	golang.org/x/sys v0.0.0-20191210023423-ac6580df4449 // indirect
+	golang.org/x/sys v0.0.0-20191220142924-d4481acd189f // indirect
 	golang.org/x/tools v0.0.0-20191217203850-210e553fe1f6 // indirect
 	google.golang.org/api v0.15.0
 	google.golang.org/genproto v0.0.0-20191216205247-b31c10ee225f

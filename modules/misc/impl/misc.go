@@ -19,6 +19,7 @@ type miscController struct {
 }
 
 func (mc miscController) PublicKey(context.Context, *miscpb.PubKeyRequest) (*miscpb.PubKeyResponse, error) {
+	//
 	resp := &miscpb.PubKeyResponse{}
 	pubBytes, err := x509.MarshalPKIXPublicKey(mc.pub)
 	assert.Nil(err)

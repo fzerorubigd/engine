@@ -16,6 +16,7 @@ SSH=$(shell which ssh)
 DB_PASS?=$(DEFAULT_PASS)
 DB_USER?=$(APP_NAME)
 DB_NAME?=$(APP_NAME)
+DB_HOST?=postgres
 WORK_DIR=$(ROOT)/tmp
 LONG_HASH?=$(shell git log -n1 --pretty="format:%H" | cat)
 SHORT_HASH?=$(shell git log -n1 --pretty="format:%h"| cat)
@@ -28,9 +29,10 @@ LD_ARGS=-ldflags $(FLAGS)
 GET=cd $(ROOT) && $(GO) get -u -v $(LD_ARGS)
 BUILD=cd $(ROOT) && $(GO) build -v $(LD_ARGS)
 INSTALL=cd $(ROOT) && $(GO) install -v $(LD_ARGS)
-CG_SERVICES_POSTGRES_USER=$(DB_USER)
-CG_SERVICES_POSTGRES_PASSWORD=$(DB_PASS)
-CG_SERVICES_POSTGRES_DB=$(DB_NAME)
+export E_SERVICES_POSTGRES_USER=$(DB_USER)
+export E_SERVICES_POSTGRES_PASSWORD=$(DB_PASS)
+export E_SERVICES_POSTGRES_DB=$(DB_NAME)
+export E_SERVICES_POSTGRES_DB=$(postgresql)
 where-am-i = $(CURDIR)/$(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
 
 # Default target is lint
