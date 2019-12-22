@@ -8,19 +8,19 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestContext(t *testing.T) {
+func TestCliContext(t *testing.T) {
+	signals = append(signals, syscall.SIGUSR1)
 	ctx := Context()
 	select {
 	case <-ctx.Done():
 		require.True(t, false, "context canceled early")
 	default:
 	}
-	sig <- syscall.SIGINT
+	syscall.Kill(syscall.Getpid(), syscall.SIGUSR1)
 
 	select {
 	case <-ctx.Done():
 	case <-time.After(time.Second):
 		require.True(t, false, "context not canceled")
 	}
-
 }
