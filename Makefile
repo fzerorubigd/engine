@@ -41,10 +41,10 @@ lint: $(BIN)/golangci-lint
 $(BIN)/jwtRS256.key:
 	ssh-keygen -t rsa -b 4096 -m PEM -f $(BIN)/jwtRS256.key -N ''
 
-$(BIN)/jwtRS256.key.bup: $(BIN)/jwtRS256.key
+$(BIN)/jwtRS256.key.pub: $(BIN)/jwtRS256.key
 	openssl rsa -in $(BIN)/jwtRS256.key -pubout -outform PEM -out $(BIN)/jwtRS256.key.pub
 
-rsa_file: $(BIN)/jwtRS256.key.bup $(BIN)/jwtRS256.key
+rsa_file: $(BIN)/jwtRS256.key.pub $(BIN)/jwtRS256.key
 
 $(BIN)/golangci-lint:
 	$(CURL) -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(BIN) v1.17.1
