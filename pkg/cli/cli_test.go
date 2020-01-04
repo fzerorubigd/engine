@@ -9,8 +9,7 @@ import (
 )
 
 func TestCliContext(t *testing.T) {
-	signals = append(signals, syscall.SIGUSR1)
-	ctx := Context()
+	ctx := Context(syscall.SIGUSR1)
 	select {
 	case <-ctx.Done():
 		require.True(t, false, "context canceled early")
