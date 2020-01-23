@@ -1,12 +1,12 @@
+include .env
+
 export ROOT:=$(realpath $(dir $(firstword $(MAKEFILE_LIST))))
 export BIN:=$(ROOT)/bin
 export GOBIN:=$(BIN)
 export PATH:=$(BIN):$(PATH)
-export PROJECT=engine
 export PROTOTOOL_VERSION=1.8.0
 export DOKKU_HOST=elbix.dev
 APP_NAME:=$(PROJECT)
-DEFAULT_PASS=bita123
 GO=$(shell which go)
 GIT=$(shell which git)
 CURL:=$(shell which curl)
@@ -41,10 +41,10 @@ lint: $(BIN)/golangci-lint
 $(BIN)/jwtRS256.key:
 	ssh-keygen -t rsa -b 4096 -m PEM -f $(BIN)/jwtRS256.key -N ''
 
-$(BIN)/jwtRS256.key.bup: $(BIN)/jwtRS256.key
+$(BIN)/jwtRS256.key.pub: $(BIN)/jwtRS256.key
 	openssl rsa -in $(BIN)/jwtRS256.key -pubout -outform PEM -out $(BIN)/jwtRS256.key.pub
 
-rsa_file: $(BIN)/jwtRS256.key.bup $(BIN)/jwtRS256.key
+rsa_file: $(BIN)/jwtRS256.key.pub $(BIN)/jwtRS256.key
 
 $(BIN)/golangci-lint:
 	$(CURL) -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(BIN) v1.17.1
