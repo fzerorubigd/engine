@@ -1,3 +1,5 @@
+include .env
+
 export ROOT:=$(realpath $(dir $(firstword $(MAKEFILE_LIST))))
 export BIN:=$(ROOT)/bin
 export GOBIN:=$(BIN)
