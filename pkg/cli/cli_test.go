@@ -22,4 +22,19 @@ func TestCliContext(t *testing.T) {
 	case <-time.After(time.Second):
 		require.True(t, false, "context not canceled")
 	}
+
+	// Retry with new context
+	ctx = Context(syscall.SIGUSR1)
+	select {
+	case <-ctx.Done():
+		require.True(t, false, "context canceled early")
+	default:
+	}
+	syscall.Kill(syscall.Getpid(), syscall.SIGUSR1)
+
+	select {
+	case <-ctx.Done():
+	case <-time.After(time.Second):
+		require.True(t, false, "context not canceled")
+	}
 }
