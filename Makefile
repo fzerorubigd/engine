@@ -3,7 +3,8 @@ export BIN:=$(ROOT)/bin
 export GOBIN:=$(BIN)
 export PATH:=$(BIN):$(PATH)
 export PROJECT=engine
-export PROTOTOOL_VERSION=1.8.0
+export PROTOTOOL_VERSION=1.10.0
+export CILINTER_VERSION=v1.27.0
 export DOKKU_HOST=elbix.dev
 APP_NAME:=$(PROJECT)
 DEFAULT_PASS=bita123
@@ -47,7 +48,7 @@ $(BIN)/jwtRS256.key.bup: $(BIN)/jwtRS256.key
 rsa_file: $(BIN)/jwtRS256.key.bup $(BIN)/jwtRS256.key
 
 $(BIN)/golangci-lint:
-	$(CURL) -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(BIN) v1.17.1
+	$(CURL) -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(BIN) $(CILINTER_VERSION)
 
 clean:
 	$(GIT) clean -fX ./
@@ -104,9 +105,6 @@ $(BIN)/go-bindata:
 $(BIN)/reflex:
 	$(GET) github.com/cespare/reflex
 
-$(BIN)/wire:
-	$(GET) github.com/google/wire/cmd/wire
-
 swagger-to-go:
 	$(INSTALL) ./cmd/swagger-to-go
 
@@ -142,8 +140,7 @@ swagger-ui: $(BIN)/go-bindata
 
 swagger: swagger-to-go proto $(addsuffix -swagger,$(dir $(wildcard $(ROOT)/modules/*/)))
 
-code-gen: swagger $(BIN)/wire
-	cd ./cmd/qollenge && $(BIN)/wire
+code-gen: swagger proto
 
 build-all:
 	@echo "Building all binaries"
