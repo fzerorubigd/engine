@@ -15,7 +15,7 @@ func TestCliContext(t *testing.T) {
 		require.True(t, false, "context canceled early")
 	default:
 	}
-	syscall.Kill(syscall.Getpid(), syscall.SIGUSR1)
+	_ = syscall.Kill(syscall.Getpid(), syscall.SIGUSR1)
 
 	select {
 	case <-ctx.Done():
@@ -30,7 +30,7 @@ func TestCliContext(t *testing.T) {
 		require.True(t, false, "context canceled early")
 	default:
 	}
-	syscall.Kill(syscall.Getpid(), syscall.SIGUSR1)
+	_ = syscall.Kill(syscall.Getpid(), syscall.SIGUSR1)
 
 	select {
 	case <-ctx.Done():
