@@ -8,6 +8,7 @@ import (
 	extrapb "github.com/fzerorubigd/protobuf/extra"
 	"github.com/gogo/protobuf/gogoproto"
 	"github.com/gogo/protobuf/proto"
+	"github.com/gogo/protobuf/protoc-gen-gogo/descriptor"
 	"github.com/gogo/protobuf/protoc-gen-gogo/generator"
 	"github.com/gogo/protobuf/vanity"
 	"github.com/jinzhu/inflection"
@@ -38,7 +39,7 @@ type modelData struct {
 	types     map[string]string
 	createdAt bool
 	updatedAt bool
-	hasID     bool
+	idType    string
 }
 
 func newPlugin(useGogoImport bool) generator.Plugin {
@@ -114,7 +115,7 @@ func (p *plugin) Generate(file *generator.FileDescriptor) {
 		model.types = p.getExtraMap(msg)
 		model.createdAt = p.hasTimeField(msg, "created_at")
 		model.updatedAt = p.hasTimeField(msg, "updated_at")
-		model.hasID = p.hasIDField(msg)
+		model.idType = p.hasIDField(msg)
 		models = append(models, model)
 	}
 	if len(models) == 0 {
@@ -133,7 +134,7 @@ func (p *plugin) Generate(file *generator.FileDescriptor) {
 		p.P("/*")
 		p.P(pretty.Sprint(models[i]))
 		p.P("*/")
-		if models[i].hasID {
+		if models[i].idType != "" {
 			p.createFunction(models[i])
 			p.updateFunction(models[i])
 			p.byPrimaryFunction(models[i])
@@ -198,7 +199,7 @@ func (p *plugin) createFunction(msg modelData) {
 	p.initClosure(msg.receiver, "PreInsert")
 
 	l := len(msg.dbFields)
-	if msg.hasID {
+	if msg.idType != "" {
 		l--
 	}
 	args := make([]string, l)
@@ -243,7 +244,7 @@ func (p *plugin) updateFunction(msg modelData) {
 	}
 	p.initClosure(msg.receiver, "PreUpdate")
 	l := len(msg.dbFields)
-	if msg.hasID {
+	if msg.idType != "" {
 		l--
 	}
 	args := make([]string, l)
@@ -277,7 +278,7 @@ func (p *plugin) updateFunction(msg modelData) {
 
 func (p *plugin) byPrimaryFunction(msg modelData) {
 	p.P()
-	p.P("func (m *Manager) Get", msg.model, "ByPrimary(ctx ", p.contextImport.Use(), ".Context, id int64) (*", msg.model, ", error){")
+	p.P("func (m *Manager) Get", msg.model, "ByPrimary(ctx ", p.contextImport.Use(), ".Context, id ", msg.idType, ") (*", msg.model, ", error){")
 	p.In()
 	p.P("q := `SELECT ", strings.Join(msg.dbFields, ", "), " FROM ", msg.schema, ".", msg.table, " WHERE id = $1`")
 
@@ -388,14 +389,21 @@ func (p *plugin) hasTimeField(msg *generator.Descriptor, s string) bool {
 	return false
 }
 
-func (p *plugin) hasIDField(msg *generator.Descriptor) bool {
+func (p *plugin) hasIDField(msg *generator.Descriptor) string {
 	for _, f := range msg.Field {
 		if f.GetName() == "id" {
-			return true
+			switch f.GetType() {
+			case descriptor.FieldDescriptorProto_TYPE_INT64:
+				return "int64"
+			case descriptor.FieldDescriptorProto_TYPE_STRING:
+				return "string"
+			default:
+				return ""
+			}
 		}
 	}
 
-	return false
+	return ""
 }
 
 func (p *plugin) initClosure(rec, fn string) {
