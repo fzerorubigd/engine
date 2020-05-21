@@ -1,4 +1,4 @@
-package qollenge
+package common
 
 /*
 This file is for wiring the different modules in the project.
@@ -27,8 +27,8 @@ func userMod() (grpcgw.Controller, error) {
 }
 
 func miscMod() (grpcgw.Controller, error) {
-	string2 := getPrivateKey()
-	rsaPrivateKey, err := sec.ParseRSAPrivateKeyFromBase64PEM(string2)
+	privateKey := getPrivateKey()
+	rsaPrivateKey, err := sec.ParseRSAPrivateKeyFromBase64PEM(privateKey)
 	if err != nil {
 		return nil, err
 	}

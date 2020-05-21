@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"elbix.dev/engine/cmd/qollenge"
+	"elbix.dev/engine/app/common"
 	"elbix.dev/engine/pkg/cli"
 	"elbix.dev/engine/pkg/initializer"
 	"elbix.dev/engine/pkg/log"
@@ -20,7 +20,7 @@ var (
 
 func main() {
 	ctx := cli.Context()
-	_ = qollenge.InitializeConfig(ctx, false)
+	_ = common.InitializeConfig(ctx, false)
 
 	defer initializer.Initialize(ctx)()
 

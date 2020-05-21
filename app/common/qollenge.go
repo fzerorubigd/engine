@@ -1,4 +1,4 @@
-package qollenge
+package common
 
 import (
 	"context"

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"elbix.dev/engine/cmd/qollenge"
+	"elbix.dev/engine/app/common"
 	"elbix.dev/engine/pkg/cli"
 	"elbix.dev/engine/pkg/grpcgw"
 	"elbix.dev/engine/pkg/initializer"
@@ -10,7 +10,7 @@ import (
 
 func main() {
 	ctx := cli.Context()
-	if err := qollenge.InitializeConfig(ctx, true); err != nil {
+	if err := common.InitializeConfig(ctx, true); err != nil {
 		log.Fatal("Dependency injection failed", log.Err(err))
 	}
 

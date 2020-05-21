@@ -1,5 +1,6 @@
-FROM golang:1.12-alpine
+FROM golang:1.14-alpine
 
+ENV GOFLAGS="-mod=readonly"
 ADD . /go/src/elbix.dev/engine
 
 RUN apk add --no-cache --virtual .build-deps git gcc g++ libc-dev make \
@@ -12,13 +13,12 @@ FROM alpine:3.6
 ARG APP_NAME
 ARG APP_PREFIX
 
-COPY --from=0 /go/src/elbix.dev/engine/bin/${APP_PREFIX}server /bin/server
-COPY --from=0 /go/src/elbix.dev/engine/bin/${APP_PREFIX}migration /bin/migration
+COPY --from=0 /go/src/elbix.dev/engine/bin/server /bin/server
+COPY --from=0 /go/src/elbix.dev/engine/bin/migration /bin/migration
 ADD scripts/server.sh /bin/server.sh
 ADD scripts/migration.sh /bin/migration.sh
-ADD scripts/$APP_NAME/Procfile /bin/Procfile
-ADD scripts/$APP_NAME/CHECKS /bin/CHECKS
-ADD scripts/$APP_NAME/app.json /bin/app.json
+CMD echo "web: /bin/sh /bin/server.sh" > /bin/Procfile
+CMD echo "/v1/misc/health" > /bin/CHECKS
 RUN chmod a+x /bin/server.sh /bin/migration.sh
 
 EXPOSE 80
