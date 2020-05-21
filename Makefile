@@ -36,7 +36,7 @@ where-am-i = $(CURDIR)/$(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
 
 # Default target is lint
 lint: $(BIN)/golangci-lint
-	LINT_GOGC=5 GOGC=5 $(BIN)/golangci-lint run
+	LINT_GOGC=5 GOGC=5 $(BIN)/golangci-lint run --timeout 5m0s
 
 
 $(BIN)/jwtRS256.key:
