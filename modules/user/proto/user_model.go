@@ -3,7 +3,6 @@ package userpb
 import (
 	"context"
 	"fmt"
-	"regexp"
 	"strings"
 	"time"
 
@@ -19,16 +18,12 @@ import (
 	"elbix.dev/engine/pkg/random"
 )
 
-// From the bcrypt package
 const (
-	minHashSize = 59
 	// NoPassString is for users without password (OAuth users)
 	NoPassString = "NO" // Size must be less than 6 character
 )
 
-//  TODO: NEEDS COMMENT INFO
 var (
-	isBcrypt = regexp.MustCompile(`^\$[^$]+\$[0-9]+\$`)
 	provider token.Provider
 )
 
