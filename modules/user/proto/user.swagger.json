@@ -289,8 +289,7 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "string",
-          "format": "int64"
+          "type": "string"
         },
         "display_name": {
           "type": "string"

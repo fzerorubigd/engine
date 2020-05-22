@@ -3,13 +3,12 @@ package userpb
 import (
 	"context"
 	"fmt"
-	"regexp"
-	"strconv"
 	"strings"
 	"time"
 
 	"elbix.dev/engine/pkg/token"
 	typespb "github.com/fzerorubigd/protobuf/types"
+	"github.com/google/uuid"
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 
@@ -19,36 +18,26 @@ import (
 	"elbix.dev/engine/pkg/random"
 )
 
-// From the bcrypt package
 const (
-	minHashSize = 59
 	// NoPassString is for users without password (OAuth users)
 	NoPassString = "NO" // Size must be less than 6 character
 )
 
-//  TODO: NEEDS COMMENT INFO
 var (
-	isBcrypt = regexp.MustCompile(`^\$[^$]+\$[0-9]+\$`)
 	provider token.Provider
 )
 
-func (m *User) cryptPassword() {
-	// TODO : Watch it if this creepy code is dangerous :)
-	if (len(m.Password) < minHashSize || !isBcrypt.MatchString(m.Password)) && m.Password != NoPassString {
-		p, err := bcrypt.GenerateFromPassword([]byte(m.Password), bcrypt.DefaultCost)
-		assert.Nil(err)
-		m.Password = string(p)
-	}
-}
-
 // PreInsert the user on create
 func (m *User) PreInsert() {
-	m.cryptPassword()
+	if m.Id == "" {
+		m.Id = uuid.New().String()
+
+	}
 }
 
 // PreUpdate the user on update
 func (m *User) PreUpdate() {
-	m.cryptPassword()
+
 }
 
 // VerifyPassword try to verify password for given hash
@@ -109,10 +98,12 @@ func (m *Manager) FindUserByEmail(ctx context.Context, e string) (*User, error) 
 // RegisterUser is to register new user
 func (m *Manager) RegisterUser(ctx context.Context, email, name, pass string) (*User, error) {
 	email = strings.ToLower(email)
+	p, err := bcrypt.GenerateFromPassword([]byte(pass), bcrypt.DefaultCost)
+	assert.Nil(err)
 	u := User{
 		Email:       email,
 		DisplayName: name,
-		Password:    pass,
+		Password:    string(p),
 		Status:      UserStatus_USER_STATUS_REGISTERED,
 	}
 
@@ -146,13 +137,8 @@ func (m *Manager) FindUserByIndirectToken(ctx context.Context, token string) (*U
 	}
 	email := t["eml"].(string)
 	uidS := t["uid"].(string)
-	uid, err := strconv.ParseInt(uidS, 10, 0)
-	if err != nil {
-		return nil, errors.Wrap(err, "invalid uid")
-	}
-
 	u := &User{
-		Id: uid,
+		Id: uidS,
 	}
 
 	if err := m.ReloadUser(ctx, u); err != nil {
@@ -170,7 +156,9 @@ func (m *Manager) DeleteToken(_ context.Context, token string) {
 
 // ChangePassword change the password, and remove the change pass flag
 func (m *Manager) ChangePassword(ctx context.Context, u *User, newPassword string) error {
-	u.Password = newPassword
+	p, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+	assert.Nil(err)
+	u.Password = string(p)
 	// Make sure to reset the change pass
 	u.ChangePassAt = &typespb.Timestamp{
 		Unix:  0,
@@ -181,19 +169,20 @@ func (m *Manager) ChangePassword(ctx context.Context, u *User, newPassword strin
 
 // TemporaryPassword create a temporary password for the user
 func (m *Manager) TemporaryPassword(ctx context.Context, u *User) (string, error) {
-	pass := random.String(10)
-	u.Password = pass
+	p, err := bcrypt.GenerateFromPassword([]byte(random.String(10)), bcrypt.DefaultCost)
+	assert.Nil(err)
+	u.Password = string(p)
 	u.ChangePassAt = &typespb.Timestamp{
 		Unix:  time.Now().Unix(),
 		Valid: true,
 	}
-	return pass, m.UpdateUser(ctx, u)
+	return u.Password, m.UpdateUser(ctx, u)
 }
 
 // CreateForgottenToken return a forgotten token, also return the age of already generated token
 // TODO: rate limit
 func (m *Manager) CreateForgottenToken(ctx context.Context, u *User) (string, time.Duration, error) {
-	key := fmt.Sprintf("forgotten_%d", u.Id)
+	key := fmt.Sprintf("forgotten_%s", u.Id)
 	v, err := kv.FetchKey(key)
 	if err != nil {
 		v = <-random.ID
@@ -206,7 +195,7 @@ func (m *Manager) CreateForgottenToken(ctx context.Context, u *User) (string, ti
 
 // VerifyForgottenToken try to verify token and remove it after successful verify
 func (m *Manager) VerifyForgottenToken(ctx context.Context, u *User, token string) error {
-	key := fmt.Sprintf("forgotten_%d", u.Id)
+	key := fmt.Sprintf("forgotten_%s", u.Id)
 	v, err := kv.FetchKey(key)
 	if err != nil {
 		return errors.Wrap(err, "not found")

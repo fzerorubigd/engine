@@ -9,16 +9,16 @@ echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" 
 apt update
 $minimal_apt_get_install wget sudo git zsh nano libsqlite3-dev autoconf bison build-essential libssl-dev \
                 libyaml-dev libreadline6 libreadline6-dev zlib1g zlib1g-dev htop redis-server postgresql postgresql-contrib \
-                mercurial ruby-dev realpath pkg-config unzip dnsutils re2c python-pip openjdk-8-jre jq \
-                python-dev libpq-dev tmux bzr libsodium-dev cmake python-setuptools iputils-ping iproute2
+                mercurial ruby-dev realpath pkg-config unzip dnsutils re2c python3-pip openjdk-8-jre jq \
+                python3-dev libpq-dev tmux bzr libsodium-dev cmake python3-setuptools iputils-ping iproute2
 
 # Install golang
 cd /tmp
 curl https://godeb.s3.amazonaws.com/godeb-amd64.tar.gz | gunzip | tar xvf -
-/tmp/godeb install 1.13.5
+/tmp/godeb install 1.14.3
 
 GOBIN=/usr/local/bin GOPATH=/tmp go get -v -u github.com/mailhog/MailHog
-pip install --no-cache-dir psycopg2-binary pgcli
+pip3 install --no-cache-dir psycopg2-binary pgcli
 
 # Create vagrant user
 bash -c "echo root:bita123 | chpasswd"

@@ -7,11 +7,11 @@ import (
 	fmt "fmt"
 	math "math"
 	proto "github.com/golang/protobuf/proto"
+	_ "github.com/fzerorubigd/protobuf/types"
+	_ "github.com/gogo/protobuf/gogoproto"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	_ "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options"
 	_ "github.com/fzerorubigd/protobuf/extra"
-	_ "github.com/fzerorubigd/protobuf/types"
-	_ "github.com/gogo/protobuf/gogoproto"
 	elbix_dev_engine_pkg_postgres_model "elbix.dev/engine/pkg/postgres/model"
 	time "time"
 	github_com_fzerorubigd_protobuf_types "github.com/fzerorubigd/protobuf/types"
@@ -59,7 +59,7 @@ main.modelData{
     types:     {},
     createdAt: true,
     updatedAt: true,
-    hasID:     true,
+    idType:    "string",
 }
 */
 
@@ -72,8 +72,8 @@ func (m *Manager) CreateUser(ctx context.Context, u *User) error {
 			o.PreInsert()
 		}
 	}(u)
-	q := `INSERT INTO aaa.users(email, display_name, password, status, created_at, updated_at, last_login, change_pass_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`
-	row := m.GetDbMap().QueryRowxContext(ctx, q, u.Email, u.DisplayName, u.Password, u.Status, u.CreatedAt, u.UpdatedAt, u.LastLogin, u.ChangePassAt)
+	q := `INSERT INTO aaa.users(id, email, display_name, password, status, created_at, updated_at, last_login, change_pass_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id`
+	row := m.GetDbMap().QueryRowxContext(ctx, q, u.Id, u.Email, u.DisplayName, u.Password, u.Status, u.CreatedAt, u.UpdatedAt, u.LastLogin, u.ChangePassAt)
 	return row.Scan(&u.Id)
 }
 
@@ -91,7 +91,7 @@ func (m *Manager) UpdateUser(ctx context.Context, u *User) error {
 	return err
 }
 
-func (m *Manager) GetUserByPrimary(ctx context.Context, id int64) (*User, error) {
+func (m *Manager) GetUserByPrimary(ctx context.Context, id string) (*User, error) {
 	q := `SELECT id, email, display_name, password, status, created_at, updated_at, last_login, change_pass_at FROM aaa.users WHERE id = $1`
 	row := m.GetDbMap().QueryRowxContext(ctx, q, id)
 

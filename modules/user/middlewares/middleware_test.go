@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"elbix.dev/engine/modules/user/proto"
+	userpb "elbix.dev/engine/modules/user/proto"
 	"elbix.dev/engine/pkg/grpcgw"
 	"elbix.dev/engine/pkg/mockery"
 )
