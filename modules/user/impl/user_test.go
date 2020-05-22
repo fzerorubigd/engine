@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"elbix.dev/engine/modules/user/proto"
+	userpb "elbix.dev/engine/modules/user/proto"
 	"elbix.dev/engine/pkg/grpcgw"
 	"elbix.dev/engine/pkg/mockery"
 )
@@ -71,7 +71,7 @@ func TestUserController_Register_Invalid(t *testing.T) {
 	assert.Equal(t, http.StatusBadRequest, gErr.Status())
 
 	r, err = u.Register(ctx, &userpb.RegisterRequest{
-		Email:       "master@cerulean.ir", // Email from migration
+		Email:       "root@elbix.dev", // Email from migration
 		DisplayName: "abcdef",
 		Password:    "12345678",
 	})
