@@ -17,8 +17,8 @@ COPY --from=0 /go/src/elbix.dev/engine/bin/server /bin/server
 COPY --from=0 /go/src/elbix.dev/engine/bin/migration /bin/migration
 ADD scripts/server.sh /bin/server.sh
 ADD scripts/migration.sh /bin/migration.sh
-CMD echo "web: /bin/sh /bin/server.sh" > /bin/Procfile
-CMD echo "/v1/misc/health" > /bin/CHECKS
+RUN echo "web: /bin/sh /bin/server.sh" > /bin/Procfile
+RUN echo "/v1/misc/health" > /bin/CHECKS
 RUN chmod a+x /bin/server.sh /bin/migration.sh
 
 EXPOSE 80
