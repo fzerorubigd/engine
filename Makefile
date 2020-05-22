@@ -79,7 +79,9 @@ database-setup: need_root
 	sudo -u postgres psql -U postgres -d postgres -c "CREATE USER $(DB_USER) WITH PASSWORD '$(DB_PASS)';" || sudo -u postgres psql -U postgres -d postgres -c "ALTER USER $(DB_USER) WITH PASSWORD '$(DB_PASS)';"
 	sudo -u postgres psql -U postgres -d postgres -c "CREATE USER $(DB_USER)_test WITH PASSWORD '$(DB_PASS)';" || sudo -u postgres psql -U postgres -d postgres -c "ALTER USER $(DB_USER)_test WITH PASSWORD '$(DB_PASS)';"
 	sudo -u postgres psql -U postgres -c "CREATE DATABASE $(DB_NAME);" || echo "Database $(DB_NAME) is already there?"
+	sudo -u postgres psql -U postgres -d $(DB_NAME) -c 'CREATE EXTENSION "uuid-ossp"'
 	sudo -u postgres psql -U postgres -c "CREATE DATABASE $(DB_NAME)_test;" || echo "Database $(DB_NAME)_test is already there?"
+	sudo -u postgres psql -U postgres -d $(DB_NAME)_test -c 'CREATE EXTENSION "uuid-ossp"'
 	sudo -u postgres psql -U postgres -c "GRANT ALL ON DATABASE $(DB_NAME) TO $(DB_USER);"
 	sudo -u postgres psql -U postgres -c "GRANT ALL ON DATABASE $(DB_NAME)_test TO $(DB_USER)_test;"
 

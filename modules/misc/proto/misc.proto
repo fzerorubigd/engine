@@ -7,7 +7,7 @@ option java_multiple_files = true;
 option java_outer_classname = "MiscProto";
 option java_package = "com.misc";
 
-import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+// import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 

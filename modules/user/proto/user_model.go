@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 	"regexp"
-	"strconv"
 	"strings"
 	"time"
 
 	"elbix.dev/engine/pkg/token"
 	typespb "github.com/fzerorubigd/protobuf/types"
+	"github.com/google/uuid"
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 
@@ -43,6 +43,10 @@ func (m *User) cryptPassword() {
 
 // PreInsert the user on create
 func (m *User) PreInsert() {
+	if m.Id == "" {
+		m.Id = uuid.New().String()
+
+	}
 	m.cryptPassword()
 }
 
@@ -146,13 +150,8 @@ func (m *Manager) FindUserByIndirectToken(ctx context.Context, token string) (*U
 	}
 	email := t["eml"].(string)
 	uidS := t["uid"].(string)
-	uid, err := strconv.ParseInt(uidS, 10, 0)
-	if err != nil {
-		return nil, errors.Wrap(err, "invalid uid")
-	}
-
 	u := &User{
-		Id: uid,
+		Id: uidS,
 	}
 
 	if err := m.ReloadUser(ctx, u); err != nil {
@@ -193,7 +192,7 @@ func (m *Manager) TemporaryPassword(ctx context.Context, u *User) (string, error
 // CreateForgottenToken return a forgotten token, also return the age of already generated token
 // TODO: rate limit
 func (m *Manager) CreateForgottenToken(ctx context.Context, u *User) (string, time.Duration, error) {
-	key := fmt.Sprintf("forgotten_%d", u.Id)
+	key := fmt.Sprintf("forgotten_%s", u.Id)
 	v, err := kv.FetchKey(key)
 	if err != nil {
 		v = <-random.ID
@@ -206,7 +205,7 @@ func (m *Manager) CreateForgottenToken(ctx context.Context, u *User) (string, ti
 
 // VerifyForgottenToken try to verify token and remove it after successful verify
 func (m *Manager) VerifyForgottenToken(ctx context.Context, u *User, token string) error {
-	key := fmt.Sprintf("forgotten_%d", u.Id)
+	key := fmt.Sprintf("forgotten_%s", u.Id)
 	v, err := kv.FetchKey(key)
 	if err != nil {
 		return errors.Wrap(err, "not found")

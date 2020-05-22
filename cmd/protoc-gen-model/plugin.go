@@ -199,7 +199,7 @@ func (p *plugin) createFunction(msg modelData) {
 	p.initClosure(msg.receiver, "PreInsert")
 
 	l := len(msg.dbFields)
-	if msg.idType != "" {
+	if msg.idType != "string" && msg.idType != "" {
 		l--
 	}
 	args := make([]string, l)
@@ -207,7 +207,7 @@ func (p *plugin) createFunction(msg modelData) {
 	flds := make([]string, l)
 	i := 0
 	for j, dbf := range msg.dbFields {
-		if dbf == "id" {
+		if dbf == "id" && msg.idType != "string" {
 			continue
 		}
 		flds[i] = dbf
