@@ -170,6 +170,7 @@ watch: $(BIN)/reflex
 deploy:
 	$(DOCKER) build --build-arg APP_NAME=$(APP_NAME) -t dokku/$(APP_NAME):$(COMMIT_COUNT) .
 	$(DOCKER) save dokku/$(APP_NAME):$(COMMIT_COUNT) | $(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "docker load"
+	$(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "docker tag dokku/$(APP_NAME):$(COMMIT_COUNT) dokku/$(APP_NAME):latest"
 	$(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "dokku tags:deploy $(APP_NAME) $(COMMIT_COUNT)"
 
 .PHONY: lint swagger-to-go proto swagger build-server run-server generate vendor
