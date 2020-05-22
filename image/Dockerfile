@@ -1,9 +1,7 @@
-FROM phusion/baseimage:latest
+FROM golang:1.14-buster
 
-COPY ./install.sh /bd_build/install.sh
+RUN go get github.com/fzerorubigd/didebaan/cmd/...
 
-RUN chmod a+x /bd_build/install.sh && \
-    /bd_build/install.sh && \
-    /bd_build/cleanup.sh
+WORKDIR /elbix.dev/engine
 
-
+ENTRYPOINT ["/go/bin/didebaan"]

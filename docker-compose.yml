@@ -1,0 +1,93 @@
+version: "3"
+
+services:
+  postgresql:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - '5432:5432'
+
+  adminer:
+    image: adminer
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.adminer.rule=Host(`adminer.${TRAEFIK_HOST}`)"
+      - "traefik.http.routers.adminer.entrypoints=web"
+
+  mailhog:
+    image: mailhog/mailhog
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mailhog.rule=Host(`mailhog.${TRAEFIK_HOST}`)"
+      - "traefik.http.routers.mailhog.entrypoints=web"
+      - "traefik.http.services.mailhog.loadbalancer.server.port=8025"
+
+  redis:
+    image: redis:latest
+    restart: always
+
+  redisweb:
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+      REDIS_HOSTS: redis
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.redisweb.rule=Host(`redisweb.${TRAEFIK_HOST}`)"
+      - "traefik.http.routers.redisweb.entrypoints=web"
+      - "traefik.http.services.redisweb.loadbalancer.server.port=8081"
+
+
+  didebaan:
+    build: image
+    environment:
+      E_SERVICES_POSTGRES_USER: ${POSTGRES_USER}
+      E_SERVICES_POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      E_SERVICES_POSTGRES_DB: ${POSTGRES_DB}
+      E_SERVICES_POSTGRES_HOST: postgresql
+      E_SERVICES_REDIS_ADDRESS: redis
+    volumes:
+       - ./:/elbix.dev/engine
+       - ./tmp/cache:/go/pkg/
+    command:
+      - "make run-server"
+    ports:
+      - 55055:55055
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`api.${TRAEFIK_HOST}`)"
+      - "traefik.http.routers.api.entrypoints=web"
+      - "traefik.http.services.api.loadbalancer.server.port=8090"
+
+
+  traefik:
+    image: "traefik:latest"
+    container_name: "traefik"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--api=true"
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+
+  whoami:
+    image: "containous/whoami"
+    container_name: "simple-service"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.${TRAEFIK_HOST}`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
+

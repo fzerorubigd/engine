@@ -166,6 +166,15 @@ all: build-all tools-migration
 watch: $(BIN)/reflex
 	$(BIN)/reflex -r '\.proto$$' make code-gen
 
+$(BIN)/didebaan-cli:
+	$(GET) github.com/fzerorubigd/didebaan/cmd/didebaan-cli
+
+triger: $(BIN)/didebaan-cli
+	$(BIN)/didebaan-cli
+
+start:
+	docker-compose up
+
 # Deploy
 deploy:
 	$(DOCKER) build --build-arg APP_NAME=$(APP_NAME) -t dokku/$(APP_NAME):$(COMMIT_COUNT) .
