@@ -32,27 +32,17 @@ var (
 	provider token.Provider
 )
 
-func (m *User) cryptPassword() {
-	// TODO : Watch it if this creepy code is dangerous :)
-	if (len(m.Password) < minHashSize || !isBcrypt.MatchString(m.Password)) && m.Password != NoPassString {
-		p, err := bcrypt.GenerateFromPassword([]byte(m.Password), bcrypt.DefaultCost)
-		assert.Nil(err)
-		m.Password = string(p)
-	}
-}
-
 // PreInsert the user on create
 func (m *User) PreInsert() {
 	if m.Id == "" {
 		m.Id = uuid.New().String()
 
 	}
-	m.cryptPassword()
 }
 
 // PreUpdate the user on update
 func (m *User) PreUpdate() {
-	m.cryptPassword()
+
 }
 
 // VerifyPassword try to verify password for given hash
@@ -113,10 +103,12 @@ func (m *Manager) FindUserByEmail(ctx context.Context, e string) (*User, error) 
 // RegisterUser is to register new user
 func (m *Manager) RegisterUser(ctx context.Context, email, name, pass string) (*User, error) {
 	email = strings.ToLower(email)
+	p, err := bcrypt.GenerateFromPassword([]byte(pass), bcrypt.DefaultCost)
+	assert.Nil(err)
 	u := User{
 		Email:       email,
 		DisplayName: name,
-		Password:    pass,
+		Password:    string(p),
 		Status:      UserStatus_USER_STATUS_REGISTERED,
 	}
 
@@ -169,7 +161,9 @@ func (m *Manager) DeleteToken(_ context.Context, token string) {
 
 // ChangePassword change the password, and remove the change pass flag
 func (m *Manager) ChangePassword(ctx context.Context, u *User, newPassword string) error {
-	u.Password = newPassword
+	p, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+	assert.Nil(err)
+	u.Password = string(p)
 	// Make sure to reset the change pass
 	u.ChangePassAt = &typespb.Timestamp{
 		Unix:  0,
@@ -180,13 +174,14 @@ func (m *Manager) ChangePassword(ctx context.Context, u *User, newPassword strin
 
 // TemporaryPassword create a temporary password for the user
 func (m *Manager) TemporaryPassword(ctx context.Context, u *User) (string, error) {
-	pass := random.String(10)
-	u.Password = pass
+	p, err := bcrypt.GenerateFromPassword([]byte(random.String(10)), bcrypt.DefaultCost)
+	assert.Nil(err)
+	u.Password = string(p)
 	u.ChangePassAt = &typespb.Timestamp{
 		Unix:  time.Now().Unix(),
 		Valid: true,
 	}
-	return pass, m.UpdateUser(ctx, u)
+	return u.Password, m.UpdateUser(ctx, u)
 }
 
 // CreateForgottenToken return a forgotten token, also return the age of already generated token
