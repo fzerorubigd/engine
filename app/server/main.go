@@ -1,15 +1,23 @@
 package main
 
 import (
+	"syscall"
+
 	"elbix.dev/engine/app/common"
-	"elbix.dev/engine/pkg/cli"
 	"elbix.dev/engine/pkg/grpcgw"
 	"elbix.dev/engine/pkg/initializer"
 	"elbix.dev/engine/pkg/log"
+	"github.com/fzerorubigd/clictx"
 )
 
 func main() {
-	ctx := cli.Context()
+	ctx := clictx.Context(
+		syscall.SIGKILL,
+		syscall.SIGINT,
+		syscall.SIGTERM,
+		syscall.SIGQUIT,
+		syscall.SIGABRT,
+	)
 	if err := common.InitializeConfig(ctx, true); err != nil {
 		log.Fatal("Dependency injection failed", log.Err(err))
 	}

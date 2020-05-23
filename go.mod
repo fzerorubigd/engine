@@ -8,6 +8,7 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fullstorydev/grpchan v1.0.1
 	github.com/fzerorubigd/chapar v0.0.0-20190210094209-31bedf3ca11b
+	github.com/fzerorubigd/clictx v1.0.1
 	github.com/fzerorubigd/expand v0.0.0-20150817182922-fd359294116f
 	github.com/fzerorubigd/protobuf v0.0.0-20191214233402-e3dbdb78d718
 	github.com/fzerorubigd/redimock v0.0.0-20190203221554-6d493724ce3b // indirect
@@ -36,15 +37,14 @@ require (
 	github.com/stretchr/testify v1.5.1
 	go.uber.org/zap v1.15.0
 	golang.org/x/crypto v0.0.0-20200510223506-06a226fb4e37
-	golang.org/x/net v0.0.0-20200513185701-a91f0712d120
-	golang.org/x/sys v0.0.0-20200515095857-1151b9dac4a9 // indirect
+	golang.org/x/net v0.0.0-20200520182314-0ba52f642ac2
+	golang.org/x/sys v0.0.0-20200519105757-fe76b779f299 // indirect
 	golang.org/x/tools v0.0.0-20200515220128-d3bf790afa53 // indirect
-	google.golang.org/api v0.24.0
-	google.golang.org/genproto v0.0.0-20200515170657-fc4c6c6a6587
+	google.golang.org/api v0.25.0
+	google.golang.org/genproto v0.0.0-20200521103424-e9a78aa275b7
 	google.golang.org/grpc v1.29.1
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/go-playground/validator.v9 v9.31.0
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
-	gopkg.in/yaml.v2 v2.3.0 // indirect
 	honnef.co/go/tools v0.0.1-2020.1.4 // indirect
 )
