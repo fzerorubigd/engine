@@ -45,10 +45,10 @@ $(BIN)/golangci-lint:
 $(BIN)/jwtRS256.key:
 	ssh-keygen -t rsa -b 4096 -m PEM -f $(BIN)/jwtRS256.key -N ''
 
-$(BIN)/jwtRS256.key.bup: $(BIN)/jwtRS256.key
+$(BIN)/jwtRS256.key.pup: $(BIN)/jwtRS256.key
 	openssl rsa -in $(BIN)/jwtRS256.key -pubout -outform PEM -out $(BIN)/jwtRS256.key.pub
 
-rsa_file: $(BIN)/jwtRS256.key.bup $(BIN)/jwtRS256.key
+rsa_file: $(BIN)/jwtRS256.key.pup $(BIN)/jwtRS256.key
 
 # Cleanup the repository
 clean:
@@ -56,9 +56,8 @@ clean:
 
 # Go vendor, I think I should remove this one "someday"
 vendor:
-	GO111MODULE=on $(GO) get ./cmd/... ./pkg/... ./modules/...
+	GO111MODULE=on $(GO) get ./app/... ./cmd/... ./pkg/... ./modules/...
 	GO111MODULE=on $(GO) mod tidy
-	GO111MODULE=on $(GO) mod vendor
 
 # Include modules make file
 include $(wildcard $(ROOT)/modules/*/module.mk)
@@ -75,15 +74,11 @@ database-clean: need_root
 	sudo -u postgres psql -U postgres -c "DROP DATABASE IF EXISTS $(DB_NAME);"
 	sudo -u postgres psql -U postgres -c "DROP DATABASE IF EXISTS $(DB_NAME)_test;"
 
-database-setup: need_root
-	sudo -u postgres psql -U postgres -d postgres -c "CREATE USER $(DB_USER) WITH PASSWORD '$(DB_PASS)';" || sudo -u postgres psql -U postgres -d postgres -c "ALTER USER $(DB_USER) WITH PASSWORD '$(DB_PASS)';"
-	sudo -u postgres psql -U postgres -d postgres -c "CREATE USER $(DB_USER)_test WITH PASSWORD '$(DB_PASS)';" || sudo -u postgres psql -U postgres -d postgres -c "ALTER USER $(DB_USER)_test WITH PASSWORD '$(DB_PASS)';"
-	sudo -u postgres psql -U postgres -c "CREATE DATABASE $(DB_NAME);" || echo "Database $(DB_NAME) is already there?"
-	sudo -u postgres psql -U postgres -d $(DB_NAME) -c 'CREATE EXTENSION "uuid-ossp"'
-	sudo -u postgres psql -U postgres -c "CREATE DATABASE $(DB_NAME)_test;" || echo "Database $(DB_NAME)_test is already there?"
-	sudo -u postgres psql -U postgres -d $(DB_NAME)_test -c 'CREATE EXTENSION "uuid-ossp"'
-	sudo -u postgres psql -U postgres -c "GRANT ALL ON DATABASE $(DB_NAME) TO $(DB_USER);"
-	sudo -u postgres psql -U postgres -c "GRANT ALL ON DATABASE $(DB_NAME)_test TO $(DB_USER)_test;"
+test-database-setup:
+	PGPASSWORD=$(DB_PASS) psql -h localhost -U $(DB_USER) -d $(DB_NAME) -c "CREATE DATABASE $(DB_NAME)_test;" || echo "Database $(DB_NAME)_test is already there?"
+	PGPASSWORD=$(DB_PASS) psql -h localhost -U $(DB_USER) -d $(DB_NAME)_test -c 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp"'
+	PGPASSWORD=$(DB_PASS) psql -h localhost -U $(DB_USER) -d $(DB_NAME) -c "CREATE USER $(DB_USER)_test WITH PASSWORD '$(DB_PASS)';" || PGPASSWORD=$(DB_PASS) psql -h localhost -U $(DB_USER) -d $(DB_NAME) -c "ALTER USER $(DB_USER) WITH PASSWORD '$(DB_PASS)';" 
+	PGPASSWORD=$(DB_PASS) psql -h localhost -U $(DB_USER) -d $(DB_NAME)_test -c "GRANT ALL ON DATABASE $(DB_NAME)_test TO $(DB_USER)_test;"
 
 # Genrators
 $(BIN)/prototool:
@@ -147,8 +142,9 @@ test: tools-migration
 	$(GO) test ./pkg/... ./modules/misc/... ./modules/user/... -coverprofile cover.cp
 	E_SERVICES_POSTGRES_USER="$(DB_USER)_test" E_SERVICES_POSTGRES_DB="$(DB_NAME)_test" $(BIN)/migration -action=down-all
 
+test-full: test-database-setup test
 
-build-all:
+build:
 	@echo "Building all binaries"
 	$(INSTALL) ./cmd/...
 	$(INSTALL) ./app/...
@@ -157,11 +153,11 @@ build-all:
 $(BIN)/reflex:
 	$(GET) github.com/cespare/reflex
 
-run-server: build-all rsa_file
+run-server: build rsa_file
 	@echo "Running..."
-	E_SECRET_PRIVATE=$(shell cat $(BIN)/jwtRS256.key | base64 -w 0) $(BIN)/server 2>&1
+	@E_SECRET_PRIVATE=$(shell cat $(BIN)/jwtRS256.key | base64 -w 0) $(BIN)/server 2>&1
 
-all: build-all tools-migration
+all: build tools-migration
 
 watch: $(BIN)/reflex
 	$(BIN)/reflex -r '\.proto$$' make code-gen
@@ -170,7 +166,7 @@ $(BIN)/didebaan-cli:
 	$(GET) github.com/fzerorubigd/didebaan/cmd/didebaan-cli
 
 triger: $(BIN)/didebaan-cli
-	$(BIN)/didebaan-cli
+	@$(BIN)/didebaan-cli
 
 start:
 	docker-compose up

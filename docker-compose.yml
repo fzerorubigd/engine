@@ -30,6 +30,8 @@ services:
   redis:
     image: redis:latest
     restart: always
+    ports:
+      - '6379:6379'    
 
   redisweb:
     image: rediscommander/redis-commander:latest
@@ -44,7 +46,7 @@ services:
 
 
   didebaan:
-    build: image
+    build: images/didebaan
     environment:
       E_SERVICES_POSTGRES_USER: ${POSTGRES_USER}
       E_SERVICES_POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -63,7 +65,6 @@ services:
       - "traefik.http.routers.api.rule=Host(`api.${TRAEFIK_HOST}`)"
       - "traefik.http.routers.api.entrypoints=web"
       - "traefik.http.services.api.loadbalancer.server.port=8090"
-
 
   traefik:
     image: "traefik:latest"
