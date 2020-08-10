@@ -35,7 +35,8 @@ CG_SERVICES_POSTGRES_DB=$(DB_NAME)
 where-am-i = $(CURDIR)/$(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
 
 # Linter 
-lint: $(BIN)/golangci-lint
+lint: ## Linter
+	$(BIN)/golangci-lint
 	LINT_GOGC=5 GOGC=5 $(BIN)/golangci-lint run --timeout 5m0s -v
 
 $(BIN)/golangci-lint:
@@ -48,14 +49,15 @@ $(BIN)/jwtRS256.key:
 $(BIN)/jwtRS256.key.pup: $(BIN)/jwtRS256.key
 	openssl rsa -in $(BIN)/jwtRS256.key -pubout -outform PEM -out $(BIN)/jwtRS256.key.pub
 
-rsa_file: $(BIN)/jwtRS256.key.pup $(BIN)/jwtRS256.key
+rsa_file: ## rsa file
+	$(BIN)/jwtRS256.key.pup $(BIN)/jwtRS256.key
 
 # Cleanup the repository
-clean:
+clean: ## Cleanup the repository
 	$(GIT) clean -fX ./
 
 # Go vendor, I think I should remove this one "someday"
-vendor:
+vendor: ## Go vendor, I think I should remove this one "someday"
 	GO111MODULE=on $(GO) get ./app/... ./cmd/... ./pkg/... ./modules/...
 	GO111MODULE=on $(GO) mod tidy
 
@@ -63,18 +65,19 @@ vendor:
 include $(wildcard $(ROOT)/modules/*/module.mk)
 
 # Utility functions
-need_root:
+need_root: ## Utility functions need root
 	@[ "$(shell id -u)" -eq "0" ] || exit 1
 
-not_root:
+not_root: ## Utility functions not root
 	@[ "$(shell id -u)" != "0" ] || exit 1
 
 # Database related
-database-clean: need_root
+database-clean: ## Database related
+	need_root
 	sudo -u postgres psql -U postgres -c "DROP DATABASE IF EXISTS $(DB_NAME);"
 	sudo -u postgres psql -U postgres -c "DROP DATABASE IF EXISTS $(DB_NAME)_test;"
 
-test-database-setup:
+test-database-setup: ## test-database-setup
 	PGPASSWORD=$(DB_PASS) psql -h localhost -U $(DB_USER) -d $(DB_NAME) -c "CREATE DATABASE $(DB_NAME)_test;" || echo "Database $(DB_NAME)_test is already there?"
 	PGPASSWORD=$(DB_PASS) psql -h localhost -U $(DB_USER) -d $(DB_NAME)_test -c 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp"'
 	PGPASSWORD=$(DB_PASS) psql -h localhost -U $(DB_USER) -d $(DB_NAME) -c "CREATE USER $(DB_USER)_test WITH PASSWORD '$(DB_PASS)';" || PGPASSWORD=$(DB_PASS) psql -h localhost -U $(DB_USER) -d $(DB_NAME) -c "ALTER USER $(DB_USER) WITH PASSWORD '$(DB_PASS)';" 
@@ -103,17 +106,19 @@ $(BIN)/protoc-gen-grpchan:
 $(BIN)/go-bindata:
 	$(GET) github.com/shuLhan/go-bindata/cmd/go-bindata
 
-swagger-to-go:
+swagger-to-go: ## swagger-to-go
 	$(INSTALL) ./cmd/swagger-to-go
 
-generators:
+generators: ## generators protoc gen wrapper and model
 	$(INSTALL) ./cmd/protoc-gen-wrapper
 	$(INSTALL) ./cmd/protoc-gen-model
 
-proto: $(BIN)/prototool $(BIN)/protoc-gen-go $(BIN)/protoc-gen-grpc-gateway $(BIN)/protoc-gen-swagger $(BIN)/protoc-gen-grpchan $(BIN)/protoc-gen-gogo generators
+proto: ## run proto
+	$(BIN)/prototool $(BIN)/protoc-gen-go $(BIN)/protoc-gen-grpc-gateway $(BIN)/protoc-gen-swagger $(BIN)/protoc-gen-grpchan $(BIN)/protoc-gen-gogo generators
 	$(BIN)/prototool generate
 
-swagger-ui: $(BIN)/go-bindata
+swagger-ui: ## swagger ui 
+	$(BIN)/go-bindata
 	$(GIT) clone --depth 1 https://github.com/swagger-api/swagger-ui.git $(ROOT)/tmp/swagger-ui
 	rm -rf $(ROOT)/third_party/swagger-ui
 	mv $(ROOT)/tmp/swagger-ui/dist $(ROOT)/third_party/swagger-ui
@@ -121,61 +126,75 @@ swagger-ui: $(BIN)/go-bindata
 	sed -i -e 's/https:\/\/petstore.swagger.io\/v2\/swagger\.json/\/v1\/swagger\/index\.json/g' $(ROOT)/third_party/swagger-ui/index.html
 	cd $(ROOT)/third_party/swagger-ui && $(BIN)/go-bindata -nometadata -o $(ROOT)/pkg/grpcgw/swagger.gen.go -nomemcopy=true -pkg=grpcgw ./...
 
-swagger: swagger-to-go proto $(addsuffix -swagger,$(dir $(wildcard $(ROOT)/modules/*/)))
+swagger: ## swagger to go proto
+	swagger-to-go proto $(addsuffix -swagger,$(dir $(wildcard $(ROOT)/modules/*/)))
 
-code-gen: swagger proto
+code-gen: ## swagger proto
+	swagger proto
 
 # Migrations
-tools-migration: $(BIN)/go-bindata $(addsuffix -migration,$(dir $(wildcard $(ROOT)/modules/*/)))
+tools-migration: ## tools Migrations
+	$(BIN)/go-bindata $(addsuffix -migration,$(dir $(wildcard $(ROOT)/modules/*/)))
 	$(INSTALL) ./app/migration
 
-mig-up: tools-migration
+mig-up: ## tools-migration
 	$(BIN)/migration -action=up
 
-mig-down: tools-migration
+mig-down: ## tools-migration
 	$(BIN)/migration -action=down
 
 # Test/Build
-test: tools-migration
+test: ## Test/Build
+
 	E_SERVICES_POSTGRES_USER="$(DB_USER)_test" E_SERVICES_POSTGRES_DB="$(DB_NAME)_test" $(BIN)/migration -action=down-all
 	E_SERVICES_POSTGRES_USER="$(DB_USER)_test" E_SERVICES_POSTGRES_DB="$(DB_NAME)_test" $(BIN)/migration -action=up
 	$(GO) test ./pkg/... ./modules/misc/... ./modules/user/... -coverprofile cover.cp
 	E_SERVICES_POSTGRES_USER="$(DB_USER)_test" E_SERVICES_POSTGRES_DB="$(DB_NAME)_test" $(BIN)/migration -action=down-all
 
-test-full: test-database-setup test
+test-full: ## test full
+	test-database-setup test
 
-build:
+build: ## Building all binaries
 	@echo "Building all binaries"
 	$(INSTALL) ./cmd/...
 	$(INSTALL) ./app/...
 
 
-$(BIN)/reflex:
+	$(BIN)/reflex:
 	$(GET) github.com/cespare/reflex
 
-run-server: build rsa_file
+run-server: ## run server
+	build rsa_file
 	@echo "Running..."
 	@E_SECRET_PRIVATE=$(shell cat $(BIN)/jwtRS256.key | base64 -w 0) $(BIN)/server 2>&1
 
-all: build tools-migration
+all: ## build tools migration
+	build tools-migration
 
-watch: $(BIN)/reflex
+watch: ## watch
+	$(BIN)/reflex
 	$(BIN)/reflex -r '\.proto$$' make code-gen
 
-$(BIN)/didebaan-cli:
+	$(BIN)/didebaan-cli:
 	$(GET) github.com/fzerorubigd/didebaan/cmd/didebaan-cli
 
-triger: $(BIN)/didebaan-cli
+triger: ## triger didebaan-cli
+	$(BIN)/didebaan-cli
 	@$(BIN)/didebaan-cli
 
-start:
+start: ## start docker compose up
 	docker-compose up
 
 # Deploy
-deploy:
+deploy: ## deploy docker
 	$(DOCKER) build --build-arg APP_NAME=$(APP_NAME) -t dokku/$(APP_NAME):$(COMMIT_COUNT) .
 	$(DOCKER) save dokku/$(APP_NAME):$(COMMIT_COUNT) | $(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "docker load"
 	$(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "docker tag dokku/$(APP_NAME):$(COMMIT_COUNT) dokku/$(APP_NAME):latest"
 	$(SSH) -o "StrictHostKeyChecking no" root@$(DOKKU_HOST) "dokku tags:deploy $(APP_NAME) $(COMMIT_COUNT)"
 
 .PHONY: lint swagger-to-go proto swagger build-server run-server generate vendor
+
+.PHONY: help
+help: ## This help.
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+.DEFAULT_GOAL := help
