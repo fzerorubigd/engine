@@ -4,14 +4,14 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"syscall"
+
+	"github.com/fzerorubigd/clictx"
 
 	"elbix.dev/engine/app/common"
 	"elbix.dev/engine/pkg/initializer"
 	"elbix.dev/engine/pkg/log"
 	"elbix.dev/engine/pkg/migration"
 	"elbix.dev/engine/pkg/postgres/model"
-	"github.com/fzerorubigd/clictx"
 )
 
 var (
@@ -20,13 +20,7 @@ var (
 )
 
 func main() {
-	ctx := clictx.Context(
-		syscall.SIGKILL,
-		syscall.SIGINT,
-		syscall.SIGTERM,
-		syscall.SIGQUIT,
-		syscall.SIGABRT,
-	)
+	ctx := clictx.DefaultContext()
 	_ = common.InitializeConfig(ctx, false)
 
 	defer initializer.Initialize(ctx)()

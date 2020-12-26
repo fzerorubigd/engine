@@ -4,8 +4,9 @@ import (
 	"testing"
 	"time"
 
-	"elbix.dev/engine/pkg/sec"
 	"github.com/stretchr/testify/require"
+
+	"elbix.dev/engine/pkg/sec"
 )
 
 // privateKeyTest is a private RSA key for test (base64 encoded)
